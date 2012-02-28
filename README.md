@@ -5,13 +5,16 @@ Write JSON unit tests faster and with less code.  Great for testing REST interfa
 
 Write and maintain this:
 
+`
     JSONObject data = getRESTData("/friends/367.json");
     String expected ="{friends:[{id:123,name:\"Corby Page\"},"
         + "{id:456,name:\"Carter Page\"}]}";
     JSONAssert.assertEquals(expected, data, false);
+`
 
 NOT this:
 
+`
     JSONObject data = getRESTData("/friends/367.json");
     Assert.assertTrue(data.has("friends"));
     Object friendsObject = data.get("friends");
@@ -38,5 +41,6 @@ NOT this:
         Assert.fail("Expected either Carter or Corby, Got: "
             + friend1Obj.getString("name"));
     }
+`
 
 Right?
