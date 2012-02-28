@@ -1,1 +1,35 @@
-Placeholder project for org.skyscreamer.jsonassert.  Once the initial code is relatively stable, the package will be refactored out into this project, and the project will be transferred to skyscreamer.
+Write JSON unit tests faster and with less code.  Great for testing REST interfaces.
+
+Write and maintain this:
+
+    String expected ="{fans:[{id:123,name:\"Corby Page\"},{id:456,name:\"Carter Page\"}]}";
+    JSONAssert.assertEquals(expected, data, false);
+
+Instead of this:
+
+    Assert.assertTrue(data.has("fans"));
+    Object fansObject = data.get("fans");
+    Assert.assertTrue(fansObject instanceof JSONArray);
+    JSONArray fans = (JSONArray) fansObject;
+    Assert.assertEquals(2, data.length());
+    JSONObject fan1Obj = fans.getJSONObject(data.get(0));
+    Assert.true(fan1Obj.has("id"));
+    Assert.true(fan1Obj.has("name"));
+    JSONObject fan2Obj = fans.getJSONObject(data.get(1));
+    Assert.true(fan2Obj.has("id"));
+    Assert.true(fan2Obj.has("name"));
+    if ("Carter Page".equals(fan1Obj.getString("name"))) {
+        Assert.assertEquals(123, fan1Obj.getInt("id"));
+        Assert.assertEquals("Corby Page", fan2Obj.getString("name"));
+        Assert.assertEquals(456, fan2Obj.getInt("id"));
+    }
+    else if ("Corby Page".equals(fan1Obj.getString("name"))) {
+        Assert.assertEquals(456, fan1Obj.getInt("id"));
+        Assert.assertEquals("Carter Page", fan2Obj.getString("name"));
+        Assert.assertEquals(123, fan2Obj.getInt("id"));
+    }
+    else {
+        Assert.fail("Expected either Carter or Corby, Got: " + fan1Obj.getString("name"));
+    }
+
+Right?
