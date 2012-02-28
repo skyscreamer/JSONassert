@@ -3,18 +3,16 @@ JSONassert
 
 Write JSON unit tests faster and with less code.  Great for testing REST interfaces.
 
+It works like you expect.  The strictness of the checking is tunable.  Get understandable results back.
+
 Write and maintain this:
 
-`
     JSONObject data = getRESTData("/friends/367.json");
-    String expected ="{friends:[{id:123,name:\"Corby Page\"},"
-        + "{id:456,name:\"Carter Page\"}]}";
+    String expected = "{friends:[{id:123,name:\"Corby Page\"},{id:456,name:\"Carter Page\"}]}";
     JSONAssert.assertEquals(expected, data, false);
-`
 
-NOT this:
+NOT this (ouch!):
 
-`
     JSONObject data = getRESTData("/friends/367.json");
     Assert.assertTrue(data.has("friends"));
     Object friendsObject = data.get("friends");
@@ -38,9 +36,5 @@ NOT this:
         Assert.assertEquals(123, friend2Obj.getInt("id"));
     }
     else {
-        Assert.fail("Expected either Carter or Corby, Got: "
-            + friend1Obj.getString("name"));
+        Assert.fail("Expected either Carter or Corby, Got: " + friend1Obj.getString("name"));
     }
-`
-
-Right?
