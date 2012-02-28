@@ -1,3 +1,6 @@
+JSONassert
+==========
+
 Write JSON unit tests faster and with less code.  Great for testing REST interfaces.
 
 Write and maintain this:
@@ -5,7 +8,7 @@ Write and maintain this:
     String expected ="{fans:[{id:123,name:\"Corby Page\"},{id:456,name:\"Carter Page\"}]}";
     JSONAssert.assertEquals(expected, data, false);
 
-Instead of this:
+NOT this:
 
     Assert.assertTrue(data.has("fans"));
     Object fansObject = data.get("fans");
