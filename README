@@ -5,7 +5,8 @@ Write JSON unit tests faster and with less code.  Great for testing REST interfa
 
 Write and maintain this:
 
-    String expected ="{fans:[{id:123,name:\"Corby Page\"},{id:456,name:\"Carter Page\"}]}";
+    String expected ="{fans:[{id:123,name:\"Corby Page\"},"
+        + "{id:456,name:\"Carter Page\"}]}";
     JSONAssert.assertEquals(expected, data, false);
 
 NOT this:
@@ -32,7 +33,8 @@ NOT this:
         Assert.assertEquals(123, fan2Obj.getInt("id"));
     }
     else {
-        Assert.fail("Expected either Carter or Corby, Got: " + fan1Obj.getString("name"));
+        Assert.fail("Expected either Carter or Corby, Got: "
+            + fan1Obj.getString("name"));
     }
 
 Right?
