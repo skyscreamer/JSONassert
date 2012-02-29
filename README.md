@@ -38,3 +38,10 @@ NOT this (ouch!):
     else {
         Assert.fail("Expected either Carter or Corby, Got: " + friend1Obj.getString("name"));
     }
+
+* * *
+
+Resources
+---------
+
+[JavaDoc](http://skyscreamer.org/JSONassert/javadoc/)
