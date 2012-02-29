@@ -10,7 +10,7 @@
 
     <groupId>org.skyscreamer</groupId>
     <artifactId>jsonassert</artifactId>
-    <version>0.9.0</version>
+    <version>0.9.1-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <name>JSONassert</name>
