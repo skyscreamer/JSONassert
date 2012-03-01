@@ -3,6 +3,9 @@ JSONassert
 
 Write JSON unit tests faster and with less code.  Great for testing REST interfaces.
 
+Intro
+-----
+
 It works like you expect.  The strictness of the checking is tunable.  Get understandable results back.
 
 Write and maintain this:
