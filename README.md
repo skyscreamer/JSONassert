@@ -41,7 +41,26 @@ NOT this (ouch!):
 
 * * *
 
+QuickStart
+----------
+
+Add the following to your project's pom.xml:
+
+    <dependency>
+        <groupId>org.skyscreamer</groupId>
+        <artifactId>jsonassert</artifactId>
+        <version>0.9.0</version>
+    </dependency>
+
+And use JSONAssert.assertEquals just like you'd used Assert.assertEquals in existing JUnit test cases.  That's it.
+
+Behind the scenes, JSONAssert, converts your "expected" string to a JSON object, and compares that to the result you want to test.  It performs a logical comparison -- much like the don't-do-this example above, but a lot cleaner.  On test failure, the result messages are very specific and should simplify troubleshooting.
+
+
+* * *
+
 Resources
 ---------
 
 [JavaDoc](http://skyscreamer.org/JSONassert/javadoc/)
+
