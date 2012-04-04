@@ -1,12 +1,15 @@
 JSONassert
 ==========
 
-Write JSON unit tests faster and with less code.  Great for testing REST interfaces.
+Write JSON unit tests in less code.  Great for testing REST interfaces.
 
-Intro
------
+Summary
+-------
 
-Write your JSON tests as if you were comparing to a string.  JSONassert turns the string into a JSON object and compare the logical structure and data between the two.  When _strict_ is set to false (recommended), it forgives reordering data and extending results (as long as all the expected elements are there), making tests less brittle.
+Write JSON tests as if you are comparing a string.  Under the covers, JSONassert converts your string into a JSON object and compares the logical structure and data with the actual JSON.  When _strict_ is set to false (recommended), it forgives reordering data and extending results (as long as all the expected elements are there), making tests less brittle.
+
+Examples
+--------
 
 In JSONassert you write and maintain something like this:
 
@@ -75,6 +78,12 @@ And use JSONAssert.assertEquals just like you'd used Assert.assertEquals in exis
 
 Behind the scenes, JSONAssert, converts your "expected" string to a JSON object, and compares that to the result you want to test.  It performs a logical comparison -- much like the don't-do-this example above, but a lot cleaner.  On test failure, the result messages are very specific and should simplify troubleshooting.
 
+
+* * *
+
+Who uses JSONassert?
+--------------------
+ + [yoga](https://github.com/skyscreamer/yoga) - A relational REST framework
 
 * * *
 
