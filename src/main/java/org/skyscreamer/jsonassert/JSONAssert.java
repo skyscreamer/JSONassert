@@ -38,6 +38,8 @@ import org.json.JSONObject;
  *
  */
 public class JSONAssert {
+    private JSONAssert() {}
+
     /**
      * Asserts that the JSONObject provided matches the expected string.  If it isn't it throws an
      * {@link AssertionError}.

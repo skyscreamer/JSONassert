@@ -42,7 +42,11 @@ public class JSONCompareResult {
     public String getMessage() {
         return _message;
     }
-    
+
+    /**
+     * Identify that the comparison failed
+     * @param message String explaining why if the comparison failed
+     */
     protected void fail(String message) {
         _success = false;
         if (_message.length() == 0) {
@@ -53,6 +57,12 @@ public class JSONCompareResult {
         }
     }
 
+    /**
+     * Identify that the comparison failed
+     * @param field Which field failed
+     * @param expected Expected result
+     * @param actual Actual result
+     */
     protected void fail(String field, Object expected, Object actual) {
         StringBuffer message= new StringBuffer();
         message.append(field);
