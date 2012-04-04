@@ -82,6 +82,7 @@ Write tests like this:
 
 <code>JSONAssert.assertEquals(<i>expectedJSONString</i>, <i>actualJSON</i>, <i>strictMode</i>);</code>
 
+[Some real-world examples](https://github.com/skyscreamer/yoga/tree/master/yoga-demos/yoga-demo-shared/src/main/java/org/skyscreamer/yoga/demo/test)
 
 * * *
 
