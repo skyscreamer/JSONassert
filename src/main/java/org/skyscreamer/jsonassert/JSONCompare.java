@@ -155,8 +155,9 @@ public class JSONCompare {
         else if (allJSONObjects(expected)) {
             String uniqueKey = findUniqueKey(expected);
             if (uniqueKey == null) {
-                throw new IllegalArgumentException("Non-strict checking of an array of objects without a common simple " +
-                        "field is not supported.  ([{id:1,a:3},{id:2,b:4}] is ok, [{dog:\"fido\"},{cat:\"fluffy\"}] is not)");
+                // An expensive last resort
+                recursivelyCompareJSONArray(key, expected, actual, mode, result);
+                return;
             }
             Map<Object, JSONObject> expectedValueMap = arrayOfJsonObjectToMap(expected, uniqueKey);
             Map<Object, JSONObject> actualValueMap = arrayOfJsonObjectToMap(actual, uniqueKey);
@@ -176,11 +177,53 @@ public class JSONCompare {
             }
         }
         else if (allJSONArrays(expected)) {
-            throw new IllegalArgumentException("Non-strict checking of arrays of arrays (e.g. [[1,2],[3,4]]) is not supported.");
+            // An expensive last resort
+            recursivelyCompareJSONArray(key, expected, actual, mode, result);
+            return;
         }
         else {
-            throw new IllegalArgumentException("A mixture of simple values, objects, and arrays (e.g. [1,2,{a:\"b\"},[]]) " +
-                    "are not supported in non-strict mode.");
+            // An expensive last resort
+            recursivelyCompareJSONArray(key, expected, actual, mode, result);
+            return;
+        }
+    }
+
+    // This is expensive (O(n^2) -- yuck), but may be the only resort for some cases with loose array ordering, and no
+    // easy way to uniquely identify each element.
+    private static void recursivelyCompareJSONArray(String key, JSONArray expected, JSONArray actual,
+                                                    JSONCompareMode mode, JSONCompareResult result) throws JSONException {
+        Set<Integer> matched = new HashSet<Integer>();
+        for(int i = 0 ; i < actual.length() ; ++i) {
+            Object actualElement = actual.get(i);
+            boolean matchFound = false;
+            for(int j = 0 ; j < expected.length() ; ++j) {
+                if (matched.contains(j) || !actual.get(i).getClass().equals(expected.get(j).getClass())) {
+                    continue;
+                }
+                if (actualElement instanceof JSONObject) {
+                    if (compareJSON((JSONObject)actualElement, (JSONObject)expected.get(j), mode).passed()) {
+                        matched.add(j);
+                        matchFound = true;
+                        break;
+                    }
+                }
+                else if (actualElement instanceof JSONArray) {
+                    if (compareJSON((JSONArray)actualElement, (JSONArray)expected.get(j), mode).passed()) {
+                        matched.add(j);
+                        matchFound = true;
+                        break;
+                    }
+                }
+                else if (actualElement.equals(expected.get(j))) {
+                    matched.add(j);
+                    matchFound = true;
+                    break;
+                }
+            }
+            if (!matchFound) {
+                result.fail("Could not find match for element " + actualElement);
+                return;
+            }
         }
     }
 
