@@ -8,6 +8,10 @@ Summary
 
 Write JSON tests as if you are comparing a string.  Under the covers, JSONassert converts your string into a JSON object and compares the logical structure and data with the actual JSON.  When _strict_ is set to false (recommended), it forgives reordering data and extending results (as long as all the expected elements are there), making tests less brittle.
 
+Supported test frameworks:
+
+ * [JUnit](http://junit.org)
+
 Examples
 --------
 
@@ -74,9 +78,9 @@ To use, [download the JAR](https://github.com/skyscreamer/JSONassert/downloads) 
         <version>0.9.0</version>
     </dependency>
 
-And use JSONAssert.assertEquals just like you'd used Assert.assertEquals in existing JUnit test cases.  That's it.
+Write tests like this:
 
-Behind the scenes, JSONAssert, converts your "expected" string to a JSON object, and compares that to the result you want to test.  It performs a logical comparison -- much like the don't-do-this example above, but a lot cleaner.  On test failure, the result messages are very specific and should simplify troubleshooting.
+<code>JSONAssert.assertEquals(<i>expectedJSONString</i>, <i>actualJSON</i>, <i>strictMode</i>);</code>
 
 
 * * *
