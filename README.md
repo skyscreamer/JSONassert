@@ -51,7 +51,8 @@ else {
 }
 </del></code></pre>
 
-The more complicated your test, the bigger the benefit from JSONassert.
+Error Messages
+--------------
 
 We tried to make error messages easy to understand.  This is really important, since it gets hard for the eye to pick out the difference, particularly in long JSON strings.  For example:
 
@@ -63,7 +64,7 @@ returns the following:
 
     friends[id=3].pets[]: Expected bird, but not found ; friends[id=3].pets[]: Contains cat, but not expected
 
-Which tells you that the pets array under friend with id=3 was supposed to have a bird, but had a cat instead.  (Maybe the cat ate the bird?)
+Which tells you that the pets array under the friend where id=3 was supposed to contain "bird", but had "cat" instead.  (Maybe the cat ate the bird?)
 
 * * *
 
