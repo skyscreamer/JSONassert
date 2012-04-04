@@ -66,7 +66,7 @@ Which tells you that the pets array under friend with id=3 was supposed to have 
 QuickStart
 ----------
 
-To use, add the following to your project's pom.xml:
+To use, [download the JAR](https://github.com/skyscreamer/JSONassert/downloads) or add the following to your project's pom.xml:
 
     <dependency>
         <groupId>org.skyscreamer</groupId>
