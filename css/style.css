@@ -52,7 +52,7 @@ textarea {overflow: auto;}
 
 
 a{
-    color: #1CD;
+    color: #339CA5;
 }
 
 /*		Default Layout: 992px.
@@ -93,7 +93,7 @@ body {
                 background: #3a3a3a;
             }
             nav .cookbook {
-                background: #11CCDD;
+                background: #339CA5;
             }
             nav .quickstart {
                 background: #757575;
@@ -117,7 +117,7 @@ body {
     header { }
         header h1 {
             clear: both;
-            color: #11CCDD;
+            color: #339CA5;
             font-size: 43px;
             line-height: 60px;
 	    float: left;
@@ -141,7 +141,7 @@ section {
     padding: 0 20px;
 }
     section h2 {
-        border-bottom:  2px solid #11CCDD;
+        border-bottom:  2px solid #339CA5;
         font-size: 20px;
         line-height: 21px;
         margin-bottom: 20px;
