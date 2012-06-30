@@ -1,1 +1,130 @@
-Hello
+<!doctype html>
+<html>
+<head>
+    <title>JSONAssert - Write JSON Unit Tests with Less Code - Introduction</title>
+    <meta name="description" content="Great for testing REST interfaces, JSONassert greatly simplifies testing JSON results in unit tests." />
+    <meta name="keywords" content="jsonassert,json unit test,rest unit test,json junit,rest junit" />
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link href="css/style.css" rel="stylesheet"/>
+    <script type="text/javascript">
+
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', '']);
+        _gaq.push(['_setDomainName', 'skyscreamer.org']);
+        _gaq.push(['_trackPageview']);
+
+        (function() {
+            var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+            var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+        })();
+
+    </script>
+</head>
+<body>
+<header>
+    <h1>JSONassert</h1>
+    <h2>a <a href="http://www.skyscreamer.org">Skyscreamer</a> project</h2>
+</header>
+<br clear="all" />
+<nav>
+    <ul>
+        <li><a class="intro" href="./">Introduction</a></li>
+        <li><a class="cookbook" href="cookbook.html">Cookbook</a></li>
+        <li><a class="quickstart" href="quickstart.html">Quickstart</a></li>
+        <li><a class="javadoc" href="javadoc/index.html">Javadoc</a></li>
+        <li><a class="download" href="https://github.com/skyscreamer/jsonassert/downloads">Download</a></li>
+        <li><a class="contrib" href="https://github.com/skyscreamer/jsonassert">Contribute</a></li>
+    </ul>
+</nav>
+<section>
+    <a name="intro"></a>
+    <h2>Introduction</h2>
+
+    <p class="emphasize">Write JSON unit tests in less code. Great for testing REST interfaces.</p>
+
+    <p><br/>Code JSON tests as if you are comparing a string. Under the covers, JSONassert converts your string into a JSON object and compares the logical structure and data with the actual JSON. When strict is set to false (recommended), it forgives reordering data and extending results (as long as all the expected elements are there), making tests less brittle.</p>
+
+    <p><br/>Supported test frameworks:</p>
+
+    <ul>
+      <li><a href="http://junit.org" target="_blank">JUnit</a></li>
+    </ul>
+
+    <p><br/>The current version of JSONassert is 1.0.0.</p>
+
+    <h2>Examples</h2>
+
+    <div class="example">
+      <p>In JSONassert, you write and maintain something like this:</p>
+        <blockquote>
+            <a>JSONObject data = getRESTData("/friends/367.json");</a><br/>
+	    <a>String expected = "{friends:[{id:123,name:\"Corby Page\"},{id:456,name:\"Carter Page\"}]}";</a><br/>
+	    <a>JSONAssert.assertEquals(expected, data, false);</a><br/>
+        </blockquote>
+    </div>
+
+    <div class="example">
+      <p>... instead of all this:</p>
+        <blockquote class="strikethrough">
+	  <a>JSONObject data = getRESTData("/friends/367.json");</a><br/>
+	  <a>Assert.assertTrue(data.has("friends"));</a><br/>
+	  <a>Object friendsObject = data.get("friends");</a><br/>
+	  <a>Assert.assertTrue(friendsObject instanceof JSONArray);</a><br/>
+	  <a>JSONArray friends = (JSONArray) friendsObject;</a><br/>
+	  <a>Assert.assertEquals(2, data.length());</a><br/>
+	  <a>JSONObject friend1Obj = friends.getJSONObject(data.get(0));</a><br/>
+	  <a>Assert.true(friend1Obj.has("id"));</a><br/>
+	  <a>Assert.true(friend1Obj.has("name"));</a><br/>
+	  <a>JSONObject friend2Obj = friends.getJSONObject(data.get(1));</a><br/>
+	  <a>Assert.true(friend2Obj.has("id"));</a><br/>
+	  <a>Assert.true(friend2Obj.has("name"));</a><br/>
+	  <a>if ("Carter Page".equals(friend1Obj.getString("name"))) {</a><br/>
+	  <a> &nbsp; Assert.assertEquals(123, friend1Obj.getInt("id"));</a><br/>
+	  <a> &nbsp; Assert.assertEquals("Corby Page", friend2Obj.getString("name"));</a><br/>
+	  <a> &nbsp; Assert.assertEquals(456, friend2Obj.getInt("id"));</a><br/>
+	  <a>}</a><br/>
+	  <a>else if ("Corby Page".equals(friend1Obj.getString("name"))) {</a><br/>
+	  <a> &nbsp; Assert.assertEquals(456, friend1Obj.getInt("id"));</a><br/>
+	  <a> &nbsp; Assert.assertEquals("Carter Page", friend2Obj.getString("name"));</a><br/>
+	  <a> &nbsp; Assert.assertEquals(123, friend2Obj.getInt("id"));</a><br/>
+	  <a>}</a><br/>
+	  <a>else {</a><br/>
+	  <a> &nbsp; Assert.fail("Expected either Carter or Corby, Got: " + friend1Obj.getString("name"));</a><br/>
+	  <a>}</a><br/>
+        </blockquote>
+    </div>
+
+    <h2>Error Messages</h2>
+
+    <div class="example">
+      <p>We tried to make error messages easy to understand. This is really important, since it gets hard for the eye to pick out the difference, particularly in long JSON strings. For example:</p>
+        <blockquote>
+	  <a>String expected = "{id:1,name:\"Joe\",friends:[{id:2,name:\"Pat\",pets:[\"dog\"]},{id:3,name:\"Sue\",pets:[\"<span class="emphasize">bird</span>\",\"fish\"]}],pets:[]}";</a><br/>
+	  <a>String actual = "{id:1,name:\"Joe\",friends:[{id:2,name:\"Pat\",pets:[\"dog\"]},{id:3,name:\"Sue\",pets:[\"<span class="emphasize">cat</span>\",\"fish\"]}],pets:[]}"</a><br/>
+	  <a>JSONAssert.assertEquals(expected, actual, false);</a><br/>
+        </blockquote>
+    </div>
+
+    <div class="example">
+      <p>... returns the following:</p>
+        <blockquote>
+	  <a>friends[id=3].pets[]: Expected bird, but not found ; friends[id=3].pets[]: Contains cat, but not expected</a><br/>
+        </blockquote>
+    </div>
+
+    ... which tells you that the pets array under the friend where id=3 was supposed to contain "bird", but had "cat" instead. 
+    (Maybe the cat ate the bird?)
+</section>
+
+<section>
+    <a name="contact"></a>
+    <h2>Contact</h2>
+    <p>
+        This is open source so if you want to help out whether by submitting code, design, suggestions, feedback,
+        or feature requests, we appreciate whatever you can contribute.  Contact us at
+        <a href="mailto:jsonassert-dev@skyscreamer.org">jsonassert-dev@skyscreamer.org</a> with questions or ideas.
+    </p>
+</section>
+</body>
+</html>
