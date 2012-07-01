@@ -1,0 +1,82 @@
+<!doctype html>
+<html>
+<head>
+    <title>JSONAssert - Write JSON Unit Tests with Less Code - Quickstart</title>
+    <meta name="description" content="Great for testing REST interfaces, JSONassert greatly simplifies testing JSON results in unit tests." />
+    <meta name="keywords" content="jsonassert,json unit test,rest unit test,json junit,rest junit" />
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link href="css/style.css" rel="stylesheet"/>
+    <script type="text/javascript">
+
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-33062731-1']);
+        _gaq.push(['_setDomainName', 'skyscreamer.org']);
+        _gaq.push(['_trackPageview']);
+
+        (function() {
+            var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+            var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+        })();
+
+    </script>
+</head>
+<body>
+<header>
+    <h1>JSONassert</h1>
+    <h2>a <a href="http://skyscreamer.org">Skyscreamer</a> project</h2>
+</header>
+<br clear="all" />
+<nav>
+    <ul>
+        <li><a class="intro" href="./">Introduction</a></li>
+        <li><a class="cookbook" href="cookbook.html">Cookbook</a></li>
+        <li><a class="quickstart" href="">Quickstart</a></li>
+        <li><a class="javadoc" href="javadoc/index.html">Javadoc</a></li>
+        <li><a class="download" href="https://github.com/skyscreamer/jsonassert/downloads">Download</a></li>
+        <li><a class="contrib" href="https://github.com/skyscreamer/jsonassert"> &nbsp; </a></li>
+    </ul>
+</nav>
+<section>
+    <a name="intro"></a>
+    <h2>Quick Start</h2>
+
+    <p>To use, <a href="https://github.com/skyscreamer/jsonassert/downloads">download the JAR</a> or
+      add the following to your project's pom.xml:</p>
+
+    <div class="example">
+        <blockquote>
+	  <a>&lt;dependency&gt;</a><br/>
+	  <a> &nbsp; &lt;groupId&gt;org.skyscreamer&lt;/groupId&gt;</a><br/>
+	  <a> &nbsp; &lt;artifactId&gt;jsonassert&lt;/artifactId&gt;</a><br/>
+	  <a> &nbsp; &lt;version&gt;1.0.0&lt;/version&gt;</a><br/>
+	  <a>&lt;/dependency&gt;</a><br/>
+        </blockquote>
+    </div>
+
+    <p>Syntax is simple, and similar to JUnit Assert:</p>
+    <div class="example">
+        <blockquote>
+	  <a>JSONAssert.assertEquals(<span class="italics">expectedJSON</span>, <span class="italics">actualJSON</span>, <span class="italics">strictMode</span>);</a><br/>
+        </blockquote>
+    </div>
+
+    <p>Add JSONassert tests within existing JUnit tests, just like you would add a standard Assert:</p>
+
+    <div class="example">
+        <blockquote>
+	  <a>@Test</a><br/>
+	  <a>public void testGetUser() {</a><br/>
+          <a> &nbsp; Assert.assertTrue(_restService.isEnabled());</a><br/>
+          <a> &nbsp; String result = _restService.get("/user/123.json");</a><br/>
+	  <a class="emphasize"> &nbsp; JSONAssert.assertEquals("{id:123,name:\"Joe\"}", result, false);</a><br/>
+	  <a>}</a><br/>
+        </blockquote>
+    </div>
+
+    <p>It is recommended that you leave <span class="italics">strictMode</span>
+      off, so your will be tests less brittle.
+      Turn it on if you need to enforce a particular order for arrays, or if you want to 
+      ensure that the actual JSON does not have any fields beyond what's expected.</p>
+</body>
+</html>
