@@ -30,7 +30,7 @@ public class JSONAssertTest {
         testPass("{name:\"Joe\",id:1}", "{id:1,name:\"Joe\"}", true);
     }
 
-    @Test // Currently JSONAssert assumes JSONObject.  Consider migrating to net.sf.json to cleanly add arrays.
+    @Test // Currently JSONAssert assumes JSONObject.
     public void testArray() throws JSONException {
         testPass("[1,2,3]","[1,2,3]", true);
         testPass("[1,2,3]","[1,3,2]", false);
