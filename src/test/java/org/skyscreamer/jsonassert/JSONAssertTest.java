@@ -26,7 +26,8 @@ public class JSONAssertTest {
 
     @Test
     public void testReversed() throws JSONException {
-        testPass("{name:\"Joe\"},id:1}", "{id:1,name:\"Joe\"}", false);
+        testPass("{name:\"Joe\",id:1}", "{id:1,name:\"Joe\"}", false);
+        testPass("{name:\"Joe\",id:1}", "{id:1,name:\"Joe\"}", true);
     }
 
     @Test // Currently JSONAssert assumes JSONObject.  Consider migrating to net.sf.json to cleanly add arrays.
