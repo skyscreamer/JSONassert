@@ -226,14 +226,14 @@ public class JSONCompare {
                     continue;
                 }
                 if (actualElement instanceof JSONObject) {
-                    if (compareJSON((JSONObject)actualElement, (JSONObject)expected.get(j), mode).passed()) {
+                    if (compareJSON((JSONObject)expected.get(j), (JSONObject)actualElement, mode).passed()) {
                         matched.add(j);
                         matchFound = true;
                         break;
                     }
                 }
                 else if (actualElement instanceof JSONArray) {
-                    if (compareJSON((JSONArray)actualElement, (JSONArray)expected.get(j), mode).passed()) {
+                    if (compareJSON((JSONArray)expected.get(j), (JSONArray)actualElement, mode).passed()) {
                         matched.add(j);
                         matchFound = true;
                         break;
