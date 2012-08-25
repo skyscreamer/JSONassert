@@ -72,4 +72,11 @@ public enum JSONCompareMode {
     public boolean hasStrictOrder() {
         return _strictOrder;
     }
+    
+    /**
+     * @return the non-strict equivalent.
+     */
+    public JSONCompareMode butNotStrict() {
+        return isExtensible() ? LENIENT : NON_EXTENSIBLE;
+    }
 }
