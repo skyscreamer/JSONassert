@@ -137,6 +137,11 @@ public class JSONAssertTest {
     }
     
     @Test
+    public void testLenientArrayRecursion() throws JSONException {
+        testPass("[{\"arr\":[5, 2, 1]}]", "[{\"b\":3, \"arr\":[1, 5, 2]}]", false);
+    }
+   
+    @Test 
     public void testFieldMismatch() throws JSONException {
         JSONCompareResult result = JSONCompare.compareJSON("{name:\"Pat\"}", "{name:\"Sue\"}", STRICT);
         Assert.assertEquals("Pat", result.getExpected());
