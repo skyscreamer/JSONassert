@@ -1,11 +1,10 @@
 package org.skyscreamer.jsonassert;
 
-import static org.skyscreamer.jsonassert.JSONCompareMode.LENIENT;
-import static org.skyscreamer.jsonassert.JSONCompareMode.STRICT;
-
 import org.json.JSONException;
 import org.junit.Assert;
 import org.junit.Test;
+
+import static org.skyscreamer.jsonassert.JSONCompareMode.*;
 
 /**
  * Unit tests for {@link JSONAssert}
