@@ -1,10 +1,11 @@
 package org.skyscreamer.jsonassert;
 
+import static org.skyscreamer.jsonassert.JSONCompareMode.LENIENT;
+import static org.skyscreamer.jsonassert.JSONCompareMode.STRICT;
+
 import org.json.JSONException;
 import org.junit.Assert;
 import org.junit.Test;
-
-import static org.skyscreamer.jsonassert.JSONCompareMode.*;
 
 /**
  * Unit tests for {@link JSONAssert}
@@ -135,7 +136,12 @@ public class JSONAssertTest {
     public void testArrayOfArrays() throws JSONException {
         testPass("{id:1,stuff:[[4,3],[3,2],[],[1,2]]}", "{id:1,stuff:[[1,2],[2,3],[],[3,4]]}", false);
     }
-
+    
+    @Test
+    public void testLenientArrayRecursion() throws JSONException {
+        testPass("[{\"arr\":[5, 2, 1]}]", "[{\"b\":3, \"arr\":[1, 5, 2]}]", false);
+    }
+    
     private void testPass(String expected, String actual, boolean strict)
         throws JSONException
     {

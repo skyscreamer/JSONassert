@@ -1,11 +1,18 @@
 package org.skyscreamer.jsonassert;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
+
 import org.apache.commons.collections.CollectionUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.util.*;
 
 /**
  * Provides the logic to compare two JSON entities.  This is the backend to {@link JSONAssert}, but it can
@@ -201,14 +208,14 @@ public class JSONCompare {
                     continue;
                 }
                 if (actualElement instanceof JSONObject) {
-                    if (compareJSON((JSONObject)actualElement, (JSONObject)expected.get(j), mode).passed()) {
+                    if (compareJSON((JSONObject)expected.get(j), (JSONObject)actualElement, mode).passed()) {
                         matched.add(j);
                         matchFound = true;
                         break;
                     }
                 }
                 else if (actualElement instanceof JSONArray) {
-                    if (compareJSON((JSONArray)actualElement, (JSONArray)expected.get(j), mode).passed()) {
+                    if (compareJSON((JSONArray)expected.get(j), (JSONArray)actualElement, mode).passed()) {
                         matched.add(j);
                         matchFound = true;
                         break;
