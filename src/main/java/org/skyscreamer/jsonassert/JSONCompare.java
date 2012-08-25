@@ -112,6 +112,31 @@ public class JSONCompare {
             else if (!expectedValue.equals(actualValue)) {
                 result.fail(fullKey, expectedValue, actualValue);
             }
+        } else {
+            if (isNull(expectedValue)) {
+                result.fail(fullKey + ": expected null, but got " + classToType(actualValue));
+            } else if (isNull(actualValue)) {
+                result.fail(fullKey + ": expected " + classToType(expectedValue) + ", but got null");
+            } else {
+                result.fail("Values of " + fullKey + " have different types: expected " + classToType(expectedValue)
+                        + ", but got " + classToType(actualValue));
+            }
+        }
+    }
+
+    private static boolean isNull(Object value) {
+        return value.getClass().getSimpleName().equals("Null");
+    }
+
+    private static String classToType(Object value) {
+        if (value instanceof JSONArray) {
+            return "an array";
+        } else if (value instanceof JSONObject) {
+            return "an object";
+        } else if (value instanceof String) {
+            return "a string";
+        } else {
+            return value.getClass().getName();
         }
     }
 
