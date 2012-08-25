@@ -135,6 +135,14 @@ public class JSONAssertTest {
     public void testArrayOfArrays() throws JSONException {
         testPass("{id:1,stuff:[[4,3],[3,2],[],[1,2]]}", "{id:1,stuff:[[1,2],[2,3],[],[3,4]]}", false);
     }
+    
+    @Test
+    public void testFieldMismatch() throws JSONException {
+        JSONCompareResult result = JSONCompare.compareJSON("{name:\"Pat\"}", "{name:\"Sue\"}", STRICT);
+        Assert.assertEquals("Pat", result.getExpected());
+        Assert.assertEquals("Sue", result.getActual());
+        Assert.assertEquals("name", result.getField());
+    }
 
     @Test
     public void testNullProperty() throws JSONException {
