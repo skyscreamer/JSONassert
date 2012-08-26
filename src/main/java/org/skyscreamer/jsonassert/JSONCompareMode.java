@@ -12,7 +12,7 @@ package org.skyscreamer.jsonassert;
  *     <tr><th>STRICT_ORDER</th><th>yes</th><th>yes</th></tr>
  * </table>
  *
- * <p>If extensbility not allowed, then all of the expected values must match in what's being tested,
+ * <p>If extensibility not allowed, then all of the expected values must match in what's being tested,
  * but any additional fields will cause the test to fail.  When extensibility is allowed, all values
  * must still match.  For example, if you're expecting:</p>
  *
@@ -45,7 +45,7 @@ public enum JSONCompareMode {
      */
     NON_EXTENSIBLE(false, false),
     /**
-     * Strict order checking.  Not extensible, but strict array ordering.
+     * Strict order checking.  Extensible, and strict array ordering.
      */
     STRICT_ORDER(true, true);
 
