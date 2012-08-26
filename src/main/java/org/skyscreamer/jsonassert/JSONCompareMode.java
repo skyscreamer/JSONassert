@@ -74,16 +74,28 @@ public enum JSONCompareMode {
     }
     
     /**
-     * @return the non-strict equivalent.
+     * Get the equivalent {@code JSONCompareMode} with or without strict ordering.
+     * 
+     * @return the equivalent {@code JSONCompareMode}
      */
-    public JSONCompareMode butNotStrict() {
-        return isExtensible() ? LENIENT : NON_EXTENSIBLE;
+    public JSONCompareMode withStrictOrdering(boolean strictOrdering) {
+        if (strictOrdering) {
+            return isExtensible() ? STRICT_ORDER : STRICT;
+        } else {
+            return isExtensible() ? LENIENT : NON_EXTENSIBLE;
+        }
     }
 
     /**
-     * @return the extensible equivalent.
+     * Get the equivalent {@code JSONCompareMode} with or without extensibility.
+     * 
+     * @return the equivalent {@code JSONCompareMode}
      */
-    public JSONCompareMode withExtensibility() {
-        return hasStrictOrder() ? STRICT_ORDER : LENIENT;
+    public JSONCompareMode withExtensible(boolean extensible) {
+        if (extensible) {
+            return hasStrictOrder() ? STRICT_ORDER : LENIENT;
+        } else {
+            return hasStrictOrder() ? STRICT : NON_EXTENSIBLE;
+        }
     }
 }
