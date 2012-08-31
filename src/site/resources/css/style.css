@@ -1,0 +1,317 @@
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+    margin: 0;
+    padding: 0;
+    border: 0 none;
+    font-size: 100%;
+    font: inherit;
+    vertical-align: baseline;
+}
+article, aside, details, figcaption, figure,
+footer, header, hgroup, menu, nav, section {
+    display: block;
+}
+html {
+    color: #000000;
+    background: #ffffff;
+    overflow-y: scroll;
+}
+body {line-height: 1;}
+h1, h2, h3, h4, h5, h6 {font-weight: normal;}
+ol, ul {list-style: none;}
+blockquote, q {quotes: none;}
+blockquote:before, blockquote:after,
+q:before, q:after {
+    content: '';
+    content: none;
+}
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+caption, th {text-align: left;}
+*:focus {outline: none 0;}
+input::-moz-focus-inner, a img,:link img,:visited img {border: 0 none;}
+:link, :visited, :hover, :active {text-decoration: none;}
+address, caption, cite, code, dfn, em, strong, th, var {
+    font-style: normal;
+    font-weight: normal;
+}
+textarea {overflow: auto;}
+
+
+a{
+    color: #339CA5;
+}
+
+/*		Default Layout: 992px.
+        Gutters: 24px.
+        Outer margins: 48px.
+        Leftover space for scrollbars @1024px: 32px.
+-------------------------------------------------------------------------------
+cols    1     2      3      4      5      6      7      8      9      10
+px      68    160    252    344    436    528    620    712    804    896    */
+
+body {
+    font-family: "Lucida Grande", Verdana, Tahoma, sans-serif;
+    font-size: 14px;
+    line-height: 15px;
+    color: #444;
+    padding: 48px 48px 84px;
+    margin: 0 auto;
+    width: 896px;
+    -webkit-text-size-adjust: 100%; /* Stops Mobile Safari from auto-adjusting font-sizes */
+}
+    nav {
+        background: #BEBBBB;
+        letter-spacing: .5px;
+        overflow:  auto;
+        top: 0;
+            -webkit-box-shadow: 0 3px 3px 0 #ccf;
+            -moz-box-shadow: 0 3px 3px 0 #ccf;
+            box-shadow: 0 2px 6px 0 #bbb;
+    }
+        nav a {
+            display: block;
+            color: #fff;
+            float: left;
+            padding: 10px 18px;
+            border-right: 1px solid #eee;
+        }
+            nav .intro {
+                background: #3a3a3a;
+            }
+            nav .cookbook {
+                background: #339CA5;
+            }
+            nav .quickstart {
+                background: #757575;
+            }
+            nav .javadoc {
+                background: #757575;
+            }
+            nav .download {
+                background: #929090;
+            }
+            nav .contrib {
+                background: #a6a6a6;
+                background-image:url('http://skyscreamer.org/i/blacktocat.png');
+                background-repeat:no-repeat;
+                background-position:center;
+                background-origin:content-box;
+            }
+        nav a.active {
+            background: #f3444e;
+        }
+    header { }
+        header h1 {
+            clear: both;
+            color: #339CA5;
+            font-size: 43px;
+            line-height: 60px;
+	    float: left;
+	    width: 70%;
+        }
+        header h2 {
+            padding: 33px 0 0 0;
+            float: left;
+            text-align: right;
+            width: 30%;
+        }
+	header h2 a {
+	    color: #950510;
+        }
+        header ul li {
+            float: left;
+        }
+section {
+    clear: both;
+    margin: 0 0 20px 0;
+    padding: 0 20px;
+}
+    section h2 {
+        border-bottom:  2px solid #339CA5;
+        font-size: 20px;
+        line-height: 21px;
+        margin-bottom: 20px;
+        padding-top: 30px;
+    }
+    section p {
+        margin: 10px 0;
+    }
+    section blockquote,
+    section pre {
+        background: #B2F1F7;
+        border: 3px double #aaa;
+        padding: 10px;
+    }
+    section pre {
+        overflow: auto;
+        font: 11px "Courier New", Courier, monospace;
+    }
+        section blockquote a {
+            font: 12px "Courier New", Courier, monospace;
+            color: #000;
+        }
+    section .demo {
+        background: #d1d1ff;
+        border: 3px double #aaa;
+        float: left;
+        margin: 20px 0 20px 0;
+        padding: 8px;
+        width: 380px;
+    }
+        section .demo h5 {
+            font-size: 13px;
+            font-weight: bold;
+        }
+            section .demo .wrapper {
+                display: none;
+                font: 12px "Courier New", Courier, monospace;
+                margin: 0;
+                padding: 0;
+            }
+                section .wrapper article h4 {
+                    font-weight: bold;
+                    margin-top: 20px;
+                }
+                section .demo .wrapper h4 {
+                    font-size: 15px;
+                }
+                section .demo input,
+                section .demo textarea {
+                    border: 1px solid #888;
+                    margin-top: 30px;
+                    width: 100%;
+                }
+                section .demo textarea {
+                    height: 150px;
+                }
+        section .demo2 {
+            float: right;
+        }
+    section div.example {
+        margin: 30px 20px;
+    }
+        section div.example p {
+            font: 12px Verdana;
+            margin-bottom: 3px;
+        }
+    section ul {
+        list-style: circle;
+        margin-left: 20px;
+    }
+        section ul li {
+            margin-bottom: 8px;
+        }
+
+    .strikethrough { text-decoration: line-through; }
+
+    .emphasize { font-weight: bold; }
+
+    .perf_table {
+        border: #30873E 2px solid;
+        width: 800px;
+    }
+
+    .perf_table th {
+        border: #30873E 1px solid;
+        padding: 3px;
+        spacing: 3px;
+        background-color: #30873E;
+        color: #FFFFFF;
+    }
+
+    .perf_table td {
+        border: #30873E 1px solid;
+        padding: 3px;
+        spacing: 3px;
+    }
+
+    .perf_table .alt_row td {
+        border: #30873E 1px solid;
+        padding: 3px;
+        spacing: 3px;
+        background-color: #7EC16A;
+    }
+
+
+
+/*		Tablet Layout: 768px.
+Gutters: 24px.
+Outer margins: 28px.
+Inherits styles from: Default Layout.
+-----------------------------------------------------------------
+cols    1     2      3      4      5      6      7      8
+px      68    160    252    344    436    528    620    712    */
+
+@media only screen and (min-width: 768px) and (max-width: 991px) {
+
+    body {
+        width: 712px;
+        padding: 48px 28px 60px;
+    }
+    section .demo {
+        width: 285px;
+    }
+}
+
+
+
+/*		Mobile Layout: 320px.
+        Gutters: 24px.
+        Outer margins: 34px.
+        Inherits styles from: Default Layout.
+---------------------------------------------
+cols    1     2      3
+px      68    160    252    */
+
+@media only screen and (max-width: 767px) {
+
+    body {
+        width: 252px;
+        padding: 48px 34px 60px;
+    }
+        nav li a {
+            float: none;
+            display: block;
+        }
+        section .demo {
+            float: left;
+            width: 200px;
+        }
+
+}
+
+
+
+/*		Wide Mobile Layout: 480px.
+        Gutters: 24px.
+        Outer margins: 22px.
+        Inherits styles from: Default Layout, Mobile Layout.
+------------------------------------------------------------
+cols    1     2      3      4      5
+px      68    160    252    344    436    */
+
+@media only screen and (min-width: 480px) and (max-width: 767px) {
+
+    body {
+        width: 436px;
+        padding: 48px 22px 48px;
+    }
+    section .demo {
+        float: left;
+    }
+
+}
