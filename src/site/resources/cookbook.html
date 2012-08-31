@@ -1,0 +1,137 @@
+<!doctype html>
+<html>
+<head>
+    <title>JSONAssert - Write JSON Unit Tests with Less Code - Cookbook</title>
+    <meta name="description" content="Great for testing REST interfaces, JSONassert greatly simplifies testing JSON results in unit tests." />
+    <meta name="keywords" content="jsonassert,json unit test,rest unit test,json junit,rest junit" />
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link href="css/style.css" rel="stylesheet"/>
+    <script type="text/javascript">
+
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-33062731-1']);
+        _gaq.push(['_setDomainName', 'skyscreamer.org']);
+        _gaq.push(['_trackPageview']);
+
+        (function() {
+            var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+            var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+        })();
+
+    </script>
+</head>
+<body>
+<header>
+    <h1>JSONassert</h1>
+    <h2>a <a href="http://skyscreamer.org">Skyscreamer</a> project</h2>
+</header>
+<br clear="all" />
+<nav>
+    <ul>
+        <li><a class="intro" href="./">Introduction</a></li>
+        <li><a class="cookbook" href="">Cookbook</a></li>
+        <li><a class="quickstart" href="quickstart.html">Quickstart</a></li>
+        <li><a class="javadoc" href="apidocs/index.html">Javadoc</a></li>
+        <li><a class="download" href="https://github.com/skyscreamer/jsonassert/downloads">Download</a></li>
+        <li><a class="contrib" href="https://github.com/skyscreamer/jsonassert"> &nbsp; </a></li>
+    </ul>
+</nav>
+<section>
+    <a name="cookbook"></a>
+    <h2>Cookbook</h2>
+
+    <p>Assertion parameters can be a java.lang.String with JSON data, an org.json.JSONObject, or an org.json.JSONArray.
+      For readability, we'll use strings in the following examples.</p>
+
+    <div class="example">
+      <p>A really simple example.  Get a JSON object and test its ID:</p>
+        <blockquote>
+	  <a>@Test</a><br/>
+	  <a>public void testSimple() {</a><br/>
+          <a> &nbsp; String result = getJSONResult("/user/1.json");</a><br/>
+          <a> &nbsp; JSONAssert.assertEquals("{id:1}", result, false); <span class="emphasize italics">// Pass</span></a><br/>
+	  <a>}</a><br/>
+        </blockquote>
+    </div>
+
+    <div class="example">
+      <p>If you enable <span class="italics">strictMode</span>, then extended fields fail:</p>
+        <blockquote>
+	  <a>String result = "{id:1,name:\"Juergen\"}";</a><br/>
+	  <a>JSONAssert.assertEquals("{id:1}", result, <span class="emphasize">false</span>); <span class="emphasize italics">// Pass</span></a><br/>
+	  <a>JSONAssert.assertEquals("{id:1}", result, <span class="emphasize">true</span>); <span class="emphasize italics">// Fail</span></a><br/>
+        </blockquote>
+    </div>
+
+    <div class="example">
+      <p>Strict or not, field order does not matter:</p>
+        <blockquote>
+	  <a>String result = "{id:1,name:\"Juergen\"}";</a><br/>
+	  <a>JSONAssert.assertEquals("{name:\"Juergen\",id:1}", result, true); <span class="emphasize italics">// Pass</span></a><br/>
+        </blockquote>
+    </div>
+    
+
+    <p>Because application interfaces are naturally extended as they mature, it is recommended that you
+      default to leaving strict mode off, except in particular cases.</p>
+
+    <div class="example">
+      <p>Arrays rules are different.  If sequence is important, you can enable strict mode:</p>
+        <blockquote>
+	  <a>String result = "[1,2,3,4,5]";</a><br/>
+	  <a>JSONAssert.assertEquals("[1,2,3,4,5]", result, true); <span class="emphasize italics">// Pass</span></a><br/>
+	  <a>JSONAssert.assertEquals("[5,3,2,1,4]", result, true); <span class="emphasize italics">// Fail</span></a><br/>
+        </blockquote>
+    </div>
+
+    <div class="example">
+      <p>When strict mode is off, arrays can be in any order:</p>
+        <blockquote>
+	  <a>String result = "[1,2,3,4,5]";</a><br/>
+	  <a>JSONAssert.assertEquals("[5,3,2,1,4]", result, false); <span class="emphasize italics">// Pass</span></a><br/>
+        </blockquote>
+    </div>
+
+    <div class="example">
+      <p>Strict or not, arrays must match.  They can't be "extended" like object fields can:</p>
+        <blockquote>
+	  <a>String result = "[1,2,3,4,5]";</a><br/>
+	  <a>JSONAssert.assertEquals("[1,2,3,4,5]", result, false); <span class="emphasize italics">// Pass</span></a><br/>
+	  <a>JSONAssert.assertEquals("[1,2,3]", result, false); <span class="emphasize italics">// Fail</span></a><br/>
+	  <a>JSONAssert.assertEquals("[1,2,3,4,5,6]", result, false); <span class="emphasize italics">// Fail</span></a><br/>
+        </blockquote>
+    </div>
+
+<p>The example so far are simple, but this will work for JSON objects of any size (per VM memory limits), depth,
+  or complexity.</p>
+
+    <div class="example">
+      <p>You can test arrays of arrays, loose/strict ordering constraints apply at all levels:</p>
+        <blockquote>
+	  <a>String result = "{id:1,stuff:[[1,2],[2,3],[],[3,4]]}";</a><br/>
+	  <a>JSONAssert.assertEquals("{id:1,stuff:[[1,2],[2,3],[],[3,4]]}", result, true); <span class="emphasize italics">// Pass</span></a><br/>
+	  <a>JSONAssert.assertEquals("{id:1,stuff:[[4,3],[3,2],[],[1,2]]}", result, false); <span class="emphasize italics">// Pass</span></a><br/>
+        </blockquote>
+    </div>
+
+    <div class="example">
+      <p>You can test arrays of arrays, loose/strict ordering constraints apply at all levels:</p>
+        <blockquote>
+	  <a>String result = "{id:1,name:\"Joe\",friends:[{id:2,name:\"Pat\",pets:[\"dog\"]},{id:3,name:\"Sue\",pets:[\"bird\",\"fish\"]}],pets:[]}";</a><br/>
+	  <a>JSONAssert.assertEquals("{id:1,name:\"Joe\",friends:[{id:2,name:\"Pat\",pets:[\"dog\"]},{id:3,name:\"Sue\",pets:[\"bird\",\"fish\"]}],pets:[]}", result, true); <span class="emphasize italics">// Pass</span></a><br/>
+	  <a>JSONAssert.assertEquals("{name:\"Joe\",friends:[{id:3,name:\"Sue\",pets:[\"fish\",\"bird\"]},{id:2,name:\"Pat\",pets:[\"dog\"]}],pets:[],id:1}", result, false); <span class="emphasize italics">// Pass</span></a><br/>
+        </blockquote>
+    </div>
+
+    <div class="example">
+      <p>As you can see, tests work against any level of depth:</p>
+        <blockquote>
+	  <a>String result = "{a:{b:{c:{d:{e:{f:{g:{h:{i:{j:{k:{l:{m:{n:{o:{p:\"blah\"}}}}}}}}}}}}}}}}";</a><br/>
+	  <a>JSONAssert.assertEquals("{a:{b:{c:{d:{e:{f:{g:{h:{i:{j:{k:{l:{m:{n:{o:{p:\"blah\"}}}}}}}}}}}}}}}}",
+	      result, true); <span class="emphasize italics">// Pass</span></a><br/>
+        </blockquote>
+    </div>
+
+</body>
+</html>

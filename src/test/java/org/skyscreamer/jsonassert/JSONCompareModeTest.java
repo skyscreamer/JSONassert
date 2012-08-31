@@ -21,8 +21,8 @@ public class JSONCompareModeTest {
         assertTrue(NON_EXTENSIBLE.withStrictOrdering(true).hasStrictOrder());
         assertFalse(NON_EXTENSIBLE.withStrictOrdering(true).isExtensible());
         
-        assertEquals(STRICT.withStrictOrdering(true), STRICT);
-        assertEquals(STRICT_ORDER.withStrictOrdering(true), STRICT_ORDER);
+        assertEquals(STRICT, STRICT.withStrictOrdering(true));
+        assertEquals(STRICT_ORDER, STRICT_ORDER.withStrictOrdering(true));
     }
     
     @Test
@@ -32,8 +32,8 @@ public class JSONCompareModeTest {
         assertFalse(STRICT.withStrictOrdering(false).hasStrictOrder());
         assertFalse(STRICT.withStrictOrdering(false).isExtensible());
         
-        assertEquals(LENIENT.withStrictOrdering(false), LENIENT);
-        assertEquals(NON_EXTENSIBLE.withStrictOrdering(false), NON_EXTENSIBLE);
+        assertEquals(LENIENT, LENIENT.withStrictOrdering(false));
+        assertEquals(NON_EXTENSIBLE, NON_EXTENSIBLE.withStrictOrdering(false));
     }
     
     @Test
@@ -43,8 +43,8 @@ public class JSONCompareModeTest {
         assertTrue(STRICT.withExtensible(true).isExtensible());
         assertTrue(STRICT.withExtensible(true).hasStrictOrder());
         
-        assertEquals(LENIENT.withExtensible(true), LENIENT);
-        assertEquals(STRICT_ORDER.withExtensible(true), STRICT_ORDER);
+        assertEquals(LENIENT, LENIENT.withExtensible(true));
+        assertEquals(STRICT_ORDER, STRICT_ORDER.withExtensible(true));
     }
     
     @Test
@@ -54,7 +54,7 @@ public class JSONCompareModeTest {
         assertFalse(LENIENT.withExtensible(false).isExtensible());
         assertFalse(LENIENT.withExtensible(false).hasStrictOrder());
         
-        assertEquals(STRICT.withExtensible(false), STRICT);
-        assertEquals(NON_EXTENSIBLE.withExtensible(false), NON_EXTENSIBLE);
+        assertEquals(STRICT, STRICT.withExtensible(false));
+        assertEquals(NON_EXTENSIBLE, NON_EXTENSIBLE.withExtensible(false));
     }
 }
