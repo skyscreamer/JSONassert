@@ -13,6 +13,8 @@ import java.util.*;
  * non-JUnit test framework)
  */
 public class JSONCompare {
+    private JSONCompare() {}
+
     /**
      * Compares JSON string provided to the expected JSON string, and returns the results of the comparison.
      *
