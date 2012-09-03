@@ -95,6 +95,12 @@ public class JSONCompareResult {
         }
     }
 
+    /**
+     * Identify that the comparison failed
+     * @param field Which field failed
+     * @param expected Expected result
+     * @param actual Actual result
+     */
     protected void fail(String field, Object expected, Object actual) {
         this._field = field;
         this._expected = expected;
