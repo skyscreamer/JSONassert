@@ -1,7 +1,7 @@
 Changelog
 =========
 
-Version 1.0.1 - 9/3/2012
+Version 1.1.0 - 9/3/2012
 ------------------------
  - Added withStrictOrdering() and withExtensible() to JSONCompareMode
  - Javadoc fixes
