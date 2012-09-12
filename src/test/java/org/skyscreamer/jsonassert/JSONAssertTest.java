@@ -166,6 +166,16 @@ public class JSONAssertTest {
         testPass("{id:1,name:null}", "{id:1,name:null}", true);
     }
 
+    @Test
+    public void testExpectedArrayButActualObject() throws JSONException {
+        testFail("[1]", "{id:1}", false);
+    }
+
+    @Test
+    public void testExpectedObjectButActualArray() throws JSONException {
+        testFail("{id:1}", "[1]", false);
+    }
+
     private void testPass(String expected, String actual, boolean strict)
         throws JSONException
     {
