@@ -76,25 +76,26 @@ To use, [download the JAR](https://github.com/skyscreamer/JSONassert/downloads) 
     <dependency>
         <groupId>org.skyscreamer</groupId>
         <artifactId>jsonassert</artifactId>
-        <version>1.0.0</version>
+        <version>1.1.0</version>
     </dependency>
 
 Write tests like this:
 
 <code>JSONAssert.assertEquals(<i>expectedJSONString</i>, <i>actualJSON</i>, <i>strictMode</i>);</code>
 
-[Some real-world examples](https://github.com/skyscreamer/yoga/tree/master/yoga-demos/yoga-demo-shared/src/main/java/org/skyscreamer/yoga/demo/test)
+[More examples in our cookbook](http://jsonassert.skyscreamer.org/cookbook.html)
 
 * * *
 
 Who uses JSONassert?
 --------------------
  + [yoga](https://github.com/skyscreamer/yoga) - A relational REST framework
+ + [hamcrest-json](https://github.com/hertzsprung/hamcrest-json) - Hamcrest matchers for comparing JSON documents
 
 * * *
 
 Resources
 ---------
 
-[JavaDoc](http://skyscreamer.org/JSONassert/javadoc/)
+[JavaDoc](http://jsonassert.skyscreamer.org/apidocs/index.html)
 

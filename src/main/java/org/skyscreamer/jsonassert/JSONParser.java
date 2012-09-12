@@ -8,6 +8,8 @@ import org.json.JSONObject;
  * Simple JSON parsing utility.
  */
 public class JSONParser {
+    private JSONParser() {}
+
     /**
      * Takes a JSON string and returns either a {@link org.json.JSONObject} or {@link org.json.JSONArray},
      * depending on whether the string represents an object or an array.
