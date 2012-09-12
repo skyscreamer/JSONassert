@@ -1,5 +1,7 @@
 package org.skyscreamer.jsonassert;
 
+import java.util.Arrays;
+
 import org.json.JSONException;
 import org.junit.Assert;
 import org.junit.Test;
@@ -147,6 +149,11 @@ public class JSONAssertTest {
         Assert.assertEquals("Pat", result.getExpected());
         Assert.assertEquals("Sue", result.getActual());
         Assert.assertEquals("name", result.getField());
+
+        FieldComparisonFailure comparisonFailure = result.getFieldFailures().iterator().next();
+        Assert.assertEquals("Pat", comparisonFailure.getExpected());
+        Assert.assertEquals("Sue", comparisonFailure.getActual());
+        Assert.assertEquals("name", comparisonFailure.getField());
     }
 
     @Test
