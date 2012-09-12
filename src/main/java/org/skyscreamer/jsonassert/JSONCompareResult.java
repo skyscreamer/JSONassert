@@ -1,5 +1,9 @@
 package org.skyscreamer.jsonassert;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 /**
  * Bean for holding results from JSONCompare.
  */
@@ -9,6 +13,7 @@ public class JSONCompareResult {
     private String _field;
     private Object _expected;
     private Object _actual;
+    private final List<FieldComparisonFailure> _fieldFailures = new ArrayList<FieldComparisonFailure>();
 
     /**
      * Default constructor.
@@ -47,11 +52,19 @@ public class JSONCompareResult {
     }
 
     /**
+     * Get the list of failures on field comparisons
+     */
+    public List<FieldComparisonFailure> getFieldFailures() {
+        return Collections.unmodifiableList(_fieldFailures);
+    }
+
+    /**
      * Actual field value
      * 
      * @return a {@code JSONObject}, {@code JSONArray} or other {@code Object}
      *         instance, or {@code null} if the comparison did not fail on a
      *         particular field
+     * @deprecated Superseded by {@link #getFieldFailures()}
      */
     public Object getActual() {
         return _actual;
@@ -63,16 +76,17 @@ public class JSONCompareResult {
      * @return a {@code JSONObject}, {@code JSONArray} or other {@code Object}
      *         instance, or {@code null} if the comparison did not fail on a
      *         particular field
+     * @deprecated Superseded by {@link #getFieldFailures()}
      */
     public Object getExpected() {
         return _expected;
     }
     
     /**
-     * Check if comparison failed on a particular field
+     * Check if comparison failed on any particular fields
      */
     public boolean isFailureOnField() {
-        return _field != null;
+        return !_fieldFailures.isEmpty();
     }
 
     /**
@@ -80,6 +94,7 @@ public class JSONCompareResult {
      * 
      * @return a {@code String} instance, or {@code null} if the comparison did
      *         not fail on a particular field
+     * @deprecated Superseded by {@link #getFieldFailures()}
      */
     public String getField() {
         return _field;
@@ -102,6 +117,7 @@ public class JSONCompareResult {
      * @param actual Actual result
      */
     protected JSONCompareResult fail(String field, Object expected, Object actual) {
+        _fieldFailures.add(new FieldComparisonFailure(field, expected, actual));
         this._field = field;
         this._expected = expected;
         this._actual = actual;
