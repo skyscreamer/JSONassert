@@ -116,12 +116,13 @@ public class JSONCompareResult {
      * @param expected Expected result
      * @param actual Actual result
      */
-    protected void fail(String field, Object expected, Object actual) {
+    protected JSONCompareResult fail(String field, Object expected, Object actual) {
         _fieldFailures.add(new FieldComparisonFailure(field, expected, actual));
         this._field = field;
         this._expected = expected;
         this._actual = actual;
         fail(formatFailureMessage(field, expected, actual));
+        return this;
     }
 
     private String formatFailureMessage(String field, Object expected, Object actual) {
