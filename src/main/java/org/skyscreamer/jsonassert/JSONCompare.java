@@ -35,10 +35,10 @@ public class JSONCompare {
             return compareJSON((JSONArray)expected, (JSONArray)actual, mode);
         }
         else if (expected instanceof JSONObject) {
-            throw new IllegalArgumentException("Expected a JSON object, but passed in a JSON array.");
+            return new JSONCompareResult().fail("", "a JSON object", "a JSON array");
         }
         else {
-            throw new IllegalArgumentException("Expected a JSON array, but passed in a JSON object.");
+            return new JSONCompareResult().fail("", "a JSON array", "a JSON object");
         }
     }
 
