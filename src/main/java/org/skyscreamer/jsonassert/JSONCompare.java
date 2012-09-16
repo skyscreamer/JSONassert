@@ -181,7 +181,7 @@ public class JSONCompare {
         }
         else if (allJSONObjects(expected)) {
             String uniqueKey = findUniqueKey(expected);
-            if (uniqueKey == null) {
+            if (uniqueKey == null || !isUsableAsUniqueKey(uniqueKey, actual)) {
                 // An expensive last resort
                 recursivelyCompareJSONArray(key, expected, actual, mode, result);
                 return;
@@ -268,31 +268,37 @@ public class JSONCompare {
         // Find a unique key for the object (id, name, whatever)
         JSONObject o = (JSONObject)expected.get(0); // There's at least one at this point
         for(String candidate : getKeys(o)) {
-            Object candidateValue = o.get(candidate);
-            if (isSimpleValue(candidateValue)) {
-                Set<Object> seenValues = new HashSet<Object>();
-                seenValues.add(candidateValue);
-                boolean isUsableKey = true;
-                for(int i = 1 ; i < expected.length() ; ++i) {
-                    JSONObject other = (JSONObject)expected.get(i);
-                    if (!other.has(candidate)) {
-                        isUsableKey = false;
-                        break;
-                    }
-                    Object comparisonValue = other.get(candidate);
-                    if (!isSimpleValue(comparisonValue) || seenValues.contains(comparisonValue)) {
-                        isUsableKey = false;
-                        break;
-                    }
-                    seenValues.add(comparisonValue);
-                }
-                if (isUsableKey) {
-                    return candidate;
-                }
-            }
+            if (isUsableAsUniqueKey(candidate, expected)) return candidate;
         }
         // No usable unique key :-(
         return null;
+    }
+
+    /**
+     * {@code candidate} is usable as a unique key if every element in the
+     * {@code array} is a JSONObject having that key, and no two values are the same.
+     */
+    private static boolean isUsableAsUniqueKey(String candidate, JSONArray array) throws JSONException {
+        Set<Object> seenValues = new HashSet<Object>();
+        for (int i = 0 ; i < array.length() ; i++) {
+            Object item = array.get(i);
+            if (item instanceof JSONObject) {
+                JSONObject o = (JSONObject) item;
+                if (o.has(candidate)) {
+                    Object value = o.get(candidate);
+                    if (isSimpleValue(value) && !seenValues.contains(value)) {
+                        seenValues.add(value);
+                    } else {
+                        return false;
+                    }
+                } else {
+                    return false;
+                }
+            } else {
+                return false;
+            }
+        }
+        return true;
     }
 
     private static List<Object> jsonArrayToList(JSONArray expected) throws JSONException {

@@ -61,9 +61,15 @@ public class JSONCompareTest {
     }
 
     @Test
-    @Ignore // currently failing
-    public void failing() throws JSONException {
-        compareJSON("[{\"id\": 3}]", "[{}]", NON_EXTENSIBLE);
+    public void reportsUnmatchedJSONArrayWhereOnlyExpectedContainsJSONObjectWithUniqueKey() throws JSONException {
+        JSONCompareResult result = compareJSON("[{\"id\": 3}]", "[{}]", LENIENT);
+        assertThat(result, failsWithMessage(equalTo("Could not find match for element {}")));
+    }
+
+    @Test
+    public void reportsUnmatchedJSONArrayWhereExpectedContainsJSONObjectWithUniqueKeyButActualContainsElementOfOtherType() throws JSONException {
+        JSONCompareResult result = compareJSON("[{\"id\": 3}]", "[5]", LENIENT);
+        assertThat(result, failsWithMessage(equalTo("Could not find match for element 5")));
     }
 
     private Matcher<JSONCompareResult> failsWithMessage(final Matcher<String> expectedMessage) {
