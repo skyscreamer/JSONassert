@@ -26,13 +26,13 @@ public class JSONCompareTest {
     public void reportsMissingJSONObjectWithUniqueKeyInUnorderedArray() throws JSONException {
         JSONCompareResult result = compareJSON("[{\"id\" : 3}]", "[{\"id\" : 5}]", LENIENT);
         assertThat(result, failsWithMessage(equalTo("[]: Expected but did not find object where id=3 ; " +
-                "[]: Contains object where \" + uniqueKey + \"=\" + id + \", but not expected")));
+                "[]: Contains object where id=5, but not expected")));
     }
 
     @Test
     public void reportsUnmatchedJSONObjectInUnorderedArray() throws JSONException {
         JSONCompareResult result = compareJSON("[{\"address\" : {\"street\" : \"Acacia Avenue\"}}]", "[{\"age\" : 23}]", LENIENT);
-        assertThat(result, failsWithMessage(equalTo("Could not find match for element {\"age\":23}")));
+        assertThat(result, failsWithMessage(equalTo("[0] Could not find match for element {\"address\":{\"street\":\"Acacia Avenue\"}}")));
     }
 
     @Test
@@ -55,19 +55,19 @@ public class JSONCompareTest {
     @Test
     public void reportsUnmatchesIntegerValueInUnorderedArrayContainingJSONObject() throws JSONException {
         JSONCompareResult result = compareJSON("[{\"address\" : {\"street\" : \"Acacia Avenue\"}}, 5]", "[{\"address\" : {\"street\" : \"Acacia Avenue\"}}, 2]", LENIENT);
-        assertThat(result, failsWithMessage(equalTo("Could not find match for element 2")));
+        assertThat(result, failsWithMessage(equalTo("[1] Could not find match for element 5")));
     }
 
     @Test
     public void reportsUnmatchedJSONArrayWhereOnlyExpectedContainsJSONObjectWithUniqueKey() throws JSONException {
         JSONCompareResult result = compareJSON("[{\"id\": 3}]", "[{}]", LENIENT);
-        assertThat(result, failsWithMessage(equalTo("Could not find match for element {}")));
+        assertThat(result, failsWithMessage(equalTo("[0] Could not find match for element {\"id\":3}")));
     }
 
     @Test
     public void reportsUnmatchedJSONArrayWhereExpectedContainsJSONObjectWithUniqueKeyButActualContainsElementOfOtherType() throws JSONException {
         JSONCompareResult result = compareJSON("[{\"id\": 3}]", "[5]", LENIENT);
-        assertThat(result, failsWithMessage(equalTo("Could not find match for element 5")));
+        assertThat(result, failsWithMessage(equalTo("[0] Could not find match for element {\"id\":3}")));
     }
 
     private Matcher<JSONCompareResult> failsWithMessage(final Matcher<String> expectedMessage) {

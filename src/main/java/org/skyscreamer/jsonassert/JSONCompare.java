@@ -199,7 +199,7 @@ public class JSONCompare {
             }
             for(Object id : actualValueMap.keySet()) {
                 if (!expectedValueMap.containsKey(id)) {
-                    result.fail(key + "[]: Contains object where \" + uniqueKey + \"=\" + id + \", but not expected");
+                    result.fail(key + "[]: Contains object where " + uniqueKey + "=" + id + ", but not expected");
                 }
             }
         }
@@ -220,35 +220,36 @@ public class JSONCompare {
     private static void recursivelyCompareJSONArray(String key, JSONArray expected, JSONArray actual,
                                                     JSONCompareMode mode, JSONCompareResult result) throws JSONException {
         Set<Integer> matched = new HashSet<Integer>();
-        for(int i = 0 ; i < actual.length() ; ++i) {
-            Object actualElement = actual.get(i);
+        for(int i = 0 ; i < expected.length() ; ++i) {
+            Object expectedElement = expected.get(i);
             boolean matchFound = false;
-            for(int j = 0 ; j < expected.length() ; ++j) {
-                if (matched.contains(j) || !actual.get(i).getClass().equals(expected.get(j).getClass())) {
+            for(int j = 0 ; j < actual.length() ; ++j) {
+                Object actualElement = actual.get(j);
+				if (matched.contains(j) || !actualElement.getClass().equals(expectedElement.getClass())) {
                     continue;
                 }
-                if (actualElement instanceof JSONObject) {
-                    if (compareJSON((JSONObject)expected.get(j), (JSONObject)actualElement, mode).passed()) {
+                if (expectedElement instanceof JSONObject) {
+                    if (compareJSON((JSONObject)expectedElement, (JSONObject)actualElement, mode).passed()) {
                         matched.add(j);
                         matchFound = true;
                         break;
                     }
                 }
-                else if (actualElement instanceof JSONArray) {
-                    if (compareJSON((JSONArray)expected.get(j), (JSONArray)actualElement, mode).passed()) {
+                else if (expectedElement instanceof JSONArray) {
+                    if (compareJSON((JSONArray)expectedElement, (JSONArray)actualElement, mode).passed()) {
                         matched.add(j);
                         matchFound = true;
                         break;
                     }
                 }
-                else if (actualElement.equals(expected.get(j))) {
+                else if (expectedElement.equals(actualElement)) {
                     matched.add(j);
                     matchFound = true;
                     break;
                 }
             }
             if (!matchFound) {
-                result.fail("Could not find match for element " + actualElement);
+                result.fail(key + "[" + i + "] Could not find match for element " + expectedElement);
                 return;
             }
         }
