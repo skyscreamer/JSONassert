@@ -19,7 +19,7 @@ public class JSONCompareTest {
     @Test
     public void reportsWrongSimpleValueCountInUnorderedArray() throws JSONException {
         JSONCompareResult result = compareJSON("[5, 5]", "[5, 7]", LENIENT);
-        assertThat(result, failsWithMessage(equalTo("[]: Expected contains 2 5 actual contains 1 ; []: Contains 7, but not expected")));
+        assertThat(result, failsWithMessage(equalTo("[]: Expected 2 occurrence(s) of 5 but got 1 occurrence(s) ; []: Contains 7, but not expected")));
     }
 
     @Test

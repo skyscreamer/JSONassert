@@ -169,8 +169,8 @@ public class JSONCompare {
                     result.fail(key + "[]: Expected " + o + ", but not found");
                 }
                 else if (actualCount.get(o) != expectedCount.get(o)) {
-                    result.fail(key + "[]: Expected contains " + expectedCount.get(o) + " " + o
-                            + " actual contains " + actualCount.get(o));
+                    result.fail(key + "[]: Expected " + expectedCount.get(o) + " occurrence(s) of " + o
+                            + " but got " + actualCount.get(o) + " occurrence(s)");
                 }
             }
             for(Object o : actualCount.keySet()) {
