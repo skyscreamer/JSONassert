@@ -1,8 +1,5 @@
 package org.skyscreamer.jsonassert;
 
-import static org.skyscreamer.jsonassert.JSONCompareMode.LENIENT;
-import static org.skyscreamer.jsonassert.JSONCompareMode.STRICT;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;

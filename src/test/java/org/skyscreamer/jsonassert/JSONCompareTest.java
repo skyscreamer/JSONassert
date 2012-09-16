@@ -5,12 +5,10 @@ import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 import static org.skyscreamer.jsonassert.JSONCompare.compareJSON;
 import static org.skyscreamer.jsonassert.JSONCompareMode.LENIENT;
-import static org.skyscreamer.jsonassert.JSONCompareMode.NON_EXTENSIBLE;
 
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.json.JSONException;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.internal.matchers.TypeSafeMatcher;
 
