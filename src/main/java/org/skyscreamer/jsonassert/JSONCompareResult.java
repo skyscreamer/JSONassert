@@ -135,4 +135,9 @@ public class JSONCompareResult {
         message.append("\n");
         return message.toString();
     }
+
+    @Override
+    public String toString() {
+        return _message;
+    }
 }
