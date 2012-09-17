@@ -91,12 +91,12 @@ public class JSONCompare {
             }
         }
 
-        // If strict, check for vice-versa
+        // If non-extensible, check for vice-versa
         if (!mode.isExtensible()) {
             Set<String> actualKeys = getKeys(actual);
             for(String key : actualKeys) {
                 if (!expected.has(key)) {
-                    result.fail("Strict checking failed.  Got but did not expect: " + prefix + key);
+                    result.fail("Got unexpected field: " + prefix + key);
                 }
             }
         }

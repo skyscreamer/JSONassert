@@ -67,7 +67,7 @@ public class JSONCompareTest {
     @Test
     public void reportsUnexpectedFieldInNonExtensibleMode() throws JSONException {
         JSONCompareResult result = compareJSON("{\"obj\": {}}", "{\"obj\": {\"id\": 3}}", NON_EXTENSIBLE);
-        assertThat(result, failsWithMessage(equalTo("Strict checking failed.  Got but did not expect: obj.id")));
+        assertThat(result, failsWithMessage(equalTo("Got unexpected field: obj.id")));
     }
 
     @Test
