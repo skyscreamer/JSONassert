@@ -139,6 +139,20 @@ public class JSONCompareResult {
         return message.toString();
     }
 
+    public JSONCompareResult missing(String field, Object expected) {
+        fail(formatMissing(field, expected));
+        return this;
+    }
+
+    private String formatMissing(String field, Object expected) {
+        StringBuffer message= new StringBuffer();
+        message.append(field);
+        message.append("\nExpected: ");
+        message.append(describe(expected));
+        message.append("\n     but none found\n");
+        return message.toString();
+    }
+
     private static String describe(Object value) {
         if (value instanceof JSONArray) {
             return "a JSON array";

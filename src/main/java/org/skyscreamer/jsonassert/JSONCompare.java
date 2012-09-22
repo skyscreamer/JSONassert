@@ -83,11 +83,10 @@ public class JSONCompare {
             Object expectedValue = expected.get(key);
             if (actual.has(key)) {
                 Object actualValue = actual.get(key);
-                String fullKey = prefix + key;
-                compareValues(fullKey, expectedValue, actualValue, mode, result);
+                compareValues(qualify(prefix, key), expectedValue, actualValue, mode, result);
             }
             else {
-                result.fail("Does not contain expected key: " + prefix + key);
+                result.missing(prefix, key);
             }
         }
 
@@ -96,10 +95,14 @@ public class JSONCompare {
             Set<String> actualKeys = getKeys(actual);
             for(String key : actualKeys) {
                 if (!expected.has(key)) {
-                    result.fail("Got unexpected field: " + prefix + key);
+                    result.fail("Got unexpected field: " + qualify(prefix, key));
                 }
             }
         }
+    }
+
+    private static String qualify(String prefix, String key) {
+        return "".equals(prefix) ? key : prefix + "." + key;
     }
 
     private static void compareValues(String fullKey, Object expectedValue, Object actualValue, JSONCompareMode mode, JSONCompareResult result) throws JSONException 
@@ -109,7 +112,7 @@ public class JSONCompare {
                 compareJSONArray(fullKey , (JSONArray)expectedValue, (JSONArray)actualValue, mode, result);
             }
             else if (expectedValue instanceof JSONObject) {
-                compareJSON(fullKey + ".", (JSONObject) expectedValue, (JSONObject) actualValue, mode, result);
+                compareJSON(fullKey, (JSONObject) expectedValue, (JSONObject) actualValue, mode, result);
             }
             else if (!expectedValue.equals(actualValue)) {
                 result.fail(fullKey, expectedValue, actualValue);
@@ -143,7 +146,7 @@ public class JSONCompare {
             Map<Object, Integer> actualCount = CollectionUtils.getCardinalityMap(jsonArrayToList(actual));
             for(Object o : expectedCount.keySet()) {
                 if (!actualCount.containsKey(o)) {
-                    result.fail(key + "[]: Expected " + o + ", but not found");
+                    result.missing(key + "[]", o);
                 }
                 else if (actualCount.get(o) != expectedCount.get(o)) {
                     result.fail(key + "[]: Expected " + expectedCount.get(o) + " occurrence(s) of " + o
@@ -167,12 +170,12 @@ public class JSONCompare {
             Map<Object, JSONObject> actualValueMap = arrayOfJsonObjectToMap(actual, uniqueKey);
             for(Object id : expectedValueMap.keySet()) {
                 if (!actualValueMap.containsKey(id)) {
-                    result.fail(key + "[]: Expected but did not find object where " + uniqueKey + "=" + id);
+                    result.missing(formatUniqueKey(key, uniqueKey, id), expectedValueMap.get(id));
                     continue;
                 }
                 JSONObject expectedValue = expectedValueMap.get(id);
                 JSONObject actualValue = actualValueMap.get(id);
-                compareValues(key + "[" + uniqueKey + "=" + id + "]", expectedValue, actualValue, mode, result);
+                compareValues(formatUniqueKey(key, uniqueKey, id), expectedValue, actualValue, mode, result);
             }
             for(Object id : actualValueMap.keySet()) {
                 if (!expectedValueMap.containsKey(id)) {
@@ -190,6 +193,10 @@ public class JSONCompare {
             recursivelyCompareJSONArray(key, expected, actual, mode, result);
             return;
         }
+    }
+
+    private static String formatUniqueKey(String key, String uniqueKey, Object value) {
+        return key + "[" + uniqueKey + "=" + value + "]";
     }
 
     // This is expensive (O(n^2) -- yuck), but may be the only resort for some cases with loose array ordering, and no

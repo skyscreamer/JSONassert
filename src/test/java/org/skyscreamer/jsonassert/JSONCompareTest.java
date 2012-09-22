@@ -31,13 +31,19 @@ public class JSONCompareTest {
     @Test
     public void reportsArrayMissingExpectedElement() throws JSONException {
         JSONCompareResult result = compareJSON("[4]", "[7]", LENIENT);
-        assertThat(result, failsWithMessage(equalTo("[]: Expected 4, but not found ; []: Contains 7, but not expected")));
+        assertThat(result, failsWithMessage(equalTo("[]\nExpected: 4\n     but none found\n ; []: Contains 7, but not expected")));
     }
 
     @Test
     public void reportsMismatchedFieldValues() throws JSONException {
         JSONCompareResult result = compareJSON("{\"id\": 3}", "{\"id\": 5}", LENIENT);
         assertThat(result, failsWithMessage(equalTo("id\nExpected: 3\n     got: 5\n")));
+    }
+
+    @Test
+    public void reportsMissingField() throws JSONException {
+        JSONCompareResult result = compareJSON("{\"obj\": {\"id\": 3}}", "{\"obj\": {}}", LENIENT);
+        assertThat(result, failsWithMessage(equalTo("obj\nExpected: id\n     but none found\n")));
     }
 
     @Test
@@ -85,7 +91,7 @@ public class JSONCompareTest {
     @Test
     public void reportsMissingJSONObjectWithUniqueKeyInUnorderedArray() throws JSONException {
         JSONCompareResult result = compareJSON("[{\"id\" : 3}]", "[{\"id\" : 5}]", LENIENT);
-        assertThat(result, failsWithMessage(equalTo("[]: Expected but did not find object where id=3 ; " +
+        assertThat(result, failsWithMessage(equalTo("[id=3]\nExpected: a JSON object\n     but none found\n ; " +
                 "[]: Contains object where id=5, but not expected")));
     }
 
