@@ -55,13 +55,13 @@ public class JSONCompareTest {
     @Test
     public void reportsUnexpectedNull() throws JSONException {
         JSONCompareResult result = compareJSON("{\"id\": 3}", "{\"id\": null}", LENIENT);
-        assertThat(result, failsWithMessage(equalTo("id: expected java.lang.Integer, but got null")));
+        assertThat(result, failsWithMessage(equalTo("id\nExpected: 3\n     got: null\n")));
     }
 
     @Test
     public void reportsUnexpectedNonNull() throws JSONException {
         JSONCompareResult result = compareJSON("{\"id\": null}", "{\"id\": \"abc\"}", LENIENT);
-        assertThat(result, failsWithMessage(equalTo("id: expected null, but got a string")));
+        assertThat(result, failsWithMessage(equalTo("id\nExpected: null\n     got: abc\n")));
     }
 
     @Test
@@ -73,7 +73,7 @@ public class JSONCompareTest {
     @Test
     public void reportsMismatchedTypes() throws JSONException {
         JSONCompareResult result = compareJSON("{\"arr\":[]}", "{\"arr\":{}}", LENIENT);
-        assertThat(result, failsWithMessage(equalTo("Values of arr have different types: expected an array, but got an object")));
+        assertThat(result, failsWithMessage(equalTo("arr\nExpected: a JSON array\n     got: a JSON object\n")));
     }
 
     @Test

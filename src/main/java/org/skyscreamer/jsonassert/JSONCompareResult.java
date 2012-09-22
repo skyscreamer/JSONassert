@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 /**
  * Bean for holding results from JSONCompare.
  */
@@ -129,11 +132,21 @@ public class JSONCompareResult {
         StringBuffer message= new StringBuffer();
         message.append(field);
         message.append("\nExpected: ");
-        message.append(expected + "");
+        message.append(describe(expected));
         message.append("\n     got: ");
-        message.append(actual + "");
+        message.append(describe(actual));
         message.append("\n");
         return message.toString();
+    }
+
+    private static String describe(Object value) {
+        if (value instanceof JSONArray) {
+            return "a JSON array";
+        } else if (value instanceof JSONObject) {
+            return "a JSON object";
+        } else {
+            return value.toString();
+        }
     }
 
     @Override
