@@ -95,7 +95,7 @@ public class JSONCompare {
             Set<String> actualKeys = getKeys(actual);
             for(String key : actualKeys) {
                 if (!expected.has(key)) {
-                    result.fail("Got unexpected field: " + qualify(prefix, key));
+                    result.unexpected(prefix, key);
                 }
             }
         }
@@ -127,7 +127,7 @@ public class JSONCompare {
                                          JSONCompareResult result) throws JSONException
     {
         if (expected.length() != actual.length()) {
-            result.fail(key + "[]: Expected " + expected.length() + " values and got " + actual.length());
+            result.fail(key + "[]: Expected " + expected.length() + " values but got " + actual.length());
             return;
         }
         else if (expected.length() == 0) {
@@ -155,7 +155,7 @@ public class JSONCompare {
             }
             for(Object o : actualCount.keySet()) {
                 if (!expectedCount.containsKey(o)) {
-                    result.fail(key + "[]: Contains " + o + ", but not expected");
+                    result.unexpected(key + "[]", o);
                 }
             }
         }
@@ -179,7 +179,7 @@ public class JSONCompare {
             }
             for(Object id : actualValueMap.keySet()) {
                 if (!expectedValueMap.containsKey(id)) {
-                    result.fail(key + "[]: Contains object where " + uniqueKey + "=" + id + ", but not expected");
+                    result.unexpected(formatUniqueKey(key, uniqueKey, id), actualValueMap.get(id));
                 }
             }
         }

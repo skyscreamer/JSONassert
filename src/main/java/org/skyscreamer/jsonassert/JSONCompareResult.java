@@ -153,6 +153,20 @@ public class JSONCompareResult {
         return message.toString();
     }
 
+    public JSONCompareResult unexpected(String field, Object value) {
+        fail(formatUnexpected(field, value));
+        return this;
+    }
+
+    private String formatUnexpected(String field, Object value) {
+        StringBuffer message= new StringBuffer();
+        message.append(field);
+        message.append("\nUnexpected: ");
+        message.append(describe(value));
+        message.append("\n");
+        return message.toString();
+    }
+
     private static String describe(Object value) {
         if (value instanceof JSONArray) {
             return "a JSON array";

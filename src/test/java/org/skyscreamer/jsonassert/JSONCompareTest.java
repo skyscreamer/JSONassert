@@ -25,13 +25,13 @@ public class JSONCompareTest {
     @Test
     public void reportsArraysOfUnequalLength() throws JSONException {
         JSONCompareResult result = compareJSON("[4]", "[]", LENIENT);
-        assertThat(result, failsWithMessage(equalTo("[]: Expected 1 values and got 0")));
+        assertThat(result, failsWithMessage(equalTo("[]: Expected 1 values but got 0")));
     }
 
     @Test
     public void reportsArrayMissingExpectedElement() throws JSONException {
         JSONCompareResult result = compareJSON("[4]", "[7]", LENIENT);
-        assertThat(result, failsWithMessage(equalTo("[]\nExpected: 4\n     but none found\n ; []: Contains 7, but not expected")));
+        assertThat(result, failsWithMessage(equalTo("[]\nExpected: 4\n     but none found\n ; []\nUnexpected: 7\n")));
     }
 
     @Test
@@ -73,7 +73,7 @@ public class JSONCompareTest {
     @Test
     public void reportsUnexpectedFieldInNonExtensibleMode() throws JSONException {
         JSONCompareResult result = compareJSON("{\"obj\": {}}", "{\"obj\": {\"id\": 3}}", NON_EXTENSIBLE);
-        assertThat(result, failsWithMessage(equalTo("Got unexpected field: obj.id")));
+        assertThat(result, failsWithMessage(equalTo("obj\nUnexpected: id\n")));
     }
 
     @Test
@@ -85,14 +85,14 @@ public class JSONCompareTest {
     @Test
     public void reportsWrongSimpleValueCountInUnorderedArray() throws JSONException {
         JSONCompareResult result = compareJSON("[5, 5]", "[5, 7]", LENIENT);
-        assertThat(result, failsWithMessage(equalTo("[]: Expected 2 occurrence(s) of 5 but got 1 occurrence(s) ; []: Contains 7, but not expected")));
+        assertThat(result, failsWithMessage(equalTo("[]: Expected 2 occurrence(s) of 5 but got 1 occurrence(s) ; []\nUnexpected: 7\n")));
     }
 
     @Test
     public void reportsMissingJSONObjectWithUniqueKeyInUnorderedArray() throws JSONException {
         JSONCompareResult result = compareJSON("[{\"id\" : 3}]", "[{\"id\" : 5}]", LENIENT);
         assertThat(result, failsWithMessage(equalTo("[id=3]\nExpected: a JSON object\n     but none found\n ; " +
-                "[]: Contains object where id=5, but not expected")));
+                "[id=5]\nUnexpected: a JSON object\n")));
     }
 
     @Test
