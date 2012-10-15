@@ -148,7 +148,7 @@ public class JSONCompare {
                 if (!actualCount.containsKey(o)) {
                     result.missing(key + "[]", o);
                 }
-                else if (actualCount.get(o) != expectedCount.get(o)) {
+                else if (!actualCount.get(o).equals(expectedCount.get(o))) {
                     result.fail(key + "[]: Expected " + expectedCount.get(o) + " occurrence(s) of " + o
                             + " but got " + actualCount.get(o) + " occurrence(s)");
                 }
