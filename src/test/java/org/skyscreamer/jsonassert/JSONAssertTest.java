@@ -156,6 +156,13 @@ public class JSONAssertTest {
     }
 
     @Test
+    public void testBooleanArray() throws JSONException {
+        testPass("[true, false, true, true, false]", "[true, false, true, true, false]", true);
+        testPass("[false, true, true, false, true]", "[true, false, true, true, false]", false);
+        testFail("[false, true, true, false, true]", "[true, false, true, true, false]", true);
+    }
+
+    @Test
     public void testNullProperty() throws JSONException {
         testFail("{id:1,name:\"Joe\"}", "{id:1,name:null}", true);
         testFail("{id:1,name:null}", "{id:1,name:\"Joe\"}", true);
