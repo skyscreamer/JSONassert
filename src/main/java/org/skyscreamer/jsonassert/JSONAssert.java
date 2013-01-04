@@ -3,6 +3,7 @@ package org.skyscreamer.jsonassert;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.skyscreamer.jsonassert.comparator.JSONComparator;
 
 /**
  * <p>A set of assertion methods useful for writing tests methods that return JSON.</p>
@@ -92,6 +93,24 @@ public class JSONAssert {
             throws JSONException
     {
         JSONCompareResult result = JSONCompare.compareJSON(expectedStr, actualStr, strict ? JSONCompareMode.STRICT : JSONCompareMode.LENIENT);
+        if (result.failed()) {
+            throw new AssertionError(result.getMessage());
+        }
+    }
+
+    /**
+     * Asserts that the json string provided matches the expected string.  If it isn't it throws an
+     * {@link AssertionError}.
+     *
+     * @param expectedStr Expected JSON string
+     * @param actualStr String to compare
+     * @param comparator Comparator
+     * @throws JSONException
+     */
+    public static void assertEquals(String expectedStr, String actualStr, JSONComparator comparator)
+            throws JSONException
+    {
+        JSONCompareResult result = JSONCompare.compareJSON(expectedStr, actualStr, comparator);
         if (result.failed()) {
             throw new AssertionError(result.getMessage());
         }
