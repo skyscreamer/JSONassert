@@ -12,7 +12,7 @@ import org.json.JSONObject;
  */
 public class JSONCompareResult {
     private boolean _success;
-    private String _message;
+    private StringBuilder _message;
     private String _field;
     private Object _expected;
     private Object _actual;
@@ -27,7 +27,7 @@ public class JSONCompareResult {
 
     private JSONCompareResult(boolean success, String message) {
         _success = success;
-        _message = message == null ? "" : message;
+        _message = new StringBuilder(message == null ? "" : message);
     }
 
     /**
@@ -51,7 +51,7 @@ public class JSONCompareResult {
      * @return String explaining why if the comparison failed
      */
     public String getMessage() {
-        return _message;
+        return _message.toString();
     }
 
     /**
@@ -103,13 +103,12 @@ public class JSONCompareResult {
         return _field;
     }
     
-    protected void fail(String message) {
+    public void fail(String message) {
         _success = false;
         if (_message.length() == 0) {
-            _message = message;
-        }
-        else {
-            _message += " ; " + message;
+            _message.append(message);
+        } else {
+            _message.append(" ; ").append(message);
         }
     }
 
@@ -119,7 +118,7 @@ public class JSONCompareResult {
      * @param expected Expected result
      * @param actual Actual result
      */
-    protected JSONCompareResult fail(String field, Object expected, Object actual) {
+    public JSONCompareResult fail(String field, Object expected, Object actual) {
         _fieldFailures.add(new FieldComparisonFailure(field, expected, actual));
         this._field = field;
         this._expected = expected;
@@ -129,14 +128,12 @@ public class JSONCompareResult {
     }
 
     private String formatFailureMessage(String field, Object expected, Object actual) {
-        StringBuffer message= new StringBuffer();
-        message.append(field);
-        message.append("\nExpected: ");
-        message.append(describe(expected));
-        message.append("\n     got: ");
-        message.append(describe(actual));
-        message.append("\n");
-        return message.toString();
+        return field
+                + "\nExpected: "
+                + describe(expected)
+                + "\n     got: "
+                + describe(actual)
+                + "\n";
     }
 
     public JSONCompareResult missing(String field, Object expected) {
@@ -145,12 +142,10 @@ public class JSONCompareResult {
     }
 
     private String formatMissing(String field, Object expected) {
-        StringBuffer message= new StringBuffer();
-        message.append(field);
-        message.append("\nExpected: ");
-        message.append(describe(expected));
-        message.append("\n     but none found\n");
-        return message.toString();
+        return field
+                + "\nExpected: "
+                + describe(expected)
+                + "\n     but none found\n";
     }
 
     public JSONCompareResult unexpected(String field, Object value) {
@@ -159,12 +154,10 @@ public class JSONCompareResult {
     }
 
     private String formatUnexpected(String field, Object value) {
-        StringBuffer message= new StringBuffer();
-        message.append(field);
-        message.append("\nUnexpected: ");
-        message.append(describe(value));
-        message.append("\n");
-        return message.toString();
+        return field
+                + "\nUnexpected: "
+                + describe(value)
+                + "\n";
     }
 
     private static String describe(Object value) {
@@ -179,6 +172,6 @@ public class JSONCompareResult {
 
     @Override
     public String toString() {
-        return _message;
+        return _message.toString();
     }
 }
