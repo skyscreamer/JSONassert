@@ -95,8 +95,7 @@ public class JSONCompare {
             throws JSONException
     {
         // Check that actual contains all the expected values
-        Set<String> expectedKeys = getKeys(expected);
-        for(String key : expectedKeys) {
+	    for(String key : getKeys(expected)) {
             Object expectedValue = expected.get(key);
             if (actual.has(key)) {
                 Object actualValue = actual.get(key);
@@ -109,8 +108,7 @@ public class JSONCompare {
 
         // If non-extensible, check for vice-versa
         if (behavior.extraFieldsAre(DISALLOWED)) {
-            Set<String> actualKeys = getKeys(actual);
-            for(String key : actualKeys) {
+	        for(String key : getKeys(actual)) {
                 if (!expected.has(key)) {
                     result.unexpected(prefix, key);
                 }
