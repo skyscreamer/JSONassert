@@ -98,4 +98,8 @@ public enum JSONCompareMode {
             return hasStrictOrder() ? STRICT : NON_EXTENSIBLE;
         }
     }
+
+	public Behavior asBehavior() {
+		return new Behavior(Allowance.fromBoolean(_extensible), Allowance.fromBoolean(!_strictOrder));
+	}
 }

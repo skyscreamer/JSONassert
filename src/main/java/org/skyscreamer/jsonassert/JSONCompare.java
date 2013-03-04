@@ -1,5 +1,7 @@
 package org.skyscreamer.jsonassert;
 
+import static org.skyscreamer.jsonassert.Allowance.DISALLOWED;
+
 import org.apache.commons.collections.CollectionUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -26,21 +28,26 @@ public class JSONCompare {
     public static JSONCompareResult compareJSON(String expectedStr, String actualStr, JSONCompareMode mode)
             throws JSONException
     {
-        Object expected = JSONParser.parseJSON(expectedStr);
-        Object actual = JSONParser.parseJSON(actualStr);
-        if ((expected instanceof JSONObject) && (actual instanceof JSONObject)) {
-            return compareJSON((JSONObject) expected, (JSONObject) actual, mode);
-        }
-        else if ((expected instanceof JSONArray) && (actual instanceof JSONArray)) {
-            return compareJSON((JSONArray)expected, (JSONArray)actual, mode);
-        }
-        else if (expected instanceof JSONObject) {
-            return new JSONCompareResult().fail("", expected, actual);
-        }
-        else {
-            return new JSONCompareResult().fail("", expected, actual);
-        }
+       return compareJSON(expectedStr, actualStr, mode.asBehavior());
     }
+
+	public static JSONCompareResult compareJSON(String expectedStr, String actualStr, Behavior behavior) throws JSONException
+	{
+		Object expected = JSONParser.parseJSON(expectedStr);
+		Object actual = JSONParser.parseJSON(actualStr);
+		if ((expected instanceof JSONObject) && (actual instanceof JSONObject)) {
+			return compareJSON((JSONObject) expected, (JSONObject) actual, behavior);
+		}
+		else if ((expected instanceof JSONArray) && (actual instanceof JSONArray)) {
+			return compareJSON((JSONArray)expected, (JSONArray)actual, behavior);
+		}
+		else if (expected instanceof JSONObject) {
+			return new JSONCompareResult().fail("", expected, actual);
+		}
+		else {
+			return new JSONCompareResult().fail("", expected, actual);
+		}
+	}
 
     /**
      * Compares JSONObject provided to the expected JSONObject, and returns the results of the comparison.
@@ -53,10 +60,15 @@ public class JSONCompare {
     public static JSONCompareResult compareJSON(JSONObject expected, JSONObject actual, JSONCompareMode mode)
             throws JSONException
     {
-        JSONCompareResult result = new JSONCompareResult();
-        compareJSON("", expected, actual, mode, result);
-        return result;
+        return compareJSON(expected, actual, mode.asBehavior());
     }
+
+	public static JSONCompareResult compareJSON(JSONObject expected, JSONObject actual, Behavior behavior) throws JSONException
+	{
+		JSONCompareResult result = new JSONCompareResult();
+		compareJSON("", expected, actual, behavior, result);
+		return result;
+	}
 
     /**
      * Compares JSONArray provided to the expected JSONArray, and returns the results of the comparison.
@@ -69,12 +81,17 @@ public class JSONCompare {
     public static JSONCompareResult compareJSON(JSONArray expected, JSONArray actual, JSONCompareMode mode)
             throws JSONException
     {
-        JSONCompareResult result = new JSONCompareResult();
-        compareJSONArray("", expected, actual, mode, result);
-        return result;
+        return compareJSON(expected, actual, mode.asBehavior());
     }
 
-    private static void compareJSON(String prefix, JSONObject expected, JSONObject actual, JSONCompareMode mode, JSONCompareResult result)
+	public static JSONCompareResult compareJSON(JSONArray expected, JSONArray actual, Behavior behavior) throws JSONException
+	{
+		JSONCompareResult result = new JSONCompareResult();
+		compareJSONArray("", expected, actual, behavior, result);
+		return result;
+	}
+
+    private static void compareJSON(String prefix, JSONObject expected, JSONObject actual, Behavior behavior, JSONCompareResult result)
             throws JSONException
     {
         // Check that actual contains all the expected values
@@ -83,7 +100,7 @@ public class JSONCompare {
             Object expectedValue = expected.get(key);
             if (actual.has(key)) {
                 Object actualValue = actual.get(key);
-                compareValues(qualify(prefix, key), expectedValue, actualValue, mode, result);
+                compareValues(qualify(prefix, key), expectedValue, actualValue, behavior, result);
             }
             else {
                 result.missing(prefix, key);
@@ -91,7 +108,7 @@ public class JSONCompare {
         }
 
         // If non-extensible, check for vice-versa
-        if (!mode.isExtensible()) {
+        if (behavior.extraFieldsAre(DISALLOWED)) {
             Set<String> actualKeys = getKeys(actual);
             for(String key : actualKeys) {
                 if (!expected.has(key)) {
@@ -105,14 +122,14 @@ public class JSONCompare {
         return "".equals(prefix) ? key : prefix + "." + key;
     }
 
-    private static void compareValues(String fullKey, Object expectedValue, Object actualValue, JSONCompareMode mode, JSONCompareResult result) throws JSONException 
+    private static void compareValues(String fullKey, Object expectedValue, Object actualValue, Behavior behavior, JSONCompareResult result) throws JSONException
     {
         if (expectedValue.getClass().isAssignableFrom(actualValue.getClass())) {
             if (expectedValue instanceof JSONArray) {
-                compareJSONArray(fullKey , (JSONArray)expectedValue, (JSONArray)actualValue, mode, result);
+                compareJSONArray(fullKey , (JSONArray)expectedValue, (JSONArray)actualValue, behavior, result);
             }
             else if (expectedValue instanceof JSONObject) {
-                compareJSON(fullKey, (JSONObject) expectedValue, (JSONObject) actualValue, mode, result);
+                compareJSON(fullKey, (JSONObject) expectedValue, (JSONObject) actualValue, behavior, result);
             }
             else if (!expectedValue.equals(actualValue)) {
                 result.fail(fullKey, expectedValue, actualValue);
@@ -123,7 +140,7 @@ public class JSONCompare {
     }
 
     @SuppressWarnings("unchecked")
-    private static void compareJSONArray(String key, JSONArray expected, JSONArray actual, JSONCompareMode mode,
+    private static void compareJSONArray(String key, JSONArray expected, JSONArray actual, Behavior behavior,
                                          JSONCompareResult result) throws JSONException
     {
         if (expected.length() != actual.length()) {
@@ -134,11 +151,11 @@ public class JSONCompare {
             return; // Nothing to compare
         }
 
-        if (mode.hasStrictOrder()) {
+        if (behavior.anyArrayOrderIs(DISALLOWED)) {
             for(int i = 0 ; i < expected.length() ; ++i) {
                 Object expectedValue = expected.get(i);
                 Object actualValue = actual.get(i);
-                compareValues(key + "[" + i + "]", expectedValue, actualValue, mode, result);
+                compareValues(key + "[" + i + "]", expectedValue, actualValue, behavior, result);
             }
         }
         else if (allSimpleValues(expected)) {
@@ -163,7 +180,7 @@ public class JSONCompare {
             String uniqueKey = findUniqueKey(expected);
             if (uniqueKey == null || !isUsableAsUniqueKey(uniqueKey, actual)) {
                 // An expensive last resort
-                recursivelyCompareJSONArray(key, expected, actual, mode, result);
+                recursivelyCompareJSONArray(key, expected, actual, behavior, result);
                 return;
             }
             Map<Object, JSONObject> expectedValueMap = arrayOfJsonObjectToMap(expected, uniqueKey);
@@ -175,7 +192,7 @@ public class JSONCompare {
                 }
                 JSONObject expectedValue = expectedValueMap.get(id);
                 JSONObject actualValue = actualValueMap.get(id);
-                compareValues(formatUniqueKey(key, uniqueKey, id), expectedValue, actualValue, mode, result);
+                compareValues(formatUniqueKey(key, uniqueKey, id), expectedValue, actualValue, behavior, result);
             }
             for(Object id : actualValueMap.keySet()) {
                 if (!expectedValueMap.containsKey(id)) {
@@ -185,12 +202,12 @@ public class JSONCompare {
         }
         else if (allJSONArrays(expected)) {
             // An expensive last resort
-            recursivelyCompareJSONArray(key, expected, actual, mode, result);
+            recursivelyCompareJSONArray(key, expected, actual, behavior, result);
             return;
         }
         else {
             // An expensive last resort
-            recursivelyCompareJSONArray(key, expected, actual, mode, result);
+            recursivelyCompareJSONArray(key, expected, actual, behavior, result);
             return;
         }
     }
@@ -202,7 +219,7 @@ public class JSONCompare {
     // This is expensive (O(n^2) -- yuck), but may be the only resort for some cases with loose array ordering, and no
     // easy way to uniquely identify each element.
     private static void recursivelyCompareJSONArray(String key, JSONArray expected, JSONArray actual,
-                                                    JSONCompareMode mode, JSONCompareResult result) throws JSONException {
+                                                    Behavior behavior, JSONCompareResult result) throws JSONException {
         Set<Integer> matched = new HashSet<Integer>();
         for(int i = 0 ; i < expected.length() ; ++i) {
             Object expectedElement = expected.get(i);
@@ -213,14 +230,14 @@ public class JSONCompare {
                     continue;
                 }
                 if (expectedElement instanceof JSONObject) {
-                    if (compareJSON((JSONObject)expectedElement, (JSONObject)actualElement, mode).passed()) {
+                    if (compareJSON((JSONObject)expectedElement, (JSONObject)actualElement, behavior).passed()) {
                         matched.add(j);
                         matchFound = true;
                         break;
                     }
                 }
                 else if (expectedElement instanceof JSONArray) {
-                    if (compareJSON((JSONArray)expectedElement, (JSONArray)actualElement, mode).passed()) {
+                    if (compareJSON((JSONArray)expectedElement, (JSONArray)actualElement, behavior).passed()) {
                         matched.add(j);
                         matchFound = true;
                         break;
