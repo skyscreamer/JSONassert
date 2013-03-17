@@ -20,7 +20,8 @@ public final class JSONCompare {
     }
 
     /**
-     * Compares JSON string provided to the expected JSON string using provided comparator, and returns the results of the comparison.
+     * Compares JSON string provided to the expected JSON string using provided comparator, and returns the results of
+     * the comparison.
      * @param expectedStr Expected JSON string
      * @param actualStr JSON string to compare
      * @param comparator Comparator to use
@@ -47,26 +48,30 @@ public final class JSONCompare {
     }
 
     /**
-     * Compares JSON object provided to the expected JSON object using provided comparator, and returns the results of the comparison.
+     * Compares JSON object provided to the expected JSON object using provided comparator, and returns the results of
+     * the comparison.
      * @param expected expected json object
      * @param actual actual json object
      * @param comparator comparator to use
      * @return result of the comparison
      * @throws JSONException
      */
-    public static JSONCompareResult compareJSON(JSONObject expected, JSONObject actual, JSONComparator comparator) throws JSONException {
+    public static JSONCompareResult compareJSON(JSONObject expected, JSONObject actual, JSONComparator comparator)
+            throws JSONException {
         return comparator.compareJSON(expected, actual);
     }
 
     /**
-     * Compares JSON object provided to the expected JSON object using provided comparator, and returns the results of the comparison.
+     * Compares JSON object provided to the expected JSON object using provided comparator, and returns the results of
+     * the comparison.
      * @param expected expected json array
      * @param actual actual json array
      * @param comparator comparator to use
      * @return result of the comparison
      * @throws JSONException
      */
-    public static JSONCompareResult compareJSON(JSONArray expected, JSONArray actual, JSONComparator comparator) throws JSONException {
+    public static JSONCompareResult compareJSON(JSONArray expected, JSONArray actual, JSONComparator comparator)
+            throws JSONException {
         return comparator.compareJSON(expected, actual);
     }
 
