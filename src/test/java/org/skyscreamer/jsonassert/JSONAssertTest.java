@@ -1,6 +1,7 @@
 package org.skyscreamer.jsonassert;
 
 import org.json.JSONException;
+import org.json.JSONObject;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -222,8 +223,28 @@ public class JSONAssertTest {
         testFail("{id:1}", "[1]", LENIENT);
     }
 
+    @Test
+    public void testEquivalentIntAndLong() throws JSONException {
+        JSONObject expected = new JSONObject();
+        JSONObject actual = new JSONObject();
+        expected.put("id", new Integer(12345));
+        actual.put("id", new Long(12345));
+        JSONAssert.assertEquals(expected, actual, true);
+        JSONAssert.assertEquals(actual, expected, true);
+    }
+
+    @Test
+    public void testEquivalentIntAndDouble() throws JSONException {
+        JSONObject expected = new JSONObject();
+        JSONObject actual = new JSONObject();
+        expected.put("id", new Integer(12345));
+        actual.put("id", new Double(12345.0));
+        JSONAssert.assertEquals(expected, actual, true);
+        JSONAssert.assertEquals(actual, expected, true);
+    }
+
     private void testPass(String expected, String actual, JSONCompareMode compareMode)
-        throws JSONException
+            throws JSONException
     {
         String message = expected + " == " + actual + " (" + compareMode + ")";
         JSONCompareResult result = JSONCompare.compareJSON(expected, actual, compareMode);
@@ -231,7 +252,7 @@ public class JSONAssertTest {
     }
 
     private void testFail(String expected, String actual, JSONCompareMode compareMode)
-        throws JSONException
+            throws JSONException
     {
         String message = expected + " != " + actual + " (" + compareMode + ")";
         JSONCompareResult result = JSONCompare.compareJSON(expected, actual, compareMode);
