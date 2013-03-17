@@ -15,7 +15,7 @@ public class JSONParser {
      * depending on whether the string represents an object or an array.
      *
      * @param s Raw JSON string to be parsed
-     * @return
+     * @return JSONObject or JSONArray
      * @throws JSONException
      */
     public static Object parseJSON(String s) throws JSONException {
