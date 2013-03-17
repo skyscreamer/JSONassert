@@ -48,8 +48,7 @@ public class JSONAssert {
      * @throws JSONException
      */
     public static void assertEquals(String expectedStr, JSONObject actual, boolean strict)
-            throws JSONException
-    {
+            throws JSONException {
         Object expected = JSONParser.parseJSON(expectedStr);
         if (expected instanceof JSONObject) {
             assertEquals((JSONObject)expected, actual, strict);
@@ -69,8 +68,7 @@ public class JSONAssert {
      * @throws JSONException
      */
     public static void assertEquals(String expectedStr, JSONArray actual, boolean strict)
-            throws JSONException
-    {
+            throws JSONException {
         Object expected = JSONParser.parseJSON(expectedStr);
         if (expected instanceof JSONArray) {
             assertEquals((JSONArray)expected, actual, strict);
@@ -90,8 +88,7 @@ public class JSONAssert {
      * @throws JSONException
      */
     public static void assertEquals(String expectedStr, String actualStr, boolean strict)
-            throws JSONException
-    {
+            throws JSONException {
         JSONCompareResult result = JSONCompare.compareJSON(expectedStr, actualStr, strict ? JSONCompareMode.STRICT : JSONCompareMode.LENIENT);
         if (result.failed()) {
             throw new AssertionError(result.getMessage());
@@ -108,8 +105,7 @@ public class JSONAssert {
      * @throws JSONException
      */
     public static void assertEquals(String expectedStr, String actualStr, JSONComparator comparator)
-            throws JSONException
-    {
+            throws JSONException {
         JSONCompareResult result = JSONCompare.compareJSON(expectedStr, actualStr, comparator);
         if (result.failed()) {
             throw new AssertionError(result.getMessage());
@@ -126,8 +122,7 @@ public class JSONAssert {
      * @throws JSONException
      */
     public static void assertEquals(JSONObject expected, JSONObject actual, boolean strict)
-            throws JSONException
-    {
+            throws JSONException {
         JSONCompareResult result = JSONCompare.compareJSON(expected, actual, strict ? JSONCompareMode.STRICT : JSONCompareMode.LENIENT);
         if (result.failed()) {
             throw new AssertionError(result.getMessage());
@@ -144,8 +139,7 @@ public class JSONAssert {
      * @throws JSONException
      */
     public static void assertEquals(JSONArray expected, JSONArray actual, boolean strict)
-            throws JSONException
-    {
+            throws JSONException {
         JSONCompareResult result = JSONCompare.compareJSON(expected, actual, strict ? JSONCompareMode.STRICT : JSONCompareMode.LENIENT);
         if (result.failed()) {
             throw new AssertionError(result.getMessage());

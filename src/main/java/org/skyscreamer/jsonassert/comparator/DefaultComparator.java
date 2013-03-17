@@ -22,7 +22,8 @@ public class DefaultComparator extends AbstractComparator {
     }
 
     @Override
-    public void compareJSON(String prefix, JSONObject expected, JSONObject actual, JSONCompareResult result) throws JSONException {
+    public void compareJSON(String prefix, JSONObject expected, JSONObject actual, JSONCompareResult result)
+            throws JSONException {
         // Check that actual contains all the expected values
         checkJsonObjectKeysExpectedInActual(prefix, expected, actual, result);
 
@@ -33,8 +34,13 @@ public class DefaultComparator extends AbstractComparator {
     }
 
     @Override
-    public void compareValues(String prefix, Object expectedValue, Object actualValue, JSONCompareResult result) throws JSONException {
-        if (expectedValue.getClass().isAssignableFrom(actualValue.getClass())) {
+    public void compareValues(String prefix, Object expectedValue, Object actualValue, JSONCompareResult result)
+            throws JSONException {
+        if (expectedValue instanceof Number && actualValue instanceof Number) {
+            if (((Number)expectedValue).doubleValue() != ((Number)actualValue).doubleValue()) {
+                result.fail(prefix, expectedValue, actualValue);
+            }
+        } else if (expectedValue.getClass().isAssignableFrom(actualValue.getClass())) {
             if (expectedValue instanceof JSONArray) {
                 compareJSONArray(prefix, (JSONArray) expectedValue, (JSONArray) actualValue, result);
             } else if (expectedValue instanceof JSONObject) {
@@ -48,7 +54,8 @@ public class DefaultComparator extends AbstractComparator {
     }
 
     @Override
-    public void compareJSONArray(String prefix, JSONArray expected, JSONArray actual, JSONCompareResult result) throws JSONException {
+    public void compareJSONArray(String prefix, JSONArray expected, JSONArray actual, JSONCompareResult result)
+            throws JSONException {
         if (expected.length() != actual.length()) {
             result.fail(prefix + "[]: Expected " + expected.length() + " values but got " + actual.length());
             return;
