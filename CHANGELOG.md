@@ -1,6 +1,12 @@
 Changelog
 =========
 
+Version 1.2.0 - 3/17/2012
+-------------------------
+ - Fixed handling comparison of equivalent values across long, int, and double
+ - Add JSONCompareMode to asserts to allow for more options than strict/not-strict
+ - Added hooks to override/extend comparison behavior via JSONComparator
+
 Version 1.1.1 - 10/15/2012
 --------------------------
  - Return diagnostics (instead of throwing an exception) when comparing JSONObject and JSONArray
