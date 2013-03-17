@@ -49,9 +49,23 @@ public class JSONAssert {
      */
     public static void assertEquals(String expectedStr, JSONObject actual, boolean strict)
             throws JSONException {
+        assertEquals(expectedStr, actual, strict ? JSONCompareMode.STRICT : JSONCompareMode.LENIENT);
+    }
+
+    /**
+     * Asserts that the JSONObject provided matches the expected string.  If it isn't it throws an
+     * {@link AssertionError}.
+     *
+     * @param expectedStr Expected JSON string
+     * @param actual JSONObject to compare
+     * @param compareMode Specifies which comparison mode to use
+     * @throws JSONException
+     */
+    public static void assertEquals(String expectedStr, JSONObject actual, JSONCompareMode compareMode)
+            throws JSONException {
         Object expected = JSONParser.parseJSON(expectedStr);
         if (expected instanceof JSONObject) {
-            assertEquals((JSONObject)expected, actual, strict);
+            assertEquals((JSONObject)expected, actual, compareMode);
         }
         else {
             throw new AssertionError("Expecting a JSON array, but passing in a JSON object");
@@ -69,9 +83,23 @@ public class JSONAssert {
      */
     public static void assertEquals(String expectedStr, JSONArray actual, boolean strict)
             throws JSONException {
+        assertEquals(expectedStr, actual, strict ? JSONCompareMode.STRICT : JSONCompareMode.LENIENT);
+    }
+
+    /**
+     * Asserts that the JSONArray provided matches the expected string.  If it isn't it throws an
+     * {@link AssertionError}.
+     *
+     * @param expectedStr Expected JSON string
+     * @param actual JSONArray to compare
+     * @param compareMode Specifies which comparison mode to use
+     * @throws JSONException
+     */
+    public static void assertEquals(String expectedStr, JSONArray actual, JSONCompareMode compareMode)
+            throws JSONException {
         Object expected = JSONParser.parseJSON(expectedStr);
         if (expected instanceof JSONArray) {
-            assertEquals((JSONArray)expected, actual, strict);
+            assertEquals((JSONArray)expected, actual, compareMode);
         }
         else {
             throw new AssertionError("Expecting a JSON object, but passing in a JSON array");
@@ -89,7 +117,21 @@ public class JSONAssert {
      */
     public static void assertEquals(String expectedStr, String actualStr, boolean strict)
             throws JSONException {
-        JSONCompareResult result = JSONCompare.compareJSON(expectedStr, actualStr, strict ? JSONCompareMode.STRICT : JSONCompareMode.LENIENT);
+        assertEquals(expectedStr, actualStr, strict ? JSONCompareMode.STRICT : JSONCompareMode.LENIENT);
+    }
+
+    /**
+     * Asserts that the JSONArray provided matches the expected string.  If it isn't it throws an
+     * {@link AssertionError}.
+     *
+     * @param expectedStr Expected JSON string
+     * @param actualStr String to compare
+     * @param compareMode Specifies which comparison mode to use
+     * @throws JSONException
+     */
+    public static void assertEquals(String expectedStr, String actualStr, JSONCompareMode compareMode)
+            throws JSONException {
+        JSONCompareResult result = JSONCompare.compareJSON(expectedStr, actualStr, compareMode);
         if (result.failed()) {
             throw new AssertionError(result.getMessage());
         }
@@ -123,7 +165,22 @@ public class JSONAssert {
      */
     public static void assertEquals(JSONObject expected, JSONObject actual, boolean strict)
             throws JSONException {
-        JSONCompareResult result = JSONCompare.compareJSON(expected, actual, strict ? JSONCompareMode.STRICT : JSONCompareMode.LENIENT);
+        assertEquals(expected, actual, strict ? JSONCompareMode.STRICT : JSONCompareMode.LENIENT);
+    }
+
+    /**
+     * Asserts that the JSONObject provided matches the expected JSONObject.  If it isn't it throws an
+     * {@link AssertionError}.
+     *
+     * @param expected Expected JSONObject
+     * @param actual JSONObject to compare
+     * @param compareMode Specifies which comparison mode to use
+     * @throws JSONException
+     */
+    public static void assertEquals(JSONObject expected, JSONObject actual, JSONCompareMode compareMode)
+            throws JSONException
+    {
+        JSONCompareResult result = JSONCompare.compareJSON(expected, actual, compareMode);
         if (result.failed()) {
             throw new AssertionError(result.getMessage());
         }
@@ -140,7 +197,21 @@ public class JSONAssert {
      */
     public static void assertEquals(JSONArray expected, JSONArray actual, boolean strict)
             throws JSONException {
-        JSONCompareResult result = JSONCompare.compareJSON(expected, actual, strict ? JSONCompareMode.STRICT : JSONCompareMode.LENIENT);
+        assertEquals(expected, actual, strict ? JSONCompareMode.STRICT : JSONCompareMode.LENIENT);
+    }
+
+    /**
+     * Asserts that the JSONArray provided matches the expected JSONArray.  If it isn't it throws an
+     * {@link AssertionError}.
+     *
+     * @param expected Expected JSONArray
+     * @param actual JSONArray to compare
+     * @param compareMode Specifies which comparison mode to use
+     * @throws JSONException
+     */
+    public static void assertEquals(JSONArray expected, JSONArray actual, JSONCompareMode compareMode)
+            throws JSONException {
+        JSONCompareResult result = JSONCompare.compareJSON(expected, actual, compareMode);
         if (result.failed()) {
             throw new AssertionError(result.getMessage());
         }
