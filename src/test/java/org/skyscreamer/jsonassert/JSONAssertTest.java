@@ -1,11 +1,12 @@
 package org.skyscreamer.jsonassert;
 
-import static org.skyscreamer.jsonassert.JSONCompareMode.LENIENT;
-import static org.skyscreamer.jsonassert.JSONCompareMode.STRICT;
-
 import org.json.JSONException;
+import org.json.JSONObject;
 import org.junit.Assert;
 import org.junit.Test;
+
+import static org.skyscreamer.jsonassert.JSONCompareMode.LENIENT;
+import static org.skyscreamer.jsonassert.JSONCompareMode.STRICT;
 
 /**
  * Unit tests for {@link JSONAssert}
@@ -187,6 +188,26 @@ public class JSONAssertTest {
     @Test
     public void testExpectedObjectButActualArray() throws JSONException {
         testFail("{id:1}", "[1]", false);
+    }
+
+    @Test
+    public void testEquivalentIntAndLong() throws JSONException {
+        JSONObject expected = new JSONObject();
+        JSONObject actual = new JSONObject();
+        expected.put("id", new Integer(12345));
+        actual.put("id", new Long(12345));
+        JSONAssert.assertEquals(expected, actual, true);
+        JSONAssert.assertEquals(actual, expected, true);
+    }
+
+    @Test
+    public void testEquivalentIntAndDouble() throws JSONException {
+        JSONObject expected = new JSONObject();
+        JSONObject actual = new JSONObject();
+        expected.put("id", new Integer(12345));
+        actual.put("id", new Double(12345.0));
+        JSONAssert.assertEquals(expected, actual, true);
+        JSONAssert.assertEquals(actual, expected, true);
     }
 
     private void testPass(String expected, String actual, boolean strict)
