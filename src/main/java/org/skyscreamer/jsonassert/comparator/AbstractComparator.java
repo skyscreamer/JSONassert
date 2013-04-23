@@ -1,14 +1,11 @@
 package org.skyscreamer.jsonassert.comparator;
 
-import org.apache.commons.collections.CollectionUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.skyscreamer.jsonassert.JSONCompareResult;
 
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import static org.skyscreamer.jsonassert.comparator.JSONCompareUtil.*;
 
@@ -94,10 +91,8 @@ public abstract class AbstractComparator implements JSONComparator {
     }
 
     protected void compareJSONArrayOfSimpleValues(String key, JSONArray expected, JSONArray actual, JSONCompareResult result) throws JSONException {
-        @SuppressWarnings("unchecked")
-        Map<Object, Integer> expectedCount = CollectionUtils.getCardinalityMap(jsonArrayToList(expected));
-        @SuppressWarnings("unchecked")
-        Map<Object, Integer> actualCount = CollectionUtils.getCardinalityMap(jsonArrayToList(actual));
+        Map<Object, Integer> expectedCount = JSONCompareUtil.getCardinalityMap(jsonArrayToList(expected));
+        Map<Object, Integer> actualCount = JSONCompareUtil.getCardinalityMap(jsonArrayToList(actual));
         for (Object o : expectedCount.keySet()) {
             if (!actualCount.containsKey(o)) {
                 result.missing(key + "[]", o);
