@@ -77,4 +77,12 @@ public final class Behavior {
 	public Behavior with(Customization customization) {
 		return Builder.from(this).add(customization).build();
 	}
+
+    public Customization getCustomization(String path) {
+        for (Customization c : customizations) {
+            if (c.appliesToPath(path))
+                return c;
+        }
+        return null;
+    }
 }
