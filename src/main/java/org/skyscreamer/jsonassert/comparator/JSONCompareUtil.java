@@ -10,6 +10,8 @@ import java.util.*;
  * Utility class that contains Json manipulation methods
  */
 public final class JSONCompareUtil {
+    private static Integer INTEGER_ONE = new Integer(1);
+
     private JSONCompareUtil() {}
 
      public static Map<Object,JSONObject> arrayOfJsonObjectToMap(JSONArray array, String uniqueKey) throws JSONException {
@@ -116,5 +118,16 @@ public final class JSONCompareUtil {
         return key + "[" + uniqueKey + "=" + value + "]";
     }
 
-
+    public static <T> Map<T, Integer> getCardinalityMap(final Collection<T> coll) {
+        Map count = new HashMap<T, Integer>();
+        for (T item : coll) {
+            Integer c = (Integer) (count.get(item));
+            if (c == null) {
+                count.put(item, INTEGER_ONE);
+            } else {
+                count.put(item, new Integer(c.intValue() + 1));
+            }
+        }
+        return count;
+    }
 }
