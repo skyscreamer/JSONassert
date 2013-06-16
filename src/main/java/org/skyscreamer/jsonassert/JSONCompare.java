@@ -122,7 +122,12 @@ public class JSONCompare {
 
     private static void compareValues(String fullKey, Object expectedValue, Object actualValue, Behavior behavior, JSONCompareResult result) throws JSONException
     {
-        if (expectedValue.getClass().isAssignableFrom(actualValue.getClass())) {
+        Customization customization = behavior.getCustomization(fullKey);
+        if (customization != null) {
+            if (!customization.matches(actualValue, expectedValue)) {
+                result.fail(fullKey, expectedValue, actualValue);
+            }
+        } else if (expectedValue.getClass().isAssignableFrom(actualValue.getClass())) {
             if (expectedValue instanceof JSONArray) {
                 compareJSONArray(fullKey , (JSONArray)expectedValue, (JSONArray)actualValue, behavior, result);
             }
