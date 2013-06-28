@@ -1,7 +1,5 @@
 package org.skyscreamer.jsonassert;
 
-import org.hamcrest.Matcher;
-
 public final class Customization {
 	private final String path;
 	private final EqualsComparator<Object> comparator;
