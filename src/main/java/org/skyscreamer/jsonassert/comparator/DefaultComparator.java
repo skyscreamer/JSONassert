@@ -3,8 +3,14 @@ package org.skyscreamer.jsonassert.comparator;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.skyscreamer.jsonassert.Customization;
 import org.skyscreamer.jsonassert.JSONCompareMode;
 import org.skyscreamer.jsonassert.JSONCompareResult;
+
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 
 import static org.skyscreamer.jsonassert.comparator.JSONCompareUtil.allJSONObjects;
 import static org.skyscreamer.jsonassert.comparator.JSONCompareUtil.allSimpleValues;
