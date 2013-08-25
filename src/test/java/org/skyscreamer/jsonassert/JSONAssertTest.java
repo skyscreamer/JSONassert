@@ -44,14 +44,14 @@ public class JSONAssertTest {
 
     @Test // Currently JSONAssert assumes JSONObject.
     public void testArray() throws JSONException {
-        testPass("[1,2,3]", "[1,2,3]",STRICT);
-        testPass("[1,2,3]", "[1,3,2]",LENIENT);
-        testFail("[1,2,3]", "[1,3,2]",STRICT);
-        testFail("[1,2,3]", "[4,5,6]",LENIENT);
-        testPass("[1,2,3]", "[1,2,3]",STRICT_ORDER);
-        testPass("[1,2,3]", "[1,3,2]",NON_EXTENSIBLE);
-        testFail("[1,2,3]", "[1,3,2]",STRICT_ORDER);
-        testFail("[1,2,3]", "[4,5,6]",NON_EXTENSIBLE);
+        testPass("[1,2,3]","[1,2,3]", STRICT);
+        testPass("[1,2,3]","[1,3,2]", LENIENT);
+        testFail("[1,2,3]","[1,3,2]", STRICT);
+        testFail("[1,2,3]","[4,5,6]", LENIENT);
+        testPass("[1,2,3]","[1,2,3]", STRICT_ORDER);
+        testPass("[1,2,3]","[1,3,2]", NON_EXTENSIBLE);
+        testFail("[1,2,3]","[1,3,2]", STRICT_ORDER);
+        testFail("[1,2,3]","[4,5,6]", NON_EXTENSIBLE);
     }
 
     @Test
@@ -73,8 +73,8 @@ public class JSONAssertTest {
     @Test
     public void testSimpleArray() throws JSONException {
         testPass("{id:1,pets:[\"dog\",\"cat\",\"fish\"]}", // Exact to exact (strict)
-                 "{id:1,pets:[\"dog\",\"cat\",\"fish\"]}",
-                 STRICT);
+                "{id:1,pets:[\"dog\",\"cat\",\"fish\"]}",
+                STRICT);
         testFail("{id:1,pets:[\"dog\",\"cat\",\"fish\"]}", // Out-of-order fails (strict)
                 "{id:1,pets:[\"dog\",\"fish\",\"cat\"]}",
                 STRICT);
