@@ -1,5 +1,8 @@
 package org.skyscreamer.jsonassert;
 
+import java.util.Arrays;
+
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.junit.Assert;
@@ -241,6 +244,89 @@ public class JSONAssertTest {
         actual.put("id", new Double(12345.0));
         JSONAssert.assertEquals(expected, actual, true);
         JSONAssert.assertEquals(actual, expected, true);
+    }
+
+    @Test(expected = AssertionError.class)
+    public void testAssertNotEqualsWhenEqualStrict() throws JSONException {
+        JSONObject expected = new JSONObject();
+        JSONObject actual = new JSONObject();
+        expected.put("id", new Integer(12345));
+        actual.put("id", new Double(12345));
+        JSONAssert.assertNotEquals(expected, actual, true);
+    }
+
+    @Test(expected = AssertionError.class)
+    public void testAssertNotEqualsWhenEqualLenient() throws JSONException {
+        JSONObject expected = new JSONObject();
+        JSONObject actual = new JSONObject();
+        expected.put("id", new Integer(12345));
+        actual.put("id", new Double(12345));
+        JSONAssert.assertNotEquals(expected, actual, false);
+    }
+
+    @Test()
+    public void testAssertNotEqualsWhenEqualDiffObjectsStrict() throws JSONException {
+        JSONObject expected = new JSONObject();
+        JSONObject actual = new JSONObject();
+        expected.put("id", new Integer(12345));
+        expected.put("name", "Joe");
+        actual.put("id", new Double(12345));
+        JSONAssert.assertNotEquals(expected, actual, true);
+    }
+
+    @Test(expected = AssertionError.class)
+    public void testAssertNotEqualsWhenEqualDiffObjectsLenient() throws JSONException {
+        JSONObject expected = new JSONObject();
+        JSONObject actual = new JSONObject();
+        expected.put("id", new Integer(12345));
+        expected.put("name", "Joe");
+        actual.put("name", "Joe");
+        actual.put("id", new Double(12345));
+        JSONAssert.assertNotEquals(expected, actual, false);
+    }
+
+    @Test()
+    public void testAssertNotEqualsWhenDifferentStrict() throws JSONException {
+        JSONObject expected = new JSONObject();
+        JSONObject actual = new JSONObject();
+        expected.put("id", new Integer(12345));
+        actual.put("id", new Double(12346));
+        JSONAssert.assertNotEquals(expected, actual, true);
+    }
+
+    @Test()
+    public void testAssertNotEqualsWhenDifferentLenient() throws JSONException {
+        JSONObject expected = new JSONObject();
+        JSONObject actual = new JSONObject();
+        expected.put("id", new Integer(12345));
+        actual.put("id", new Double(12346));
+        JSONAssert.assertNotEquals(expected, actual, false);
+    }
+
+    @Test()
+    public void testAssertNotEqualsString() throws JSONException {
+        JSONAssert.assertNotEquals("[1,2,3]", "[1,3,2]", STRICT);
+        JSONAssert.assertNotEquals("[1,2,3]", "[1,2,4]", LENIENT);
+        JSONAssert.assertNotEquals("[1,2,3]", "[1,3,2]", true);
+        JSONAssert.assertNotEquals("[1,2,3]", "[1,2,4]", false);
+    }
+
+    @Test()
+    public void testAssertNotEqualsStringAndJSONObject() throws JSONException {
+        JSONObject actual = new JSONObject();
+        actual.put("id", new Double(12345));
+        JSONAssert.assertEquals("{id:12345}", actual, false);
+        JSONAssert.assertNotEquals("{id:12346}", actual, false);
+    }
+
+    @Test()
+    public void testAssertNotEqualsJSONArray() throws JSONException {
+        JSONArray actual = new JSONArray(Arrays.asList(1, 2, 3));
+        JSONAssert.assertEquals("[1,2,3]", actual, false);
+        JSONAssert.assertNotEquals("[1,2,4]", actual, false);
+        JSONAssert.assertNotEquals("[1,3,2]", actual, true);
+        JSONAssert.assertNotEquals(new JSONArray(Arrays.asList(1, 2, 4)), actual, false);
+        JSONAssert.assertNotEquals(new JSONArray(Arrays.asList(1, 3, 2)), actual, true);
     }
 
     private void testPass(String expected, String actual, JSONCompareMode compareMode)
