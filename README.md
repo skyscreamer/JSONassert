@@ -76,7 +76,7 @@ To use, [download the JAR](https://github.com/skyscreamer/JSONassert/downloads) 
     <dependency>
         <groupId>org.skyscreamer</groupId>
         <artifactId>jsonassert</artifactId>
-        <version>1.2.0</version>
+        <version>1.2.1</version>
     </dependency>
 
 Write tests like this:

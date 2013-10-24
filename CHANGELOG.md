@@ -1,7 +1,13 @@
 Changelog
 =========
 
-Version 1.2.0 - 3/17/2012
+Version 1.2.1 - 10/24/2013
+--------------------------
+ - Remove commons-collection dependency
+ - Updated Customization class to allow path-matching, and matching of expected and actual values with user-provided EqualityComparator.
+ - Added AssertNotEquals
+
+Version 1.2.0 - 3/17/2013
 -------------------------
  - Fixed handling comparison of equivalent values across long, int, and double
  - Add JSONCompareMode to asserts to allow for more options than strict/not-strict
