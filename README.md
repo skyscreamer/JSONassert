@@ -92,6 +92,9 @@ Who uses JSONassert?
  + [yoga](https://github.com/skyscreamer/yoga) - A relational REST framework
  + [hamcrest-json](https://github.com/hertzsprung/hamcrest-json) - Hamcrest matchers for comparing JSON documents
  + [Mule ESB](http://www.mulesoft.org/)
+ + [GroupDocs](http://groupdocs.com/)
+ + [Shazam](http://www.shazam.com/)
+ + [Thucydides](http://thucydides.net/)
 
 * * *
 
