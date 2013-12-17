@@ -15,6 +15,36 @@ import static org.skyscreamer.jsonassert.JSONCompareMode.*;
  */
 public class JSONAssertTest {
     @Test
+    public void testString() throws JSONException {
+        testPass("\"Joe\"", "\"Joe\"", STRICT);
+        testPass("\"Joe\"", "\"Joe\"", LENIENT);
+        testPass("\"Joe\"", "\"Joe\"", NON_EXTENSIBLE);
+        testPass("\"Joe\"", "\"Joe\"", STRICT_ORDER);
+        testFail("\"Joe\"", "\"Joe1\"", STRICT);
+        testFail("\"Joe\"", "\"Joe2\"", LENIENT);
+        testFail("\"Joe\"", "\"Joe3\"", NON_EXTENSIBLE);
+        testFail("\"Joe\"", "\"Joe4\"", STRICT_ORDER);
+    }
+
+    @Test
+    public void testNumber() throws JSONException {
+        testPass("123", "123", STRICT);
+        testPass("123", "123", LENIENT);
+        testPass("123", "123", NON_EXTENSIBLE);
+        testPass("123", "123", STRICT_ORDER);
+        testFail("123", "1231", STRICT);
+        testFail("123", "1232", LENIENT);
+        testFail("123", "1233", NON_EXTENSIBLE);
+        testFail("123", "1234", STRICT_ORDER);
+        testPass("0", "0", STRICT);
+        testPass("-1", "-1", STRICT);
+        testPass("0.1", "0.1", STRICT);
+        testPass("1.2e5", "1.2e5", STRICT);
+        testPass("20.4e-1", "20.4e-1", STRICT);
+        testFail("310.1e-1", "31.01", STRICT); // should fail though numbers are the same?
+    }
+
+    @Test
     public void testSimple() throws JSONException {
         testPass("{id:1}", "{id:1}", STRICT);
         testFail("{id:1}", "{id:2}", STRICT);

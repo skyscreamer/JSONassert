@@ -3,6 +3,7 @@ package org.skyscreamer.jsonassert;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.json.JSONString;
 import org.skyscreamer.jsonassert.comparator.DefaultComparator;
 import org.skyscreamer.jsonassert.comparator.JSONComparator;
 
@@ -39,6 +40,9 @@ public final class JSONCompare {
         else if ((expected instanceof JSONArray) && (actual instanceof JSONArray)) {
             return compareJSON((JSONArray)expected, (JSONArray)actual, comparator);
         }
+        else if (expected instanceof JSONString && actual instanceof JSONString) {
+            return compareJson((JSONString) expected, (JSONString) actual);
+        }
         else if (expected instanceof JSONObject) {
             return new JSONCompareResult().fail("", expected, actual);
         }
@@ -47,7 +51,7 @@ public final class JSONCompare {
         }
     }
 
-    /**
+  /**
      * Compares JSON object provided to the expected JSON object using provided comparator, and returns the results of
      * the comparison.
      * @param expected expected json object
@@ -73,6 +77,23 @@ public final class JSONCompare {
     public static JSONCompareResult compareJSON(JSONArray expected, JSONArray actual, JSONComparator comparator)
             throws JSONException {
         return comparator.compareJSON(expected, actual);
+    }
+
+    /**
+     * Compares {@link JSONString} provided to the expected {@code JSONString}, checking that the
+     * {@link org.json.JSONString#toJSONString()} are equal.
+     *
+     * @param expected Expected {@code JSONstring}
+     * @param actual   {@code JSONstring} to compare
+     */
+    public static JSONCompareResult compareJson(final JSONString expected, final JSONString actual) {
+        final JSONCompareResult result = new JSONCompareResult();
+        final String expectedJson = expected.toJSONString();
+        final String actualJson = actual.toJSONString();
+        if (!expectedJson.equals(actualJson)) {
+          result.fail("");
+        }
+        return result;
     }
 
     /**
