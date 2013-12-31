@@ -1,6 +1,10 @@
 Changelog
 =========
 
+Version 1.2.2 - 12/31/2013
+--------------------------
+ - Add support for JSONString
+
 Version 1.2.1 - 10/24/2013
 --------------------------
  - Remove commons-collection dependency
