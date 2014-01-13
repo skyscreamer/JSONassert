@@ -1,21 +1,25 @@
 package org.skyscreamer.jsonassert;
 
+import java.util.regex.Pattern;
+
 /**
- * Associates a custom matcher to a specific jsonpath.
+ * Associates a custom matcher to a jsonpath identified by a regular expression
+ * 
+ * @author Duncan Mackinder
  */
-public final class Customization implements Customizable {
-	private final String path;
+public final class RegularExpressionCustomization implements Customizable {
+	private final Pattern path;
 	private final ValueMatcher<Object> comparator;
 
-	public Customization(String path, ValueMatcher<Object> comparator) {
+	public RegularExpressionCustomization(String path, ValueMatcher<Object> comparator) {
         assert path != null;
         assert comparator != null;
-		this.path = path;
+		this.path = Pattern.compile(path);
 		this.comparator = comparator;
 	}
 
 	public static Customizable customization(String path, ValueMatcher<Object> comparator) {
-		return new Customization(path, comparator);
+		return new RegularExpressionCustomization(path, comparator);
 	}
 
     /* (non-Javadoc)
@@ -23,7 +27,7 @@ public final class Customization implements Customizable {
 	 */
     @Override
 	public boolean appliesToPath(String path) {
-        return this.path.equals(path);
+        return this.path.matcher(path).matches();
     }
 
     /* (non-Javadoc)
