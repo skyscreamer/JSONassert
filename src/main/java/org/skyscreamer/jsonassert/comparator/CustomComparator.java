@@ -15,12 +15,12 @@ public class CustomComparator extends DefaultComparator {
 
     public CustomComparator(JSONCompareMode mode,  Customization... customizations) {
         super(mode);
-        this.customizations = Arrays.asList((Customization[])customizations);
+        this.customizations = Arrays.asList(customizations);
     }
 
     @Override
     public void compareValues(String prefix, Object expectedValue, Object actualValue, JSONCompareResult result) throws JSONException {
-    	Customization customization = getCustomization(prefix);
+        Customization customization = getCustomization(prefix);
         if (customization != null) {
         	try {
     			if (!customization.matches(prefix, actualValue, expectedValue, result)) {
