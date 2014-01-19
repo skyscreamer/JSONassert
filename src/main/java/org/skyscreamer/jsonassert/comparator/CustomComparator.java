@@ -1,62 +1,42 @@
 package org.skyscreamer.jsonassert.comparator;
 
 import org.json.JSONException;
-import org.skyscreamer.jsonassert.Customizable;
 import org.skyscreamer.jsonassert.Customization;
 import org.skyscreamer.jsonassert.JSONCompareMode;
 import org.skyscreamer.jsonassert.JSONCompareResult;
+import org.skyscreamer.jsonassert.ValueMatcherException;
 
 import java.util.Arrays;
 import java.util.Collection;
 
 public class CustomComparator extends DefaultComparator {
 
-    private final Collection<Customizable> customizations;
+    private final Collection<Customization> customizations;
 
-	/**
-	 * Create custom comparator from array of customizations.
-	 * 
-	 * @param mode
-	 *            comparison mode
-	 * @param customizations
-	 *            array of customizations
-	 */
-    public CustomComparator(JSONCompareMode mode,  Customizable... customizations) {
-        super(mode);
-        this.customizations = Arrays.asList(customizations);
-    }
-
-	/**
-	 * Create custom comparator from array of customizations. Provides backwards
-	 * compatibility with code compiled against JSONassert 1.2.1 or earlier. Use
-	 * CustomComparator(JSONCompareMode mode, Customizable... customizations)
-	 * constructor in place of this one.
-	 * 
-	 * @param mode
-	 *            comparison mode
-	 * @param customizations
-	 *            array of customizations
-	 */
-    @Deprecated
     public CustomComparator(JSONCompareMode mode,  Customization... customizations) {
         super(mode);
-        this.customizations = Arrays.asList((Customizable[])customizations);
+        this.customizations = Arrays.asList((Customization[])customizations);
     }
 
     @Override
     public void compareValues(String prefix, Object expectedValue, Object actualValue, JSONCompareResult result) throws JSONException {
-        Customizable customization = getCustomization(prefix);
+    	Customization customization = getCustomization(prefix);
         if (customization != null) {
-            if (!customization.matches(actualValue, expectedValue)) {
-                result.fail(prefix, expectedValue, actualValue);
-            }
+        	try {
+    			if (!customization.matches(prefix, actualValue, expectedValue, result)) {
+   					result.fail(prefix, expectedValue, actualValue);
+    			}
+        	}
+        	catch (ValueMatcherException e) {
+       			result.fail(prefix, e);
+        	}
         } else {
             super.compareValues(prefix, expectedValue, actualValue, result);
         }
     }
 
-    private Customizable getCustomization(String path) {
-        for (Customizable c : customizations)
+    private Customization getCustomization(String path) {
+        for (Customization c : customizations)
             if (c.appliesToPath(path))
                 return c;
         return null;
