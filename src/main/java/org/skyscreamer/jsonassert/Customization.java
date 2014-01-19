@@ -18,7 +18,7 @@ public final class Customization {
 		return new Customization(path, comparator);
 	}
 
-	public boolean appliesToPath(String path) {
+    public boolean appliesToPath(String path) {
         return this.path.equals(path);
     }
 
