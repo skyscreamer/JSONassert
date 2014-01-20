@@ -13,18 +13,34 @@ public class ValueMatcherException extends RuntimeException {
 	
 	private final String actual;
 	
+	/**
+	 * Create new ValueMatcherException
+	 * 
+	 * @param message
+	 *            description of exception
+	 * @param expected
+	 *            value expected by ValueMatcher
+	 * @param actual
+	 *            value being tested by ValueMatcher
+	 */
 	public ValueMatcherException(String message, String expected, String actual) {
 		super(message);
 		this.expected = expected;
 		this.actual = actual;
 	}
-	
-	public ValueMatcherException(Throwable cause, String expected, String actual) {
-		super(cause);
-		this.expected = expected;
-		this.actual = actual;
-	}
 
+	/**
+	 * Create new ValueMatcherException
+	 * 
+	 * @param message
+	 *            description of exception
+	 * @param cause
+	 *            cause of ValueMatcherException
+	 * @param expected
+	 *            value expected by ValueMatcher
+	 * @param actual
+	 *            value being tested by ValueMatcher
+	 */
 	public ValueMatcherException(String message, Throwable cause, String expected, String actual) {
 		super(message, cause);
 		this.expected = expected;

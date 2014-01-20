@@ -22,14 +22,14 @@ public class CustomComparator extends DefaultComparator {
     public void compareValues(String prefix, Object expectedValue, Object actualValue, JSONCompareResult result) throws JSONException {
         Customization customization = getCustomization(prefix);
         if (customization != null) {
-        	try {
-    			if (!customization.matches(prefix, actualValue, expectedValue, result)) {
-   					result.fail(prefix, expectedValue, actualValue);
-    			}
-        	}
-        	catch (ValueMatcherException e) {
-       			result.fail(prefix, e);
-        	}
+            try {
+    	        if (!customization.matches(prefix, actualValue, expectedValue, result)) {
+                    result.fail(prefix, expectedValue, actualValue);
+                }
+            }
+            catch (ValueMatcherException e) {
+                result.fail(prefix, e);
+            }
         } else {
             super.compareValues(prefix, expectedValue, actualValue, result);
         }

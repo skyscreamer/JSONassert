@@ -58,6 +58,13 @@ public class RegularExpressionValueMatcherTest {
     }
 
     @Test
+    public void dynamicRegexMatchesStringAttributeInsideArrayWithNoArgConstructor() throws JSONException {
+		JSONAssert.assertEquals("{d:{results:[{__metadata:{uri:\"http://localhost:80/Person\\\\('\\\\d+'\\\\)\"}}]}}", JSON_STRING_WITH_ARRAY, new CustomComparator(
+				JSONCompareMode.STRICT_ORDER, new Customization(ARRAY_ELEMENT_PREFIX,
+						new RegularExpressionValueMatcher<Object>())));
+    }
+
+    @Test
     public void failsWhenDynamicRegexInvalid() throws JSONException {
     	try {
     		doTest(ARRAY_ELEMENT_PREFIX, null, "{d:{results:[{__metadata:{uri:\"http://localhost:80/Person('\\\\d+'\\\\)\"}}]}}", JSON_STRING_WITH_ARRAY);
