@@ -4,6 +4,7 @@ import org.json.JSONException;
 import org.skyscreamer.jsonassert.Customization;
 import org.skyscreamer.jsonassert.JSONCompareMode;
 import org.skyscreamer.jsonassert.JSONCompareResult;
+import org.skyscreamer.jsonassert.ValueMatcherException;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -21,8 +22,13 @@ public class CustomComparator extends DefaultComparator {
     public void compareValues(String prefix, Object expectedValue, Object actualValue, JSONCompareResult result) throws JSONException {
         Customization customization = getCustomization(prefix);
         if (customization != null) {
-            if (!customization.matches(actualValue, expectedValue)) {
-                result.fail(prefix, expectedValue, actualValue);
+            try {
+    	        if (!customization.matches(prefix, actualValue, expectedValue, result)) {
+                    result.fail(prefix, expectedValue, actualValue);
+                }
+            }
+            catch (ValueMatcherException e) {
+                result.fail(prefix, e);
             }
         } else {
             super.compareValues(prefix, expectedValue, actualValue, result);

@@ -127,6 +127,16 @@ public class JSONCompareResult {
         return this;
     }
 
+    /**
+     * Identify that the comparison failed
+     * @param field Which field failed
+     * @param exception exception containing details of match failure
+     */
+    public JSONCompareResult fail(String field, ValueMatcherException exception) {
+    	fail(field + ": " + exception.getMessage(), exception.getExpected(), exception.getActual());
+        return this;
+    }
+
     private String formatFailureMessage(String field, Object expected, Object actual) {
         return field
                 + "\nExpected: "
