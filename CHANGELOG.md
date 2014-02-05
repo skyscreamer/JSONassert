@@ -1,6 +1,14 @@
 Changelog
 =========
 
+Version 1.2.3 - 2/5/2014
+------------------------
+ - This edition brought to you by dmackinder (thanks!)
+ - Added array size comparator enhancements.
+ - Added ArrayValueMatcher to simplify verification of range of array elements.
+ - Improve diagnostics from RegularExpressionValueMatcher.
+ - Deprecated former Customization.matches() signature
+
 Version 1.2.2 - 12/31/2013
 --------------------------
  - Add support for JSONString
