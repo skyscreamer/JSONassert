@@ -52,6 +52,25 @@ import org.skyscreamer.jsonassert.comparator.JSONComparator;
  * JSONAssert.assertEquals("{a:[{type:row}]}", ARRAY_OF_JSONOBJECTS, new CustomComparator(JSONCompareMode.LENIENT, customization));
  * </code>
  * 
+ * <p>To verify that the 'id' attribute of every element of array 'a' matches regular expression '\d+'.  This requires a custom comparator to specify regular expression to be used to validate each array element, hence the array of Customization instances:</p>
+ * 
+ * <code>
+ * // get length of array we will verify<br/>
+ * int aLength = ((JSONArray)((JSONObject)JSONParser.parseJSON(ARRAY_OF_JSONOBJECTS)).get("a")).length();<br/>
+ * // create array of customizations one for each array element<br/>
+ * RegularExpressionValueMatcher&lt;Object&gt; regExValueMatcher = new RegularExpressionValueMatcher&lt;Object&gt;("\\d+");  // matches one or more digits<br/>
+ * Customization[] customizations = new Customization[aLength];<br/>
+ * for (int i=0; i&lt;aLength; i++) {<br/>
+ * &nbsp;&nbsp;String contextPath = "a["+i+"].id";<br/>
+ * &nbsp;&nbsp;customizations[i] = new Customization(contextPath, regExValueMatcher);<br/>
+ * }<br/>
+ * CustomComparator regExComparator = new CustomComparator(JSONCompareMode.STRICT_ORDER, customizations);<br/>
+ * ArrayValueMatcher&lt;Object&gt; regExArrayValueMatcher = new ArrayValueMatcher&lt;Object&gt;(regExComparator);<br/>
+ * Customization regExArrayValueCustomization = new Customization("a", regExArrayValueMatcher);<br/>
+ * CustomComparator regExCustomArrayValueComparator = new CustomComparator(JSONCompareMode.STRICT_ORDER, new Customization[] { regExArrayValueCustomization });<br/>
+ * JSONAssert.assertEquals("{a:[{id:X}]}", ARRAY_OF_JSONOBJECTS, regExCustomArrayValueComparator);<br/>
+ * </code>
+ * 
  * <p>To verify that the 'background' attribute of every element of array 'a' alternates between 'white' and 'grey' starting with first element 'background' being 'white':</p>
  * 
  * <code>
@@ -79,7 +98,8 @@ import org.skyscreamer.jsonassert.comparator.JSONComparator;
  * <p>To verify that the second elements of JSON array 'a' is a JSON array whose first element has the value 9:</p>
  * 
  * <code>
- * Customization innerCustomization = new Customization("a[1]", new ArrayValueMatcher&lt;Object&gt;(comparator, 0));<br/>
+ * JSONComparator innerComparator = new DefaultComparator(JSONCompareMode.LENIENT);<br/>
+ * Customization innerCustomization = new Customization("a[1]", new ArrayValueMatcher&lt;Object&gt;(innerComparator, 0));<br/>
  * JSONComparator comparator = new CustomComparator(JSONCompareMode.LENIENT, innerCustomization);<br/>
  * Customization customization = new Customization("a", new ArrayValueMatcher&lt;Object&gt;(comparator, 1));<br/>
  * JSONAssert.assertEquals("{a:[[9]]}", ARRAY_OF_JSONARRAYS, new CustomComparator(JSONCompareMode.LENIENT, customization));

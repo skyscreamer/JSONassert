@@ -210,6 +210,24 @@ public class ArrayValueMatcherTest {
 	}
 	
 	@Test
+	public void verifyEveryArrayElementWithCustomComparator() throws JSONException {
+		// get length of array we will verify
+		int aLength = ((JSONArray)((JSONObject)JSONParser.parseJSON(ARRAY_OF_JSONOBJECTS)).get("a")).length();
+		// create array of customizations one for each array element
+		RegularExpressionValueMatcher<Object> regExValueMatcher = new RegularExpressionValueMatcher<Object>("\\d+");  // matches one or more digits
+		Customization[] customizations = new Customization[aLength];
+		for (int i=0; i<aLength; i++) {
+			String contextPath = "a["+i+"].id";
+			customizations[i] = new Customization(contextPath, regExValueMatcher);
+		}
+		CustomComparator regExComparator = new CustomComparator(JSONCompareMode.STRICT_ORDER, customizations);
+		ArrayValueMatcher<Object> regExArrayValueMatcher = new ArrayValueMatcher<Object>(regExComparator);
+		Customization regExArrayValueCustomization = new Customization("a", regExArrayValueMatcher);
+		CustomComparator regExCustomArrayValueComparator = new CustomComparator(JSONCompareMode.STRICT_ORDER, new Customization[] { regExArrayValueCustomization });
+		JSONAssert.assertEquals("{a:[{id:X}]}", ARRAY_OF_JSONOBJECTS, regExCustomArrayValueComparator);
+	}
+	
+	@Test
 	public void verifyBackgroundAttributesOfEveryArrayElementAlternateBetweenWhiteAndGrey() throws JSONException {
 		 JSONComparator comparator = new DefaultComparator(JSONCompareMode.LENIENT);
 		 Customization customization = new Customization("a", new ArrayValueMatcher<Object>(comparator));
