@@ -6,7 +6,9 @@ import static org.junit.Assert.fail;
 
 import java.text.MessageFormat;
 
+import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 import org.junit.Test;
 import org.skyscreamer.jsonassert.comparator.ArraySizeComparator;
 import org.skyscreamer.jsonassert.comparator.CustomComparator;
