@@ -17,8 +17,6 @@ public class JSONCompareResult {
     private Object _expected;
     private Object _actual;
     private final List<FieldComparisonFailure> _fieldFailures = new ArrayList<FieldComparisonFailure>();
-    private final List<FieldComparisonFailure> _fieldMissing = new ArrayList<FieldComparisonFailure>();
-    private final List<FieldComparisonFailure> _fieldUnexpected = new ArrayList<FieldComparisonFailure>();
 
     /**
      * Default constructor.
@@ -62,20 +60,6 @@ public class JSONCompareResult {
     public List<FieldComparisonFailure> getFieldFailures() {
         return Collections.unmodifiableList(_fieldFailures);
     }
-    
-    /**
-     * Get the list of missed on field comparisons
-     */
-    public List<FieldComparisonFailure> getFieldMissing() {
-        return Collections.unmodifiableList(_fieldMissing);
-    }
-    
-    /**
-     * Get the list of failures on field comparisons
-     */
-    public List<FieldComparisonFailure> getFieldUnexpected() {
-        return Collections.unmodifiableList(_fieldUnexpected);
-    }
 
     /**
      * Actual field value
@@ -85,7 +69,6 @@ public class JSONCompareResult {
      *         particular field
      * @deprecated Superseded by {@link #getFieldFailures()}
      */
-    @Deprecated
     public Object getActual() {
         return _actual;
     }
@@ -98,7 +81,6 @@ public class JSONCompareResult {
      *         particular field
      * @deprecated Superseded by {@link #getFieldFailures()}
      */
-    @Deprecated
     public Object getExpected() {
         return _expected;
     }
@@ -109,20 +91,6 @@ public class JSONCompareResult {
     public boolean isFailureOnField() {
         return !_fieldFailures.isEmpty();
     }
-    
-    /**
-     * Check if comparison failed with missing on any particular fields
-     */
-    public boolean isMissingOnField() {
-        return !_fieldMissing.isEmpty();
-    }
-    
-    /**
-     * Check if comparison failed with unexpected on any particular fields
-     */
-    public boolean isUnexpectedOnField() {
-        return !_fieldUnexpected.isEmpty();
-    }
 
     /**
      * Dot-separated path the the field that failed comparison
@@ -131,7 +99,6 @@ public class JSONCompareResult {
      *         not fail on a particular field
      * @deprecated Superseded by {@link #getFieldFailures()}
      */
-    @Deprecated
     public String getField() {
         return _field;
     }
@@ -180,7 +147,6 @@ public class JSONCompareResult {
     }
 
     public JSONCompareResult missing(String field, Object expected) {
-    	_fieldMissing.add(new FieldComparisonFailure(field, expected, null));
         fail(formatMissing(field, expected));
         return this;
     }
@@ -193,7 +159,6 @@ public class JSONCompareResult {
     }
 
     public JSONCompareResult unexpected(String field, Object value) {
-    	_fieldUnexpected.add(new FieldComparisonFailure(field, null, value));
         fail(formatUnexpected(field, value));
         return this;
     }
