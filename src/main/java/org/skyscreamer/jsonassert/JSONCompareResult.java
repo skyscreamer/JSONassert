@@ -86,7 +86,7 @@ public class JSONCompareResult {
      * @deprecated Superseded by {@link #getFieldFailures()}
      */
     @Deprecated
-	public Object getActual() {
+    public Object getActual() {
         return _actual;
     }
     
@@ -99,7 +99,7 @@ public class JSONCompareResult {
      * @deprecated Superseded by {@link #getFieldFailures()}
      */
     @Deprecated
-	public Object getExpected() {
+    public Object getExpected() {
         return _expected;
     }
     
@@ -132,7 +132,7 @@ public class JSONCompareResult {
      * @deprecated Superseded by {@link #getFieldFailures()}
      */
     @Deprecated
-	public String getField() {
+    public String getField() {
         return _field;
     }
     
