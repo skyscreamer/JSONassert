@@ -1,6 +1,15 @@
 Changelog
 =========
 
+Version 1.3.0 - 12/16/2015
+--------------------------
+ - Fix & improve ArrayValueMatcher JavaDoc (dmackinder)
+     Fix final JavaDoc example and add new example showing how to verify
+     every array element using a custom comparator
+ - Fix URL in pom.xml (aukevanleeuwen)
+ - Update JSONCompareResult.java adding 2 new lists for missing and unexpected fileds (riccorazza)
+ - Includes missing imports in test class (javierseixas)
+
 Version 1.2.3 - 2/5/2014
 ------------------------
  - This edition brought to you by dmackinder (thanks!)
