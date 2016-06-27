@@ -14,7 +14,7 @@ public final class JSONCompareUtil {
 
     private JSONCompareUtil() {}
 
-     public static Map<Object,JSONObject> arrayOfJsonObjectToMap(JSONArray array, String uniqueKey) throws JSONException {
+    /*public static Map<Object,JSONObject> orig-arrayOfJsonObjectToMap(JSONArray array, String uniqueKey) throws JSONException {
         Map<Object, JSONObject> valueMap = new HashMap<Object, JSONObject>();
         for(int i = 0 ; i < array.length() ; ++i) {
             JSONObject jsonObject = (JSONObject)array.get(i);
@@ -22,7 +22,55 @@ public final class JSONCompareUtil {
             valueMap.put(id, jsonObject);
         }
         return valueMap;
+    }*/
+    /*  public static Map<Object,Object> old-arrayOfJsonObjectToMap(JSONArray array, String uniqueKey) throws JSONException {
+        Map<Object, Object> valueMap = new HashMap<Object, Object>();
+        for(int i = 0 ; i < array.length() ; ++i) {
+            JSONObject jsonObject = (JSONObject)array.get(i);
+            // iterate thru the possible fields in the array elements themselves
+            // this is for arrays of structures
+            Iterator k =jsonObject.keys();
+            while(k.hasNext()) {
+                // get the next object in the object of the array element
+            	Object name =  k.next();
+                // get that objects value
+            	Object value =  jsonObject.get((String) name);
+                // hash the 'name' of the field and its 'value'
+            	valueMap.put(name, value);
+            }
+        }
+        return valueMap;
+    }*/
+    
+        public static Map<Object,Object> JsonObjectToMap(JSONObject object) throws JSONException {
+        Map<Object, Object> valueMap = new HashMap<Object, Object>();
+        // iterate thru the possible fields in the json object
+        Iterator k =object.keys();
+        while(k.hasNext()) {
+            // get the next object in the object of the array element
+            Object name =  k.next();
+            // get that objects value
+            Object value =  object.get((String) name);
+            // hash the 'name' of the field and its 'value'
+            valueMap.put(name, value);
+        }
+        return valueMap;
     }
+    /* dead code with unique key 
+    public static Map<Object,Object> arrayOfJsonObjectToMap(JSONObject object, String uniqueKey) throws JSONException {
+        Map<Object, Object> valueMap = new HashMap<Object, Object>();
+        // iterate thru the possible fields in the json object
+        Iterator k =object.keys();
+        while(k.hasNext()) {
+            // get the next object in the object of the array element
+            Object name =  k.next();
+            // get that objects value
+            Object value =  object.get((String) name);
+            // hash the 'name' of the field and its 'value'
+            valueMap.put(name, value);
+        }
+        return valueMap;
+    } */
 
 
     public static String findUniqueKey(JSONArray expected) throws JSONException {

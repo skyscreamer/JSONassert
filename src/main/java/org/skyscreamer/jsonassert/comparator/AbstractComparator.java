@@ -72,21 +72,34 @@ public abstract class AbstractComparator implements JSONComparator {
             recursivelyCompareJSONArray(key, expected, actual, result);
             return;
         }
-        Map<Object, JSONObject> expectedValueMap = arrayOfJsonObjectToMap(expected, uniqueKey);
-        Map<Object, JSONObject> actualValueMap = arrayOfJsonObjectToMap(actual, uniqueKey);
-        for (Object id : expectedValueMap.keySet()) {
-            if (!actualValueMap.containsKey(id)) {
-                result.missing(formatUniqueKey(key, uniqueKey, id), expectedValueMap.get(id));
-                continue;
-            }
-            JSONObject expectedValue = expectedValueMap.get(id);
-            JSONObject actualValue = actualValueMap.get(id);
-            compareValues(formatUniqueKey(key, uniqueKey, id), expectedValue, actualValue, result);
+        if(expected.length()==actual.length())
+        {	
+	        for(int q=0;q <expected.length();q++)
+	        {
+		        //Map<Object, Object> expectedValueMap = arrayOfJsonObjectToMap((JSONObject)expected.get(q), uniqueKey);
+		        //Map<Object, Object> actualValueMap = arrayOfJsonObjectToMap((JSONObject)actual.get(q), uniqueKey);
+                Map<Object, Object> expectedValueMap = JsonObjectToMap((JSONObject)expected.get(q));
+		        Map<Object, Object> actualValueMap = JsonObjectToMap((JSONObject)actual.get(q));
+		        for (Object id : expectedValueMap.keySet()) {
+		            if (!actualValueMap.containsKey(id)) {
+		                result.missing(key+"["+q+"]["+(String)id+"]", expectedValueMap.get(id));
+		                continue;
+		            }
+		            Object expectedValue = (Object) expectedValueMap.get(id);
+		            Object actualValue = (Object) actualValueMap.get(id);
+		            compareValues(key+"["+q+"]["+(String)id+"]", expectedValue, actualValue, result);
+		        }
+		        for (Object id : actualValueMap.keySet()) {        	
+		            if (!expectedValueMap.containsKey(id)) {
+		                result.unexpected(key+"["+q+"]["+(String)id+"]", actualValueMap.get(id));
+		            }
+		        }
+	        }
         }
-        for (Object id : actualValueMap.keySet()) {
-            if (!expectedValueMap.containsKey(id)) {
-                result.unexpected(formatUniqueKey(key, uniqueKey, id), actualValueMap.get(id));
-            }
+        else
+        {
+        	result.fail(expected + ": Expected array size of " + expected.length() + " elements " 
+                    + "got " + actual.length() + " elements");
         }
     }
 

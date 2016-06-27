@@ -1,9 +1,15 @@
 package org.skyscreamer.jsonassert.comparator;
 
+import static org.hamcrest.core.IsEqual.equalTo;
+import static org.junit.Assert.assertThat;
 import junit.framework.Assert;
+
+import org.hamcrest.Description;
+import org.hamcrest.Matcher;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.junit.Test;
+import org.junit.internal.matchers.TypeSafeMatcher;
 import org.skyscreamer.jsonassert.JSONCompare;
 import org.skyscreamer.jsonassert.JSONCompareMode;
 import org.skyscreamer.jsonassert.JSONCompareResult;
@@ -34,6 +40,19 @@ public class CustomComparatorTest {
 
         Assert.assertTrue(compareResult.failed());
         String message = compareResult.getMessage().replaceAll("\n", "");
-        Assert.assertTrue(message, message.matches(".*id=5.*Expected.*id=6.*Unexpected.*id=7.*Unexpected.*"));
+        assertThat(compareResult, failsWithMessage(equalTo("[{\"id\":1},{\"id\":3},{\"id\":5}]: Expected array size of 3 elements got 4 elements")));
+    }
+    private Matcher<JSONCompareResult> failsWithMessage(final Matcher<String> expectedMessage) {
+        return new TypeSafeMatcher<JSONCompareResult>() {
+            @Override
+            public void describeTo(Description description) {
+                description.appendText("a failed comparison with message ").appendDescriptionOf(expectedMessage);
+            }
+
+            @Override
+            public boolean matchesSafely(JSONCompareResult item) {
+                return item.failed() && expectedMessage.matches(item.getMessage());
+            }
+        };
     }
 }
