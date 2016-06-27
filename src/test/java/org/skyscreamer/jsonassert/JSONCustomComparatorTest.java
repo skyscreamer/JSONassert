@@ -35,6 +35,75 @@ public class JSONCustomComparatorTest {
             "    }\n" +
             "}";
 
+    String simpleWildcardActual = "{\n" +
+            "  \"foo\": {\n" +
+            "    \"bar1\": {\n" +
+            "      \"baz\": \"actual\"\n" +
+            "    },\n" +
+            "    \"bar2\": {\n" +
+            "      \"baz\": \"actual\"\n" +
+            "    }\n" +
+            "  }\n" +
+            "}";
+    String simpleWildcardExpected = "{\n" +
+            "  \"foo\": {\n" +
+            "    \"bar1\": {\n" +
+            "      \"baz\": \"expected\"\n" +
+            "    },\n" +
+            "    \"bar2\": {\n" +
+            "      \"baz\": \"expected\"\n" +
+            "    }\n" +
+            "  }\n" +
+            "}";
+
+    String deepWildcardActual = "{\n" +
+            "  \"root\": {\n" +
+            "    \"baz\": \"actual\",\n" +
+            "    \"foo\": {\n" +
+            "      \"baz\": \"actual\",\n" +
+            "      \"bar\": {\n" +
+            "        \"baz\": \"actual\"\n" +
+            "      }\n" +
+            "    }\n" +
+            "  }\n" +
+            "}";
+    String deepWildcardExpected = "{\n" +
+            "  \"root\": {\n" +
+            "    \"baz\": \"expected\",\n" +
+            "    \"foo\": {\n" +
+            "      \"baz\": \"expected\",\n" +
+            "      \"bar\": {\n" +
+            "        \"baz\": \"expected\"\n" +
+            "      }\n" +
+            "    }\n" +
+            "  }\n" +
+            "}";
+
+    String rootDeepWildcardActual = "{\n" +
+            "  \"baz\": \"actual\",\n" +
+            "  \"root\": {\n" +
+            "    \"baz\": \"actual\",\n" +
+            "    \"foo\": {\n" +
+            "      \"baz\": \"actual\",\n" +
+            "      \"bar\": {\n" +
+            "        \"baz\": \"actual\"\n" +
+            "      }\n" +
+            "    }\n" +
+            "  }\n" +
+            "}";
+    String rootDeepWildcardExpected = "{\n" +
+            "  \"baz\": \"expected\",\n" +
+            "  \"root\": {\n" +
+            "    \"baz\": \"expected\",\n" +
+            "    \"foo\": {\n" +
+            "      \"baz\": \"expected\",\n" +
+            "      \"bar\": {\n" +
+            "        \"baz\": \"expected\"\n" +
+            "      }\n" +
+            "    }\n" +
+            "  }\n" +
+            "}";
+
     int comparatorCallCount = 0;
     ValueMatcher<Object> comparator = new ValueMatcher<Object>() {
         @Override
@@ -60,4 +129,27 @@ public class JSONCustomComparatorTest {
         assertEquals(1, comparatorCallCount);
     }
 
+    @Test
+    public void whenSimpleWildcardPathMatchesCallCustomMatcher() throws JSONException {
+        JSONComparator jsonCmp = new CustomComparator(JSONCompareMode.STRICT, new Customization("foo.*.baz", comparator));
+        JSONCompareResult result = compareJSON(simpleWildcardExpected, simpleWildcardActual, jsonCmp);
+        assertTrue(result.getMessage(), result.passed());
+        assertEquals(2, comparatorCallCount);
+    }
+
+    @Test
+    public void whenDeepWildcardPathMatchesCallCustomMatcher() throws JSONException {
+        JSONComparator jsonCmp = new CustomComparator(JSONCompareMode.STRICT, new Customization("root.**.baz", comparator));
+        JSONCompareResult result = compareJSON(deepWildcardExpected, deepWildcardActual, jsonCmp);
+        assertTrue(result.getMessage(), result.passed());
+        assertEquals(3, comparatorCallCount);
+    }
+
+    @Test
+    public void whenRootDeepWildcardPathMatchesCallCustomMatcher() throws JSONException {
+        JSONComparator jsonCmp = new CustomComparator(JSONCompareMode.STRICT, new Customization("**.baz", comparator));
+        JSONCompareResult result = compareJSON(rootDeepWildcardExpected, rootDeepWildcardActual, jsonCmp);
+        assertTrue(result.getMessage(), result.passed());
+        assertEquals(4, comparatorCallCount);
+    }
 }

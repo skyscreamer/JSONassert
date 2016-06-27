@@ -1,17 +1,82 @@
 package org.skyscreamer.jsonassert;
 
+import java.util.regex.Pattern;
+
 /**
  * Associates a custom matcher to a specific jsonpath.
  */
 public final class Customization {
-	private final String path;
+	private final Pattern path;
 	private final ValueMatcher<Object> comparator;
 
 	public Customization(String path, ValueMatcher<Object> comparator) {
         assert path != null;
         assert comparator != null;
-		this.path = path;
+		this.path = Pattern.compile(buildPattern(path));
 		this.comparator = comparator;
+	}
+
+	private String buildPattern(String path) {
+		return buildPatternLevel1(path);
+	}
+
+	private String buildPatternLevel1(String path) {
+		String regex = "\\*\\*\\.";
+		String replacement = "(?:.+\\.)?";
+
+		StringBuilder sb = new StringBuilder();
+		String[] parts = path.split(regex);
+		for (int i = 0; i < parts.length; i++) {
+			String part = parts[i];
+
+			sb.append(buildPatternLevel2(part));
+			if (i < parts.length - 1) {
+				sb.append(replacement);
+			}
+		}
+
+		return sb.toString();
+	}
+
+	private String buildPatternLevel2(String s) {
+		if (s.isEmpty()) {
+			return "";
+		}
+		String regex = "\\*\\*";
+		String replacement = ".+";
+
+		StringBuilder sb = new StringBuilder();
+		String[] parts = s.split(regex);
+		for (int i = 0; i < parts.length; i++) {
+			String part = parts[i];
+
+			sb.append(buildPatternLevel3(part));
+			if (i < parts.length - 1) {
+				sb.append(replacement);
+            }
+        }
+		return sb.toString();
+	}
+
+	private String buildPatternLevel3(String s) {
+		if (s.isEmpty()) {
+			return "";
+		}
+
+		String regex = "\\*";
+		String replacement = "[^\\.]+";
+
+		StringBuilder sb = new StringBuilder();
+		String[] parts = s.split(regex);
+		for (int i = 0; i < parts.length; i++) {
+			String part = parts[i];
+
+			sb.append(Pattern.quote(part));
+			if (i < parts.length - 1) {
+				sb.append(replacement);
+            }
+        }
+		return sb.toString();
 	}
 
 	public static Customization customization(String path, ValueMatcher<Object> comparator) {
@@ -19,7 +84,7 @@ public final class Customization {
 	}
 
     public boolean appliesToPath(String path) {
-        return this.path.equals(path);
+        return this.path.matcher(path).matches();
     }
 
 	/**
@@ -27,7 +92,7 @@ public final class Customization {
 	 * Customization's comparator. Calls to this method should be replaced by
 	 * calls to matches(String prefix, Object actual, Object expected,
 	 * JSONCompareResult result).
-	 * 
+	 *
 	 * @param actual
 	 *            JSON value being tested
 	 * @param expected
@@ -38,12 +103,12 @@ public final class Customization {
     public boolean matches(Object actual, Object expected) {
         return comparator.equal(actual, expected);
     }
-    
+
 	/**
 	 * Return true if actual value matches expected value using this
 	 * Customization's comparator. The equal method used for comparison depends
 	 * on type of comparator.
-	 * 
+	 *
 	 * @param prefix
 	 *            JSON path of the JSON item being tested (only used if
 	 *            comparator is a LocationAwareValueMatcher)
