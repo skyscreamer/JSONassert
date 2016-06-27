@@ -217,6 +217,12 @@ public class JSONAssert {
      */
     public static void assertEquals(String expectedStr, String actualStr, JSONCompareMode compareMode)
             throws JSONException {
+        if (expectedStr==actualStr) return;
+        if (expectedStr==null){
+            throw new AssertionError("Expected string is null.");
+        }else if (actualStr==null){
+            throw new AssertionError("Actual string is null.");
+        }
         JSONCompareResult result = JSONCompare.compareJSON(expectedStr, actualStr, compareMode);
         if (result.failed()) {
             throw new AssertionError(result.getMessage());
