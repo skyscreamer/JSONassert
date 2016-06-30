@@ -100,7 +100,7 @@ public class JSONCompareTest {
         JSONCompareResult result = compareJSON("[{\"id\" : 3}]", "[{\"id\" : 5}]", LENIENT);
         //assertThat(result, failsWithMessage(equalTo("[id=3]\nExpected: a JSON object\n     but none found\n ; " +
          //       "[id=5]\nUnexpected: a JSON object\n")));
-        assertThat(result, failsWithMessage(equalTo("[0][id]\nExpected: 3\n     got: 5\n")));
+        assertThat(result, failsWithMessage(equalTo("[0] id\nExpected: 3\n     got: 5\n")));
         //assertEquals(result.getFieldMissing().size(), 1);
         //assertEquals(result.getFieldUnexpected().size(), 1);
     }
@@ -108,7 +108,8 @@ public class JSONCompareTest {
     @Test
     public void reportsUnmatchedJSONObjectInUnorderedArray() throws JSONException {
         JSONCompareResult result = compareJSON("[{\"address\" : {\"street\" : \"Acacia Avenue\"}}]", "[{\"age\" : 23}]", LENIENT);
-        assertThat(result, failsWithMessage(equalTo("[0] Could not find match for element {\"address\":{\"street\":\"Acacia Avenue\"}}")));
+        //assertThat(result, failsWithMessage(equalTo("[0] Could not find match for element {\"address\":{\"street\":\"Acacia Avenue\"}}")));
+        assertThat(result, failsWithMessage(equalTo("[0] \nExpected: address\n     but none found\n")));
     }
 
     @Test
@@ -137,7 +138,8 @@ public class JSONCompareTest {
     @Test
     public void reportsUnmatchedJSONArrayWhereOnlyExpectedContainsJSONObjectWithUniqueKey() throws JSONException {
         JSONCompareResult result = compareJSON("[{\"id\": 3}]", "[{}]", LENIENT);
-        assertThat(result, failsWithMessage(equalTo("[0] Could not find match for element {\"id\":3}")));
+        //assertThat(result, failsWithMessage(equalTo("[0] Could not find match for element {\"id\":3}")));
+        assertThat(result, failsWithMessage(equalTo("[0] \nExpected: id\n     but none found\n")));
     }
 
     @Test
