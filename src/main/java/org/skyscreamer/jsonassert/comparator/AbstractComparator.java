@@ -67,26 +67,38 @@ public abstract class AbstractComparator implements JSONComparator {
 
     protected void compareJSONArrayOfJsonObjects(String key, JSONArray expected, JSONArray actual, JSONCompareResult result) throws JSONException {
         String uniqueKey = findUniqueKey(expected);
-        if (uniqueKey == null || !isUsableAsUniqueKey(uniqueKey, actual)) {
+
+        if(expected.length()==actual.length())
+        {	
+            if (true || uniqueKey == null || !isUsableAsUniqueKey(uniqueKey, actual)) {
             // An expensive last resort
             recursivelyCompareJSONArray(key, expected, actual, result);
             return;
-        }
-        Map<Object, JSONObject> expectedValueMap = arrayOfJsonObjectToMap(expected, uniqueKey);
-        Map<Object, JSONObject> actualValueMap = arrayOfJsonObjectToMap(actual, uniqueKey);
-        for (Object id : expectedValueMap.keySet()) {
-            if (!actualValueMap.containsKey(id)) {
-                result.missing(formatUniqueKey(key, uniqueKey, id), expectedValueMap.get(id));
-                continue;
             }
-            JSONObject expectedValue = expectedValueMap.get(id);
-            JSONObject actualValue = actualValueMap.get(id);
-            compareValues(formatUniqueKey(key, uniqueKey, id), expectedValue, actualValue, result);
+	        for(int q=0;q <expected.length();q++)
+	        {
+		        Map<Object, Object> expectedValueMap = arrayOfJsonObjectToMap((JSONObject)expected.get(q));
+		        Map<Object, Object> actualValueMap = arrayOfJsonObjectToMap((JSONObject)actual.get(q));
+		        for (Object id : expectedValueMap.keySet()) {
+		            if (!actualValueMap.containsKey(id)) {
+		                result.missing(key+"["+q+"]["+(String)id+"]", expectedValueMap.get(id));
+		                continue;
+		            }
+		            Object expectedValue = (Object) expectedValueMap.get(id);
+		            Object actualValue = (Object) actualValueMap.get(id);
+		            compareValues(key+"["+q+"]["+(String)id+"]", expectedValue, actualValue, result);
+		        }
+		        for (Object id : actualValueMap.keySet()) {        	
+		            if (!expectedValueMap.containsKey(id)) {
+		                result.unexpected(key+"["+q+"]["+(String)id+"]", actualValueMap.get(id));
+		            }
+		        }
+	        }
         }
-        for (Object id : actualValueMap.keySet()) {
-            if (!expectedValueMap.containsKey(id)) {
-                result.unexpected(formatUniqueKey(key, uniqueKey, id), actualValueMap.get(id));
-            }
+        else
+        {
+        	result.fail(expected + ": Expected array size of " + expected.length() + " elements " 
+                    + "got " + actual.length() + " elements");
         }
     }
 
@@ -122,6 +134,8 @@ public abstract class AbstractComparator implements JSONComparator {
     // easy way to uniquely identify each element.
     protected void recursivelyCompareJSONArray(String key, JSONArray expected, JSONArray actual,
                                                JSONCompareResult result) throws JSONException {
+        JSONCompareResult cresult=null;
+    	String results="";                                                        
         Set<Integer> matched = new HashSet<Integer>();
         for (int i = 0; i < expected.length(); ++i) {
             Object expectedElement = expected.get(i);
@@ -132,17 +146,23 @@ public abstract class AbstractComparator implements JSONComparator {
                     continue;
                 }
                 if (expectedElement instanceof JSONObject) {
-                    if (compareJSON((JSONObject) expectedElement, (JSONObject) actualElement).passed()) {
+                	cresult=compareJSON((JSONObject) expectedElement, (JSONObject) actualElement);
+                    if (cresult.passed()) {
                         matched.add(j);
                         matchFound = true;
                         break;
                     }
+                    else
+                        results=results+"[" + i + "] "+cresult.getMessage();
                 } else if (expectedElement instanceof JSONArray) {
-                    if (compareJSON((JSONArray) expectedElement, (JSONArray) actualElement).passed()) {
+                	cresult=compareJSON((JSONArray) expectedElement, (JSONArray) actualElement);
+                    if(cresult.passed()) {
                         matched.add(j);
                         matchFound = true;
                         break;
                     }
+                    else
+                        results=results+"[" + i + "] "+cresult.getMessage();                    
                 } else if (expectedElement.equals(actualElement)) {
                     matched.add(j);
                     matchFound = true;
@@ -150,7 +170,9 @@ public abstract class AbstractComparator implements JSONComparator {
                 }
             }
             if (!matchFound) {
-                result.fail(key + "[" + i + "] Could not find match for element " + expectedElement);
+            	if(results.length()==0)
+            		results="["+i+"] Could not find match for element "+expectedElement;
+                result.fail(results);
                 return;
             }
         }

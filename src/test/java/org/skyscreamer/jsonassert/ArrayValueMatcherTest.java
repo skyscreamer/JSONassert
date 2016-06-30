@@ -48,6 +48,9 @@ public class ArrayValueMatcherTest {
 
 	@Test
 	public void matchesSecondElementOfJSONObjectArray() throws JSONException {
+        //String rr="{provisioningType: OEM,  productId: MIPro,  contacts:[{    email: john.smith4@acmeinc.com,    role: Subscription_Admin,    firstName: John,    lastName: Smith,    displayName: John Smith,    locale: en_US,    companyName: Acme_Inc  },{    email: mary.smith4@acmeinc.com,    role: Subscription_Admin,    firstName: Mary,    lastName: Smith,    displayName: Mary Smith,    locale: en_US,    companyName: Acme_Inc  }], pbPlanIds: [    MIPro_Basic  ],  productSpecificData: [    {      name: SerialNumber,      value: 987654321    } ]}";
+        //String bb="{provisioningType: OEM,  productId: MIPro,  contacts:[{    email: \"*em\",                    role: Subscription_Admin,    firstName: \"*\",   lastName:\"*\",     displayName: \"*\",         locale: en_US,    companyName: \"*\"     },{    email: \"*em\",                    role: Subscription_Admin,    firstName: \"*\",   lastName:\"*\",     displayName: \"*\",         locale: en_US,    companyName: \"*\"     }], pbPlanIds: [\"*\"],              productSpecificData: [\"*\"                                                     ]}";
+		//doTest("contacts", new ArrayValueMatcher<Object>(comparator, 0,1),bb,rr);
 		doTest("a", new ArrayValueMatcher<Object>(comparator, 1), "{a:[{background:grey,id:2,type:row}]}", ARRAY_OF_JSONOBJECTS);
 	}
 
