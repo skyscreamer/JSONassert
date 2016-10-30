@@ -1,6 +1,12 @@
 Changelog
 =========
 
+Version 1.4.0 - 10/30/2016
+--------------------------
+ - Change the implementation for org.json to one with a more open license
+ - Fix null pointer exception (issue #48)
+ - Support wildcards in Customization.path
+
 Version 1.3.0 - 12/16/2015
 --------------------------
  - Fix & improve ArrayValueMatcher JavaDoc (dmackinder)
