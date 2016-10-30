@@ -99,6 +99,14 @@ Who uses JSONassert?
 
 * * *
 
+org.json
+--------
+
+This implementation uses a clean-room implementation of the org.json
+library implemented for the Android system, released under the Apache 2.0 license. See
+[com.vaadin.external.google:android-json](http://search.maven.org/#artifactdetails%7Ccom.vaadin.external.google%7Candroid-json%7C0.0.20131108.vaadin1%7Cjar)
+That jar does **not** include the org.json.JSONString interface, so a new implementation of that interface is added to this source.
+
 Resources
 ---------
 
