@@ -147,8 +147,8 @@ public class ArrayValueMatcher<T> implements LocationAwareValueMatcher<T> {
 	 * 
 	 * @param comparator
 	 *            comparator to use to compare elements
-	 * @from first element in actual array to compared
-	 * @to last element in actual array to compared
+	 * @param from first element in actual array to compared
+	 * @param to last element in actual array to compared
 	 */
 	public ArrayValueMatcher(JSONComparator comparator, int from, int to) {
 		assert comparator != null : "comparator null";
