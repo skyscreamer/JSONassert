@@ -56,7 +56,7 @@ public class JSONAssert {
      * Asserts that the JSONObject provided does not match the expected string.  If it is it throws an
      * {@link AssertionError}.
      * 
-     * @see #assertEquals(String JSONObject, boolean)
+     * @see #assertEquals(String, JSONObject, boolean)
      * 
      * @param expectedStr Expected JSON string
      * @param actual JSONObject to compare
