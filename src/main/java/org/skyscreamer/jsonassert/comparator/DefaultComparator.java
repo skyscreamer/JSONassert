@@ -1,17 +1,17 @@
 package org.skyscreamer.jsonassert.comparator;
 
+import static org.skyscreamer.jsonassert.comparator.JSONCompareUtil.allJSONObjects;
+import static org.skyscreamer.jsonassert.comparator.JSONCompareUtil.allSimpleValues;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.skyscreamer.jsonassert.JSONCompareMode;
 import org.skyscreamer.jsonassert.JSONCompareResult;
 
-import static org.skyscreamer.jsonassert.comparator.JSONCompareUtil.allJSONObjects;
-import static org.skyscreamer.jsonassert.comparator.JSONCompareUtil.allSimpleValues;
-
 /**
  * This class is the default json comparator implementation. <p/>
- * Comparison is performed according to  {@link JSONCompareMode} that is passed as constructor's argument.
+ * Comparison is performed according to {@link JSONCompareMode} that is passed as constructor's argument.
  */
 public class DefaultComparator extends AbstractComparator {
 
@@ -36,8 +36,8 @@ public class DefaultComparator extends AbstractComparator {
     @Override
     public void compareValues(String prefix, Object expectedValue, Object actualValue, JSONCompareResult result)
             throws JSONException {
-        if (expectedValue instanceof Number && actualValue instanceof Number) {
-            if (((Number)expectedValue).doubleValue() != ((Number)actualValue).doubleValue()) {
+        if (areNumbers(expectedValue, actualValue)) {
+            if (areSameDoubles(expectedValue, actualValue)) {
                 result.fail(prefix, expectedValue, actualValue);
             }
         } else if (expectedValue.getClass().isAssignableFrom(actualValue.getClass())) {
@@ -73,5 +73,13 @@ public class DefaultComparator extends AbstractComparator {
             // An expensive last resort
             recursivelyCompareJSONArray(prefix, expected, actual, result);
         }
+    }
+
+    private boolean areNumbers(Object expectedValue, Object actualValue) {
+        return expectedValue instanceof Number && actualValue instanceof Number;
+    }
+
+    private boolean areSameDoubles(Object expectedValue, Object actualValue) {
+        return ((Number) expectedValue).doubleValue() != ((Number) actualValue).doubleValue();
     }
 }
