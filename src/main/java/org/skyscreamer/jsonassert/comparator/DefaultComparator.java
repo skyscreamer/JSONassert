@@ -1,13 +1,13 @@
 package org.skyscreamer.jsonassert.comparator;
 
-import static org.skyscreamer.jsonassert.comparator.JSONCompareUtil.allJSONObjects;
-import static org.skyscreamer.jsonassert.comparator.JSONCompareUtil.allSimpleValues;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.skyscreamer.jsonassert.JSONCompareMode;
 import org.skyscreamer.jsonassert.JSONCompareResult;
+
+import static org.skyscreamer.jsonassert.comparator.JSONCompareUtil.allJSONObjects;
+import static org.skyscreamer.jsonassert.comparator.JSONCompareUtil.allSimpleValues;
 
 /**
  * This class is the default json comparator implementation. <p/>
@@ -75,11 +75,11 @@ public class DefaultComparator extends AbstractComparator {
         }
     }
 
-    private boolean areNumbers(Object expectedValue, Object actualValue) {
+    protected boolean areNumbers(Object expectedValue, Object actualValue) {
         return expectedValue instanceof Number && actualValue instanceof Number;
     }
 
-    private boolean areSameDoubles(Object expectedValue, Object actualValue) {
+    protected boolean areSameDoubles(Object expectedValue, Object actualValue) {
         return ((Number) expectedValue).doubleValue() != ((Number) actualValue).doubleValue();
     }
 }
