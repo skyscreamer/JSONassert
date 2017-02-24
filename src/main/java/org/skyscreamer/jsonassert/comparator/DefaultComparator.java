@@ -37,7 +37,7 @@ public class DefaultComparator extends AbstractComparator {
     public void compareValues(String prefix, Object expectedValue, Object actualValue, JSONCompareResult result)
             throws JSONException {
         if (areNumbers(expectedValue, actualValue)) {
-            if (areSameDoubles(expectedValue, actualValue)) {
+            if (areNotSameDoubles(expectedValue, actualValue)) {
                 result.fail(prefix, expectedValue, actualValue);
             }
         } else if (expectedValue.getClass().isAssignableFrom(actualValue.getClass())) {
@@ -79,7 +79,7 @@ public class DefaultComparator extends AbstractComparator {
         return expectedValue instanceof Number && actualValue instanceof Number;
     }
 
-    protected boolean areSameDoubles(Object expectedValue, Object actualValue) {
+    protected boolean areNotSameDoubles(Object expectedValue, Object actualValue) {
         return ((Number) expectedValue).doubleValue() != ((Number) actualValue).doubleValue();
     }
 }
