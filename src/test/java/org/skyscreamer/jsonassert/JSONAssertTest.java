@@ -1,14 +1,17 @@
 package org.skyscreamer.jsonassert;
 
-import java.util.Arrays;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.junit.Assert;
 import org.junit.Test;
 
-import static org.skyscreamer.jsonassert.JSONCompareMode.*;
+import java.util.Arrays;
+
+import static org.skyscreamer.jsonassert.JSONCompareMode.LENIENT;
+import static org.skyscreamer.jsonassert.JSONCompareMode.NON_EXTENSIBLE;
+import static org.skyscreamer.jsonassert.JSONCompareMode.STRICT;
+import static org.skyscreamer.jsonassert.JSONCompareMode.STRICT_ORDER;
 
 /**
  * Unit tests for {@link JSONAssert}
@@ -359,6 +362,40 @@ public class JSONAssertTest {
         JSONAssert.assertNotEquals(new JSONArray(Arrays.asList(1, 3, 2)), actual, true);
     }
 
+    @Test()
+    public void testWildCard() throws JSONException {
+        testPass("{id:**,name:\"Joe\",friends:[{id:2,name:\"Pat\",pets:[\"dog\"]},{id:3,name:\"Sue\",pets:[\"bird\",\"fish\"]}],pets:[]}",
+                "{id:1,name:\"Joe\",friends:[{id:2,name:\"Pat\",pets:[\"dog\"]},{id:3,name:\"Sue\",pets:[\"bird\",\"fish\"]}],pets:[]}",
+                STRICT, "**"); // Exact to exact (strict)
+        testPass("{id:\"**\",name:\"Joe\",friends:[{id:2,name:\"Pat\",pets:[\"dog\"]},{id:3,name:\"Sue\",pets:[\"bird\",\"fish\"]}],pets:[]}",
+                "{id:1,name:\"Joe\",friends:[{id:2,name:\"Pat\",pets:[\"dog\"]},{id:3,name:\"Sue\",pets:[\"bird\",\"fish\"]}],pets:[]}",
+                STRICT, "**"); // Exact to exact (strict)
+        testFail("{id:1,name:**,friends:[{id:2,name:\"Pat\",pets:[\"dog\"]},{id:3,name:\"Sue\",pets:[\"bird\",\"fish\"]}],pets:[]}",
+                "{id:1,name:\"Joe\",friends:[{id:3,name:\"Sue\",pets:[\"fish\",\"bird\"]},{id:2,name:\"Pat\",pets:[\"dog\"]}],pets:[]}",
+                STRICT, "**"); // Out-of-order fails (strict)
+        testFail("{id:1,name:\"Joe\",friends:[{id:2,name:\"Pat\",pets:**},{id:3,name:\"Sue\",pets:[\"bird\",\"fish\"]}],pets:[]}",
+                "{id:1,name:\"Joe\",friends:[{id:3,name:\"Sue\",pets:[\"fish\",\"bird\"]},{id:2,name:\"Pat\",pets:[\"dog\"]}],pets:[]}",
+                STRICT_ORDER, "**"); // Out-of-order fails (strict order)
+        testPass("{id:1,name:\"Joe\",friends:**,pets:[]}",
+                "{id:1,name:\"Joe\",friends:[{id:3,name:\"Sue\",pets:[\"fish\",\"bird\"]},{id:2,name:\"Pat\",pets:[\"dog\"]}],pets:[]}",
+                LENIENT, "**"); // Out-of-order ok
+        testPass("{id:1,name:\"Joe\",friends:\"**\",pets:[]}",
+                "{id:1,name:\"Joe\",friends:[{id:3,name:\"Sue\",pets:[\"fish\",\"bird\"]},{id:2,name:\"Pat\",pets:[\"dog\"]}],pets:[]}",
+                LENIENT, "**"); // Out-of-order ok
+        testPass("{id:1,name:\"Joe\",friends:[{id:2,name:\"Pat\",pets:[\"dog\"]},{id:3,name:\"Sue\",pets:**}],pets:[]}",
+                "{id:1,name:\"Joe\",friends:[{id:3,name:\"Sue\",pets:[\"fish\",\"bird\"]},{id:2,name:\"Pat\",pets:[\"dog\"]}],pets:[]}",
+                NON_EXTENSIBLE, "**"); // Out-of-order ok
+        testFail("{id:1,name:\"Joe\",friends:[{id:2,name:\"Pat\",pets:[\"dog\"]},{id:3,name:\"Sue\",pets:[\"bird\",\"fish\"]}],pets:++}",
+                "{id:1,name:\"Joe\",friends:[{id:2,name:\"Pat\",pets:[\"dog\"]},{id:3,name:\"Sue\",pets:[\"cat\",\"fish\"]}],pets:[]}",
+                STRICT, "++"); // Mismatch (strict)
+        testPass("{id:1,name:\"Joe\",friends:[{id:2,name:\"Pat\",pets:[\"dog\"]},{id:3,name:\"Sue\",pets:++}],pets:[]}",
+                "{id:1,name:\"Joe\",friends:[{id:2,name:\"Pat\",pets:[\"dog\"]},{id:3,name:\"Sue\",pets:[\"cat\",\"fish\"]}],pets:[]}",
+                STRICT, "++"); // Mismatch (strict)
+        testPass("{id:1,name:\"Joe\",friends:[{id:2,name:\"Pat\",pets:[\"dog\"]},{id:3,name:\"Sue\",pets:\"++\"}],pets:[]}",
+                "{id:1,name:\"Joe\",friends:[{id:2,name:\"Pat\",pets:[\"dog\"]},{id:3,name:\"Sue\",pets:[\"cat\",\"fish\"]}],pets:[]}",
+                STRICT, "++"); // Mismatch (strict)
+    }
+
     private void testPass(String expected, String actual, JSONCompareMode compareMode)
             throws JSONException
     {
@@ -372,6 +409,22 @@ public class JSONAssertTest {
     {
         String message = expected + " != " + actual + " (" + compareMode + ")";
         JSONCompareResult result = JSONCompare.compareJSON(expected, actual, compareMode);
+        Assert.assertTrue(message, result.failed());
+    }
+
+    private void testPass(String expected, String actual, JSONCompareMode compareMode, String wildcard)
+            throws JSONException
+    {
+        String message = expected + " == " + actual + " (" + compareMode + ")";
+        JSONCompareResult result = JSONCompare.compareJSON(expected, actual, compareMode, wildcard);
+        Assert.assertTrue(message + "\n  " + result.getMessage(), result.passed());
+    }
+
+    private void testFail(String expected, String actual, JSONCompareMode compareMode, String wildcard)
+            throws JSONException
+    {
+        String message = expected + " != " + actual + " (" + compareMode + ")";
+        JSONCompareResult result = JSONCompare.compareJSON(expected, actual, compareMode, wildcard);
         Assert.assertTrue(message, result.failed());
     }
 }
