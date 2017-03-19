@@ -11,7 +11,7 @@ import static org.skyscreamer.jsonassert.comparator.JSONCompareUtil.allSimpleVal
 
 /**
  * This class is the default json comparator implementation. <p/>
- * Comparison is performed according to  {@link JSONCompareMode} that is passed as constructor's argument.
+ * Comparison is performed according to {@link JSONCompareMode} that is passed as constructor's argument.
  */
 public class DefaultComparator extends AbstractComparator {
 
@@ -36,8 +36,8 @@ public class DefaultComparator extends AbstractComparator {
     @Override
     public void compareValues(String prefix, Object expectedValue, Object actualValue, JSONCompareResult result)
             throws JSONException {
-        if (expectedValue instanceof Number && actualValue instanceof Number) {
-            if (((Number)expectedValue).doubleValue() != ((Number)actualValue).doubleValue()) {
+        if (areNumbers(expectedValue, actualValue)) {
+            if (areNotSameDoubles(expectedValue, actualValue)) {
                 result.fail(prefix, expectedValue, actualValue);
             }
         } else if (expectedValue.getClass().isAssignableFrom(actualValue.getClass())) {
@@ -73,5 +73,13 @@ public class DefaultComparator extends AbstractComparator {
             // An expensive last resort
             recursivelyCompareJSONArray(prefix, expected, actual, result);
         }
+    }
+
+    protected boolean areNumbers(Object expectedValue, Object actualValue) {
+        return expectedValue instanceof Number && actualValue instanceof Number;
+    }
+
+    protected boolean areNotSameDoubles(Object expectedValue, Object actualValue) {
+        return ((Number) expectedValue).doubleValue() != ((Number) actualValue).doubleValue();
     }
 }

@@ -52,7 +52,7 @@ public enum JSONCompareMode {
     private final boolean _extensible;
     private final boolean _strictOrder;
 
-    private JSONCompareMode(boolean extensible, boolean strictOrder) {
+    JSONCompareMode(boolean extensible, boolean strictOrder) {
         _extensible = extensible;
         _strictOrder = strictOrder;
     }
