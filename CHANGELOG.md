@@ -5,6 +5,7 @@ Version 1.5.0 - 3/19/2017
 -------------------------
  - JSONassert now supports user-supplied error messages (thanks yasin3061@!)
  - Some refactoring / code health cleanup (thanks picimako@!)
+ - License headers on individual files
 
 Version 1.4.0 - 10/30/2016
 --------------------------
