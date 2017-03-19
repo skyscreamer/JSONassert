@@ -748,7 +748,7 @@ public class JSONAssert {
     private static String getCombinedMessage(String message1, String message2) {
         String combinedMessage = "";
         
-        if(message1 == null) {
+        if(message1 == null || "".equals(message1)) {
             combinedMessage = message2;
         } else {
             combinedMessage = message1 + " " + message2;
