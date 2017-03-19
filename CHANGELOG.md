@@ -1,6 +1,11 @@
 Changelog
 =========
 
+Version 1.5.0 - 3/19/2017
+-------------------------
+ - JSONassert now supports user-supplied error messages (thanks yasin3061@!)
+ - Some refactoring / code health cleanup (thanks picimako@!)
+
 Version 1.4.0 - 10/30/2016
 --------------------------
  - Change the implementation for org.json to one with a more open license
