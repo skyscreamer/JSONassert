@@ -30,7 +30,7 @@ public final class JSONCompareUtil {
      * @param array     the JSON array to convert
      * @param uniqueKey the key to map the JSON objects to
      * @return the map of {@link JSONObject}s from {@code array}
-     * @throws JSONException
+     * @throws JSONException JSON parsing error
      */
     public static Map<Object, JSONObject> arrayOfJsonObjectToMap(JSONArray array, String uniqueKey) throws JSONException {
         Map<Object, JSONObject> valueMap = new HashMap<Object, JSONObject>();
@@ -47,7 +47,7 @@ public final class JSONCompareUtil {
      *
      * @param expected the array to find the unique key of
      * @return the unique key if there's any, otherwise null
-     * @throws JSONException
+     * @throws JSONException JSON parsing error
      */
     public static String findUniqueKey(JSONArray expected) throws JSONException {
         // Find a unique key for the object (id, name, whatever)
@@ -60,8 +60,19 @@ public final class JSONCompareUtil {
     }
 
     /**
-     * {@code candidate} is usable as a unique key if every element in the
-     * {@code array} is a JSONObject having that key, and no two values are the same.
+     * <p>Looks to see if candidate field is a possible unique key across a array of objects.
+     * Returns true IFF:</p>
+     * <ol>
+     *   <li>array is an array of JSONObject
+     *   <li>candidate is a top-level field in each of of the objects in the array
+     *   <li>candidate is a simple value (not JSONObject or JSONArray)
+     *   <li>candidate is unique across all elements in the array
+     * </ol>
+     *
+     * @param candidate is usable as a unique key if every element in the
+     * @param array is a JSONObject having that key, and no two values are the same.
+     * @return true if the candidate can work as a unique id across array
+     * @throws JSONException JSON parsing error
      */
     public static boolean isUsableAsUniqueKey(String candidate, JSONArray array) throws JSONException {
         Set<Object> seenValues = new HashSet<Object>();
@@ -91,7 +102,7 @@ public final class JSONCompareUtil {
      *
      * @param expected the JSON array to convert
      * @return the list of objects from the {@code expected} array
-     * @throws JSONException
+     * @throws JSONException JSON parsing error
      */
     public static List<Object> jsonArrayToList(JSONArray expected) throws JSONException {
         List<Object> jsonObjects = new ArrayList<Object>(expected.length());
@@ -106,7 +117,7 @@ public final class JSONCompareUtil {
      *
      * @param array the JSON array to iterate through on
      * @return true if all the elements in {@code array} are simple values
-     * @throws JSONException
+     * @throws JSONException JSON parsing error
      * @see #isSimpleValue(Object)
      */
     public static boolean allSimpleValues(JSONArray array) throws JSONException {
@@ -133,7 +144,7 @@ public final class JSONCompareUtil {
      *
      * @param array the array to inspect
      * @return true if all the elements in the given array are JSONObjects
-     * @throws JSONException
+     * @throws JSONException JSON parsing error
      */
     public static boolean allJSONObjects(JSONArray array) throws JSONException {
         for (int i = 0; i < array.length(); ++i) {
@@ -149,7 +160,7 @@ public final class JSONCompareUtil {
      *
      * @param array the array to inspect
      * @return true if all the elements in the given array are JSONArrays
-     * @throws JSONException
+     * @throws JSONException JSON parsing error
      */
     public static boolean allJSONArrays(JSONArray array) throws JSONException {
         for (int i = 0; i < array.length(); ++i) {

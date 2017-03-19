@@ -14,6 +14,8 @@ public interface JSONString {
     /**
      * The toJSONString method allows a class to produce its own JSON 
      * serialization.
+     *
+     * @return String representation of JSON object
      * */
     String toJSONString();
 

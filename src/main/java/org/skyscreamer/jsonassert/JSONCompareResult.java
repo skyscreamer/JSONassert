@@ -58,6 +58,7 @@ public class JSONCompareResult {
 
     /**
      * Get the list of failures on field comparisons
+     * @return list of comparsion failures
      */
     public List<FieldComparisonFailure> getFieldFailures() {
         return Collections.unmodifiableList(_fieldFailures);
@@ -65,6 +66,7 @@ public class JSONCompareResult {
     
     /**
      * Get the list of missed on field comparisons
+     * @return list of comparsion failures
      */
     public List<FieldComparisonFailure> getFieldMissing() {
         return Collections.unmodifiableList(_fieldMissing);
@@ -72,6 +74,7 @@ public class JSONCompareResult {
     
     /**
      * Get the list of failures on field comparisons
+     * @return list of comparsion failures
      */
     public List<FieldComparisonFailure> getFieldUnexpected() {
         return Collections.unmodifiableList(_fieldUnexpected);
@@ -105,6 +108,7 @@ public class JSONCompareResult {
     
     /**
      * Check if comparison failed on any particular fields
+     * @return true if there are field failures
      */
     public boolean isFailureOnField() {
         return !_fieldFailures.isEmpty();
@@ -112,6 +116,7 @@ public class JSONCompareResult {
     
     /**
      * Check if comparison failed with missing on any particular fields
+     * @return true if an expected field is missing
      */
     public boolean isMissingOnField() {
         return !_fieldMissing.isEmpty();
@@ -119,6 +124,7 @@ public class JSONCompareResult {
     
     /**
      * Check if comparison failed with unexpected on any particular fields
+     * @return true if an unexpected field is in the result
      */
     public boolean isUnexpectedOnField() {
         return !_fieldUnexpected.isEmpty();
@@ -150,6 +156,7 @@ public class JSONCompareResult {
      * @param field Which field failed
      * @param expected Expected result
      * @param actual Actual result
+     * @return result of comparision
      */
     public JSONCompareResult fail(String field, Object expected, Object actual) {
         _fieldFailures.add(new FieldComparisonFailure(field, expected, actual));
@@ -164,6 +171,7 @@ public class JSONCompareResult {
      * Identify that the comparison failed
      * @param field Which field failed
      * @param exception exception containing details of match failure
+     * @return result of comparision
      */
     public JSONCompareResult fail(String field, ValueMatcherException exception) {
     	fail(field + ": " + exception.getMessage(), exception.getExpected(), exception.getActual());
@@ -179,6 +187,12 @@ public class JSONCompareResult {
                 + "\n";
     }
 
+    /**
+     * Identify the missing field
+     * @param field missing field
+     * @param expected expected result
+     * @return result of comparison
+     */
     public JSONCompareResult missing(String field, Object expected) {
     	_fieldMissing.add(new FieldComparisonFailure(field, expected, null));
         fail(formatMissing(field, expected));
@@ -192,13 +206,19 @@ public class JSONCompareResult {
                 + "\n     but none found\n";
     }
 
-    public JSONCompareResult unexpected(String field, Object value) {
+    /**
+     * Identify unexpected field
+     * @param field unexpected field
+     * @param actual actual result
+     * @return result of comparison
+     */
+    public JSONCompareResult unexpected(String field, Object actual) {
     	_fieldUnexpected.add(new FieldComparisonFailure(field, null, value));
         fail(formatUnexpected(field, value));
         return this;
     }
 
-    private String formatUnexpected(String field, Object value) {
+    private String formatUnexpected(String field, Object actual) {
         return field
                 + "\nUnexpected: "
                 + describe(value)

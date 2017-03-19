@@ -45,7 +45,7 @@ public class JSONAssert {
      * @param expectedStr Expected JSON string
      * @param actual JSONObject to compare
      * @param strict Enables strict checking
-     * @throws JSONException
+     * @throws JSONException JSON parsing error
      */
     public static void assertEquals(String expectedStr, JSONObject actual, boolean strict)
             throws JSONException {
@@ -60,7 +60,7 @@ public class JSONAssert {
      * @param expectedStr Expected JSON string
      * @param actual JSONObject to compare
      * @param strict Enables strict checking
-     * @throws JSONException
+     * @throws JSONException JSON parsing error
      */
     public static void assertEquals(String message, String expectedStr, JSONObject actual, boolean strict)
         throws JSONException {
@@ -76,7 +76,7 @@ public class JSONAssert {
      * @param expectedStr Expected JSON string
      * @param actual JSONObject to compare
      * @param strict Enables strict checking
-     * @throws JSONException
+     * @throws JSONException JSON parsing error
      */
     public static void assertNotEquals(String expectedStr, JSONObject actual, boolean strict)
             throws JSONException {
@@ -87,13 +87,13 @@ public class JSONAssert {
      * Asserts that the JSONObject provided does not match the expected string.  If it is it throws an
      * {@link AssertionError}.
      * 
-     * @see #assertEquals(String JSONObject, boolean)
+     * @see #assertEquals(String, JSONObject, boolean)
      * 
      * @param message Error message to be displayed in case of assertion failure
      * @param expectedStr Expected JSON string
      * @param actual JSONObject to compare
      * @param strict Enables strict checking
-     * @throws JSONException
+     * @throws JSONException JSON parsing error
      */
     public static void assertNotEquals(String message, String expectedStr, JSONObject actual, boolean strict)
         throws JSONException {
@@ -107,7 +107,7 @@ public class JSONAssert {
      * @param expectedStr Expected JSON string
      * @param actual JSONObject to compare
      * @param compareMode Specifies which comparison mode to use
-     * @throws JSONException
+     * @throws JSONException JSON parsing error
      */
     public static void assertEquals(String expectedStr, JSONObject actual, JSONCompareMode compareMode)
             throws JSONException {
@@ -122,7 +122,7 @@ public class JSONAssert {
      * @param expectedStr Expected JSON string
      * @param actual JSONObject to compare
      * @param compareMode Specifies which comparison mode to use
-     * @throws JSONException
+     * @throws JSONException JSON parsing error
      */
     public static void assertEquals(String message, String expectedStr, JSONObject actual, JSONCompareMode compareMode)
         throws JSONException {
@@ -144,7 +144,7 @@ public class JSONAssert {
      * @param expectedStr Expected JSON string
      * @param actual JSONObject to compare
      * @param compareMode Specifies which comparison mode to use
-     * @throws JSONException
+     * @throws JSONException JSON parsing error
      */
     public static void assertNotEquals(String expectedStr, JSONObject actual, JSONCompareMode compareMode)
             throws JSONException {
@@ -161,7 +161,7 @@ public class JSONAssert {
      * @param expectedStr Expected JSON string
      * @param actual JSONObject to compare
      * @param compareMode Specifies which comparison mode to use
-     * @throws JSONException
+     * @throws JSONException JSON parsing error
      */
     public static void assertNotEquals(String message, String expectedStr, JSONObject actual, JSONCompareMode compareMode)
         throws JSONException {
@@ -181,7 +181,7 @@ public class JSONAssert {
      * @param expectedStr Expected JSON string
      * @param actual JSONArray to compare
      * @param strict Enables strict checking
-     * @throws JSONException
+     * @throws JSONException JSON parsing error
      */
     public static void assertEquals(String expectedStr, JSONArray actual, boolean strict)
             throws JSONException {
@@ -196,7 +196,7 @@ public class JSONAssert {
      * @param expectedStr Expected JSON string
      * @param actual JSONArray to compare
      * @param strict Enables strict checking
-     * @throws JSONException
+     * @throws JSONException JSON parsing error
      */
     public static void assertEquals(String message, String expectedStr, JSONArray actual, boolean strict)
         throws JSONException {
@@ -210,7 +210,7 @@ public class JSONAssert {
      * @param expectedStr Expected JSON string
      * @param actual JSONArray to compare
      * @param strict Enables strict checking
-     * @throws JSONException
+     * @throws JSONException JSON parsing error
      */
     public static void assertNotEquals(String expectedStr, JSONArray actual, boolean strict)
             throws JSONException {
@@ -225,7 +225,7 @@ public class JSONAssert {
      * @param expectedStr Expected JSON string
      * @param actual JSONArray to compare
      * @param strict Enables strict checking
-     * @throws JSONException
+     * @throws JSONException JSON parsing error
      */
     public static void assertNotEquals(String message, String expectedStr, JSONArray actual, boolean strict)
         throws JSONException {
@@ -239,7 +239,7 @@ public class JSONAssert {
      * @param expectedStr Expected JSON string
      * @param actual JSONArray to compare
      * @param compareMode Specifies which comparison mode to use
-     * @throws JSONException
+     * @throws JSONException JSON parsing error
      */
     public static void assertEquals(String expectedStr, JSONArray actual, JSONCompareMode compareMode)
             throws JSONException {
@@ -254,7 +254,7 @@ public class JSONAssert {
      * @param expectedStr Expected JSON string
      * @param actual JSONArray to compare
      * @param compareMode Specifies which comparison mode to use
-     * @throws JSONException
+     * @throws JSONException JSON parsing error
      */
     public static void assertEquals(String message, String expectedStr, JSONArray actual, JSONCompareMode compareMode)
         throws JSONException {
@@ -274,7 +274,7 @@ public class JSONAssert {
      * @param expectedStr Expected JSON string
      * @param actual JSONArray to compare
      * @param compareMode Specifies which comparison mode to use
-     * @throws JSONException
+     * @throws JSONException JSON parsing error
      */
     public static void assertNotEquals(String expectedStr, JSONArray actual, JSONCompareMode compareMode)
             throws JSONException {
@@ -295,7 +295,7 @@ public class JSONAssert {
      * @param expectedStr Expected JSON string
      * @param actual JSONArray to compare
      * @param compareMode Specifies which comparison mode to use
-     * @throws JSONException
+     * @throws JSONException JSON parsing error
      */
     public static void assertNotEquals(String message, String expectedStr, JSONArray actual, JSONCompareMode compareMode)
         throws JSONException {
@@ -315,7 +315,7 @@ public class JSONAssert {
      * @param expectedStr Expected JSON string
      * @param actualStr String to compare
      * @param strict Enables strict checking
-     * @throws JSONException
+     * @throws JSONException JSON parsing error
      */
     public static void assertEquals(String expectedStr, String actualStr, boolean strict)
             throws JSONException {
@@ -330,7 +330,7 @@ public class JSONAssert {
      * @param expectedStr Expected JSON string
      * @param actualStr String to compare
      * @param strict Enables strict checking
-     * @throws JSONException
+     * @throws JSONException JSON parsing error
      */
     public static void assertEquals(String message, String expectedStr, String actualStr, boolean strict)
         throws JSONException {
@@ -344,7 +344,7 @@ public class JSONAssert {
      * @param expectedStr Expected JSON string
      * @param actualStr String to compare
      * @param strict Enables strict checking
-     * @throws JSONException
+     * @throws JSONException JSON parsing error
      */
     public static void assertNotEquals(String expectedStr, String actualStr, boolean strict)
             throws JSONException {
@@ -359,7 +359,7 @@ public class JSONAssert {
      * @param expectedStr Expected JSON string
      * @param actualStr String to compare
      * @param strict Enables strict checking
-     * @throws JSONException
+     * @throws JSONException JSON parsing error
      */
     public static void assertNotEquals(String message, String expectedStr, String actualStr, boolean strict)
         throws JSONException {
@@ -373,7 +373,7 @@ public class JSONAssert {
      * @param expectedStr Expected JSON string
      * @param actualStr String to compare
      * @param compareMode Specifies which comparison mode to use
-     * @throws JSONException
+     * @throws JSONException JSON parsing error
      */
     public static void assertEquals(String expectedStr, String actualStr, JSONCompareMode compareMode)
             throws JSONException {
@@ -388,7 +388,7 @@ public class JSONAssert {
      * @param expectedStr Expected JSON string
      * @param actualStr String to compare
      * @param compareMode Specifies which comparison mode to use
-     * @throws JSONException
+     * @throws JSONException JSON parsing error
      */
     public static void assertEquals(String message, String expectedStr, String actualStr, JSONCompareMode compareMode)
         throws JSONException {
@@ -411,7 +411,7 @@ public class JSONAssert {
      * @param expectedStr Expected JSON string
      * @param actualStr String to compare
      * @param compareMode Specifies which comparison mode to use
-     * @throws JSONException
+     * @throws JSONException JSON parsing error
      */
     public static void assertNotEquals(String expectedStr, String actualStr, JSONCompareMode compareMode)
             throws JSONException {
@@ -426,7 +426,7 @@ public class JSONAssert {
      * @param expectedStr Expected JSON string
      * @param actualStr String to compare
      * @param compareMode Specifies which comparison mode to use
-     * @throws JSONException
+     * @throws JSONException JSON parsing error
      */
     public static void assertNotEquals(String message, String expectedStr, String actualStr, JSONCompareMode compareMode)
         throws JSONException {
@@ -443,7 +443,7 @@ public class JSONAssert {
      * @param expectedStr Expected JSON string
      * @param actualStr String to compare
      * @param comparator Comparator
-     * @throws JSONException
+     * @throws JSONException JSON parsing error
      */
     public static void assertEquals(String expectedStr, String actualStr, JSONComparator comparator)
             throws JSONException {
@@ -459,7 +459,7 @@ public class JSONAssert {
      * @param expectedStr Expected JSON string
      * @param actualStr String to compare
      * @param comparator Comparator
-     * @throws JSONException
+     * @throws JSONException JSON parsing error
      */
     public static void assertEquals(String message, String expectedStr, String actualStr, JSONComparator comparator)
         throws JSONException {
@@ -476,7 +476,7 @@ public class JSONAssert {
      * @param expectedStr Expected JSON string
      * @param actualStr String to compare
      * @param comparator Comparator
-     * @throws JSONException
+     * @throws JSONException JSON parsing error
      */
     public static void assertNotEquals(String expectedStr, String actualStr, JSONComparator comparator)
             throws JSONException {
@@ -491,7 +491,7 @@ public class JSONAssert {
      * @param expectedStr Expected JSON string
      * @param actualStr String to compare
      * @param comparator Comparator
-     * @throws JSONException
+     * @throws JSONException JSON parsing error
      */
     public static void assertNotEquals(String message, String expectedStr, String actualStr, JSONComparator comparator)
         throws JSONException {
@@ -508,7 +508,7 @@ public class JSONAssert {
      * @param expected Expected JSONObject
      * @param actual JSONObject to compare
      * @param strict Enables strict checking
-     * @throws JSONException
+     * @throws JSONException JSON parsing error
      */
     public static void assertEquals(JSONObject expected, JSONObject actual, boolean strict)
             throws JSONException {
@@ -523,7 +523,7 @@ public class JSONAssert {
      * @param expected Expected JSONObject
      * @param actual JSONObject to compare
      * @param strict Enables strict checking
-     * @throws JSONException
+     * @throws JSONException JSON parsing error
      */
     public static void assertEquals(String message, JSONObject expected, JSONObject actual, boolean strict)
         throws JSONException {
@@ -537,7 +537,7 @@ public class JSONAssert {
      * @param expected Expected JSONObject
      * @param actual JSONObject to compare
      * @param strict Enables strict checking
-     * @throws JSONException
+     * @throws JSONException JSON parsing error
      */
     public static void assertNotEquals(JSONObject expected, JSONObject actual, boolean strict)
             throws JSONException {
@@ -552,7 +552,7 @@ public class JSONAssert {
      * @param expected Expected JSONObject
      * @param actual JSONObject to compare
      * @param strict Enables strict checking
-     * @throws JSONException
+     * @throws JSONException JSON parsing error
      */
     public static void assertNotEquals(String message, JSONObject expected, JSONObject actual, boolean strict)
         throws JSONException {
@@ -566,7 +566,7 @@ public class JSONAssert {
      * @param expected Expected JSONObject
      * @param actual JSONObject to compare
      * @param compareMode Specifies which comparison mode to use
-     * @throws JSONException
+     * @throws JSONException JSON parsing error
      */
     public static void assertEquals(JSONObject expected, JSONObject actual, JSONCompareMode compareMode)
             throws JSONException {
@@ -581,7 +581,7 @@ public class JSONAssert {
      * @param expected Expected JSONObject
      * @param actual JSONObject to compare
      * @param compareMode Specifies which comparison mode to use
-     * @throws JSONException
+     * @throws JSONException JSON parsing error
      */
     public static void assertEquals(String message, JSONObject expected, JSONObject actual, JSONCompareMode compareMode)
         throws JSONException {
@@ -598,7 +598,7 @@ public class JSONAssert {
      * @param expected Expected JSONObject
      * @param actual JSONObject to compare
      * @param compareMode Specifies which comparison mode to use
-     * @throws JSONException
+     * @throws JSONException JSON parsing error
      */
     public static void assertNotEquals(JSONObject expected, JSONObject actual, JSONCompareMode compareMode)
             throws JSONException {
@@ -613,7 +613,7 @@ public class JSONAssert {
      * @param expected Expected JSONObject
      * @param actual JSONObject to compare
      * @param compareMode Specifies which comparison mode to use
-     * @throws JSONException
+     * @throws JSONException JSON parsing error
      */
     public static void assertNotEquals(String message, JSONObject expected, JSONObject actual, JSONCompareMode compareMode)
         throws JSONException {
@@ -630,7 +630,7 @@ public class JSONAssert {
      * @param expected Expected JSONArray
      * @param actual JSONArray to compare
      * @param strict Enables strict checking
-     * @throws JSONException
+     * @throws JSONException JSON parsing error
      */
     public static void assertEquals(JSONArray expected, JSONArray actual, boolean strict)
             throws JSONException {
@@ -645,7 +645,7 @@ public class JSONAssert {
      * @param expected Expected JSONArray
      * @param actual JSONArray to compare
      * @param strict Enables strict checking
-     * @throws JSONException
+     * @throws JSONException JSON parsing error
      */
     public static void assertEquals(String message, JSONArray expected, JSONArray actual, boolean strict)
         throws JSONException {
@@ -659,7 +659,7 @@ public class JSONAssert {
      * @param expected Expected JSONArray
      * @param actual JSONArray to compare
      * @param strict Enables strict checking
-     * @throws JSONException
+     * @throws JSONException JSON parsing error
      */
     public static void assertNotEquals(JSONArray expected, JSONArray actual, boolean strict)
             throws JSONException {
@@ -674,7 +674,7 @@ public class JSONAssert {
      * @param expected Expected JSONArray
      * @param actual JSONArray to compare
      * @param strict Enables strict checking
-     * @throws JSONException
+     * @throws JSONException JSON parsing error
      */
     public static void assertNotEquals(String message, JSONArray expected, JSONArray actual, boolean strict)
         throws JSONException {
@@ -688,7 +688,7 @@ public class JSONAssert {
      * @param expected Expected JSONArray
      * @param actual JSONArray to compare
      * @param compareMode Specifies which comparison mode to use
-     * @throws JSONException
+     * @throws JSONException JSON parsing error
      */
     public static void assertEquals(JSONArray expected, JSONArray actual, JSONCompareMode compareMode)
             throws JSONException {
@@ -703,7 +703,7 @@ public class JSONAssert {
      * @param expected Expected JSONArray
      * @param actual JSONArray to compare
      * @param compareMode Specifies which comparison mode to use
-     * @throws JSONException
+     * @throws JSONException JSON parsing error
      */
     public static void assertEquals(String message, JSONArray expected, JSONArray actual, JSONCompareMode compareMode)
         throws JSONException {
@@ -720,7 +720,7 @@ public class JSONAssert {
      * @param expected Expected JSONArray
      * @param actual JSONArray to compare
      * @param compareMode Specifies which comparison mode to use
-     * @throws JSONException
+     * @throws JSONException JSON parsing error
      */
     public static void assertNotEquals(JSONArray expected, JSONArray actual, JSONCompareMode compareMode)
             throws JSONException {
@@ -735,7 +735,7 @@ public class JSONAssert {
      * @param expected Expected JSONArray
      * @param actual JSONArray to compare
      * @param compareMode Specifies which comparison mode to use
-     * @throws JSONException
+     * @throws JSONException JSON parsing error
      */
     public static void assertNotEquals(String message, JSONArray expected, JSONArray actual, JSONCompareMode compareMode)
         throws JSONException {

@@ -19,7 +19,7 @@ public interface JSONComparator {
      * @param expected the expected JSON object
      * @param actual   the actual JSON object
      * @return the result of the comparison
-     * @throws JSONException
+     * @throws JSONException JSON parsing error
      */
     JSONCompareResult compareJSON(JSONObject expected, JSONObject actual) throws JSONException;
 
@@ -29,7 +29,7 @@ public interface JSONComparator {
      * @param expected the expected JSON array
      * @param actual   the actual JSON array
      * @return the result of the comparison
-     * @throws JSONException
+     * @throws JSONException JSON parsing error
      */
     JSONCompareResult compareJSON(JSONArray expected, JSONArray actual) throws JSONException;
 
@@ -41,7 +41,7 @@ public interface JSONComparator {
      * @param expected the expected JSON object
      * @param actual   the actual JSON object
      * @param result   stores the actual state of the comparison result
-     * @throws JSONException
+     * @throws JSONException JSON parsing error
      */
     void compareJSON(String prefix, JSONObject expected, JSONObject actual, JSONCompareResult result) throws JSONException;
 
@@ -53,7 +53,7 @@ public interface JSONComparator {
      * @param expectedValue the expected value
      * @param actualValue   the actual value
      * @param result        stores the actual state of the comparison result
-     * @throws JSONException
+     * @throws JSONException JSON parsing error
      */
     void compareValues(String prefix, Object expectedValue, Object actualValue, JSONCompareResult result) throws JSONException;
 
@@ -65,7 +65,7 @@ public interface JSONComparator {
      * @param expected the expected JSON array
      * @param actual   the actual JSON array
      * @param result   stores the actual state of the comparison result
-     * @throws JSONException
+     * @throws JSONException JSON parsing error
      */
     void compareJSONArray(String prefix, JSONArray expected, JSONArray actual, JSONCompareResult result) throws JSONException;
 }

@@ -11,7 +11,7 @@ import static org.skyscreamer.jsonassert.comparator.JSONCompareUtil.*;
 
 /**
  * This class provides a skeletal implementation of the {@link JSONComparator}
- * interface, to minimize the effort required to implement this interface. <p/>
+ * interface, to minimize the effort required to implement this interface.
  */
 public abstract class AbstractComparator implements JSONComparator {
 
@@ -20,7 +20,7 @@ public abstract class AbstractComparator implements JSONComparator {
      *
      * @param expected Expected JSONObject
      * @param actual   JSONObject to compare
-     * @throws JSONException
+     * @throws JSONException JSON parsing error
      */
     @Override
     public final JSONCompareResult compareJSON(JSONObject expected, JSONObject actual) throws JSONException {
@@ -34,7 +34,7 @@ public abstract class AbstractComparator implements JSONComparator {
      *
      * @param expected Expected JSONArray
      * @param actual   JSONArray to compare
-     * @throws JSONException
+     * @throws JSONException JSON parsing error
      */
     @Override
     public final JSONCompareResult compareJSON(JSONArray expected, JSONArray actual) throws JSONException {

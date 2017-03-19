@@ -22,7 +22,7 @@ public class JSONParser {
      *
      * @param s Raw JSON string to be parsed
      * @return JSONObject or JSONArray
-     * @throws JSONException
+     * @throws JSONException JSON parsing error
      */
     public static Object parseJSON(final String s) throws JSONException {
         if (s.trim().startsWith("{")) {
