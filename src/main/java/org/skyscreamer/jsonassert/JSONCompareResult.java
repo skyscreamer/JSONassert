@@ -227,15 +227,15 @@ public class JSONCompareResult {
      * @return result of comparison
      */
     public JSONCompareResult unexpected(String field, Object actual) {
-    	_fieldUnexpected.add(new FieldComparisonFailure(field, null, value));
-        fail(formatUnexpected(field, value));
+    	_fieldUnexpected.add(new FieldComparisonFailure(field, null, actual));
+        fail(formatUnexpected(field, actual));
         return this;
     }
 
     private String formatUnexpected(String field, Object actual) {
         return field
                 + "\nUnexpected: "
-                + describe(value)
+                + describe(actual)
                 + "\n";
     }
 
