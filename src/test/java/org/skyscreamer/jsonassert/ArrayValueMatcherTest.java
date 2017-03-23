@@ -57,7 +57,7 @@ public class ArrayValueMatcherTest {
 				new ArrayValueMatcher<Object>(comparator, 1),
 				"{a:[{background:DOES_NOT_MATCH,id:2,type:row}]}",
 				ARRAY_OF_JSONOBJECTS,
-				"a\\[1\\]\\.background\\s*Expected:\\s*DOES_NOT_MATCH\\s*got:\\s*grey\\s*");
+				"a\\[1\\]\\.background\\s*Expected:\\s*\\[DOES_NOT_MATCH\\]\\s*got:\\s*\\[grey\\]\\s*");
 	}
 
 	@Test
@@ -66,7 +66,7 @@ public class ArrayValueMatcherTest {
 				new ArrayValueMatcher<Object>(comparator, 2),
 				"{a:[{background:DOES_NOT_MATCH,id:3,type:WRONG_TYPE}]}",
 				ARRAY_OF_JSONOBJECTS,
-				"a\\[2\\]\\.background\\s*Expected:\\s*DOES_NOT_MATCH\\s*got:\\s*white\\s*;\\s*a\\[2\\]\\.type\\s*Expected:\\s*WRONG_TYPE\\s*got:\\s*row\\s*");
+				"a\\[2\\]\\.background\\s*Expected:\\s*\\[DOES_NOT_MATCH\\]\\s*got:\\s*\\[white\\]\\s*;\\s*a\\[2\\]\\.type\\s*Expected:\\s*\\[WRONG_TYPE\\]\\s*got:\\s*\\[row\\]\\s*");
 	}
 
 	@Test
@@ -75,7 +75,7 @@ public class ArrayValueMatcherTest {
 				new ArrayValueMatcher<Object>(comparator, 1, 2),
 				"{a:[{background:DOES_NOT_MATCH,id:2,type:row},{background:white,id:3,type:WRONG_TYPE}]}",
 				ARRAY_OF_JSONOBJECTS,
-				"a\\[1\\]\\.background\\s*Expected:\\s*DOES_NOT_MATCH\\s*got:\\s*grey\\s*;\\s*a\\[2\\]\\.type\\s*Expected:\\s*WRONG_TYPE\\s*got:\\s*row\\s*");
+				"a\\[1\\]\\.background\\s*Expected:\\s*\\[DOES_NOT_MATCH\\]\\s*got:\\s*\\[grey\\]\\s*;\\s*a\\[2\\]\\.type\\s*Expected:\\s*\\[WRONG_TYPE\\]\\s*got:\\s*\\[row\\]\\s*");
 	}
 
 	@Test
@@ -86,7 +86,7 @@ public class ArrayValueMatcherTest {
 	@Test
 	public void failsWhenTwoElementOfSimpleValueArrayDoNotMatch() throws JSONException {
 		doFailingMatchTest("a", new ArrayValueMatcher<Object>(comparator, 3, 4), "{a:[3,4]}", ARRAY_OF_INTEGERS,
-				"a\\[3\\]\\s*Expected:\\s3\\s*got:\\s*4\\s*;\\s*a\\[4\\]\\s*Expected:\\s*4\\s*got:\\s*5\\s*");
+				"a\\[3\\]\\s*Expected:\\s\\[3\\]\\s*got:\\s*\\[4\\]\\s*;\\s*a\\[4\\]\\s*Expected:\\s*\\[4\\]\\s*got:\\s*\\[5\\]\\s*");
 	}
 
 	@Test
@@ -107,7 +107,7 @@ public class ArrayValueMatcherTest {
 				new ArrayValueMatcher<Object>(innerArraySizeComparator),
 				"{a:[[3]]}",
 				ARRAY_OF_JSONARRAYS,
-				"a\\[3\\]\\[\\]\\s*Expected:\\s*array size of 3 elements\\s*got:\\s*4 elements\\s*");
+				"a\\[3\\]\\[\\]\\s*Expected:\\s*\\[array size of 3 elements\\]\\s*got:\\s*\\[4 elements\\]\\s*");
 	}
 
 	@Test
@@ -119,7 +119,7 @@ public class ArrayValueMatcherTest {
 				new ArrayValueMatcher<Object>(innerArrayComparator, 2),  // tests inner array i.e. [12,13,14]
 				"{a:[[99]]}",
 				ARRAY_OF_JSONARRAYS,
-				"a\\[2\\]\\[1\\]\\s*Expected:\\s*99\\s*got:\\s*13\\s*");
+				"a\\[2\\]\\[1\\]\\s*Expected:\\s*\\[99\\]\\s*got:\\s*\\[13\\]\\s*");
 	}
 
 	@Test
@@ -133,7 +133,7 @@ public class ArrayValueMatcherTest {
 				new ArrayValueMatcher<Object>(comparator),
 				"{a:[{background:white}]}",
 				ARRAY_OF_JSONOBJECTS,
-				"a\\[1\\]\\.background\\s*Expected:\\s*white\\s*got:\\s*grey\\s*;\\s*a\\[3\\]\\.background\\s*Expected:\\s*white\\s*got:\\s*grey\\s*");
+				"a\\[1\\]\\.background\\s*Expected:\\s*\\[white\\]\\s*got:\\s*\\[grey\\]\\s*;\\s*a\\[3\\]\\.background\\s*Expected:\\s*\\[white\\]\\s*got:\\s*\\[grey\\]\\s*");
 	}
 
 	@Test
