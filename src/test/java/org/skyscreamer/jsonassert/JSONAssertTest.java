@@ -14,29 +14,19 @@
 
 package org.skyscreamer.jsonassert;
 
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-import static org.skyscreamer.jsonassert.JSONCompareMode.LENIENT;
-import static org.skyscreamer.jsonassert.JSONCompareMode.NON_EXTENSIBLE;
-import static org.skyscreamer.jsonassert.JSONCompareMode.STRICT;
-import static org.skyscreamer.jsonassert.JSONCompareMode.STRICT_ORDER;
-
-import java.util.Arrays;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.junit.Assert;
 import org.junit.Test;
+import org.skyscreamer.jsonassert.comparator.CustomComparator;
+import org.skyscreamer.jsonassert.comparator.JSONComparator;
 
 import java.util.Arrays;
 
-import static org.skyscreamer.jsonassert.JSONCompareMode.LENIENT;
-import static org.skyscreamer.jsonassert.JSONCompareMode.NON_EXTENSIBLE;
-import static org.skyscreamer.jsonassert.JSONCompareMode.STRICT;
-import static org.skyscreamer.jsonassert.JSONCompareMode.STRICT_ORDER;
-import org.skyscreamer.jsonassert.comparator.CustomComparator;
-import org.skyscreamer.jsonassert.comparator.JSONComparator;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+import static org.skyscreamer.jsonassert.JSONCompareMode.*;
 
 /**
  * Unit tests for {@link JSONAssert}
