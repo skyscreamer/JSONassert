@@ -34,6 +34,10 @@ public final class JSONCompare {
         return new DefaultComparator(mode);
     }
 
+    private static JSONComparator getComparatorForModeWithWildcard(JSONCompareMode mode, String wildcard) {
+        return new DefaultComparator(mode, wildcard);
+    }
+
     /**
      * Compares JSON string provided to the expected JSON string using provided comparator, and returns the results of
      * the comparison.
@@ -112,6 +116,25 @@ public final class JSONCompare {
     }
 
     /**
+     * Compares {@link JSONString} provided to the expected {@code JSONString}, checking that the
+     * {@link org.json.JSONString#toJSONString()} are equal.
+     *
+     * @param expected Expected {@code JSONstring}
+     * @param actual   {@code JSONstring} to compare
+     * @param wildcard wildcard used in the expceted json string
+     */
+    public static JSONCompareResult compareJson(final JSONString expected, final JSONString actual, String wildcard) {
+        final JSONCompareResult result = new JSONCompareResult();
+        final String expectedJson = expected.toJSONString();
+        final String actualJson = actual.toJSONString();
+        if (wildcard == null || !wildcard.equals(expectedJson)
+            || !expectedJson.equals(actualJson)) {
+          result.fail("");
+        }
+        return result;
+    }
+
+    /**
      * Compares JSON string provided to the expected JSON string, and returns the results of the comparison.
      *
      * @param expectedStr Expected JSON string
@@ -123,6 +146,20 @@ public final class JSONCompare {
     public static JSONCompareResult compareJSON(String expectedStr, String actualStr, JSONCompareMode mode)
             throws JSONException {
         return compareJSON(expectedStr, actualStr, getComparatorForMode(mode));
+    }
+
+    /**
+     * Compares JSON string provided to the expected JSON string, and returns the results of the comparison.
+     *
+     * @param expectedStr Expected JSON string
+     * @param actualStr   JSON string to compare
+     * @param mode        Defines comparison behavior
+     * @param wildcard    wildcard used in expected string
+     * @throws JSONException
+     */
+    public static JSONCompareResult compareJSON(String expectedStr, String actualStr, JSONCompareMode mode, String wildcard)
+            throws JSONException {
+        return compareJSON(expectedStr, actualStr, getComparatorForModeWithWildcard(mode, wildcard));
     }
 
     /**
@@ -139,6 +176,19 @@ public final class JSONCompare {
         return compareJSON(expected, actual, getComparatorForMode(mode));
     }
 
+    /**
+     * Compares JSONObject provided to the expected JSONObject, and returns the results of the comparison.
+     *
+     * @param expected Expected JSONObject
+     * @param actual   JSONObject to compare
+     * @param mode     Defines comparison behavior
+     * @param wildcard wildcard used in the expected json object
+     * @throws JSONException
+     */
+    public static JSONCompareResult compareJSON(JSONObject expected, JSONObject actual, JSONCompareMode mode, String wildcard)
+            throws JSONException {
+        return compareJSON(expected, actual, getComparatorForModeWithWildcard(mode, wildcard));
+    }
 
     /**
      * Compares JSONArray provided to the expected JSONArray, and returns the results of the comparison.
@@ -152,6 +202,20 @@ public final class JSONCompare {
     public static JSONCompareResult compareJSON(JSONArray expected, JSONArray actual, JSONCompareMode mode)
             throws JSONException {
         return compareJSON(expected, actual, getComparatorForMode(mode));
+    }
+
+    /**
+     * Compares JSONArray provided to the expected JSONArray, and returns the results of the comparison.
+     *
+     * @param expected Expected JSONArray
+     * @param actual   JSONArray to compare
+     * @param mode     Defines comparison behavior
+     * @param wildcard wildcard used in expected json array
+     * @throws JSONException
+     */
+    public static JSONCompareResult compareJSON(JSONArray expected, JSONArray actual, JSONCompareMode mode, String wildcard)
+            throws JSONException {
+        return compareJSON(expected, actual, getComparatorForModeWithWildcard(mode, wildcard));
     }
 
 }

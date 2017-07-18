@@ -30,9 +30,15 @@ import static org.skyscreamer.jsonassert.comparator.JSONCompareUtil.allSimpleVal
 public class DefaultComparator extends AbstractComparator {
 
     JSONCompareMode mode;
+    String wildcard;
 
     public DefaultComparator(JSONCompareMode mode) {
         this.mode = mode;
+    }
+
+    public DefaultComparator(JSONCompareMode mode, String wildcard) {
+        this.mode = mode;
+        this.wildcard = wildcard;
     }
 
     @Override
@@ -50,20 +56,22 @@ public class DefaultComparator extends AbstractComparator {
     @Override
     public void compareValues(String prefix, Object expectedValue, Object actualValue, JSONCompareResult result)
             throws JSONException {
-        if (areNumbers(expectedValue, actualValue)) {
-            if (areNotSameDoubles(expectedValue, actualValue)) {
+        if (wildcard == null || !wildcard.equals(expectedValue)) {
+            if (areNumbers(expectedValue, actualValue)) {
+                if (areNotSameDoubles(expectedValue, actualValue)) {
+                    result.fail(prefix, expectedValue, actualValue);
+                }
+            } else if (expectedValue.getClass().isAssignableFrom(actualValue.getClass())) {
+                if (expectedValue instanceof JSONArray) {
+                    compareJSONArray(prefix, (JSONArray) expectedValue, (JSONArray) actualValue, result);
+                } else if (expectedValue instanceof JSONObject) {
+                    compareJSON(prefix, (JSONObject) expectedValue, (JSONObject) actualValue, result);
+                } else if (!expectedValue.equals(actualValue)) {
+                    result.fail(prefix, expectedValue, actualValue);
+                }
+            } else {
                 result.fail(prefix, expectedValue, actualValue);
             }
-        } else if (expectedValue.getClass().isAssignableFrom(actualValue.getClass())) {
-            if (expectedValue instanceof JSONArray) {
-                compareJSONArray(prefix, (JSONArray) expectedValue, (JSONArray) actualValue, result);
-            } else if (expectedValue instanceof JSONObject) {
-                compareJSON(prefix, (JSONObject) expectedValue, (JSONObject) actualValue, result);
-            } else if (!expectedValue.equals(actualValue)) {
-                result.fail(prefix, expectedValue, actualValue);
-            }
-        } else {
-            result.fail(prefix, expectedValue, actualValue);
         }
     }
 
