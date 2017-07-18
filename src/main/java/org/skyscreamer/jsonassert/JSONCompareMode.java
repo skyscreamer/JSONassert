@@ -1,10 +1,24 @@
+/*
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+*/
+
 package org.skyscreamer.jsonassert;
 
 /**
  * <p>These different modes define different behavior for the comparison of JSON for testing.
  * Each mode encapsulates two underlying behaviors: extensibility and strict ordering.</p>
  *
- * <table border="1">
+ * <table border="1" summary="Behavior of JSONCompareMode">
  *     <tr><th>&nbsp;</th><th>Extensible</th><th>Strict Ordering</th></tr>
  *     <tr><th>STRICT</th><th>no</th><th>yes</th></tr>
  *     <tr><th>LENIENT</th><th>yes</th><th>no</th></tr>
@@ -52,7 +66,7 @@ public enum JSONCompareMode {
     private final boolean _extensible;
     private final boolean _strictOrder;
 
-    private JSONCompareMode(boolean extensible, boolean strictOrder) {
+    JSONCompareMode(boolean extensible, boolean strictOrder) {
         _extensible = extensible;
         _strictOrder = strictOrder;
     }
@@ -76,6 +90,7 @@ public enum JSONCompareMode {
     /**
      * Get the equivalent {@code JSONCompareMode} with or without strict ordering.
      * 
+     * @param strictOrdering if true, requires strict ordering of array elements
      * @return the equivalent {@code JSONCompareMode}
      */
     public JSONCompareMode withStrictOrdering(boolean strictOrdering) {
@@ -89,6 +104,7 @@ public enum JSONCompareMode {
     /**
      * Get the equivalent {@code JSONCompareMode} with or without extensibility.
      * 
+     * @param extensible if true, allows keys in actual that don't appear in expected
      * @return the equivalent {@code JSONCompareMode}
      */
     public JSONCompareMode withExtensible(boolean extensible) {

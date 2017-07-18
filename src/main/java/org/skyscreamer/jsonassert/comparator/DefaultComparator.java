@@ -1,3 +1,17 @@
+/*
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+*/
+
 package org.skyscreamer.jsonassert.comparator;
 
 import org.json.JSONArray;
@@ -10,8 +24,8 @@ import static org.skyscreamer.jsonassert.comparator.JSONCompareUtil.allJSONObjec
 import static org.skyscreamer.jsonassert.comparator.JSONCompareUtil.allSimpleValues;
 
 /**
- * This class is the default json comparator implementation. <p/>
- * Comparison is performed according to  {@link JSONCompareMode} that is passed as constructor's argument.
+ * This class is the default json comparator implementation.
+ * Comparison is performed according to {@link JSONCompareMode} that is passed as constructor's argument.
  */
 public class DefaultComparator extends AbstractComparator {
 
@@ -36,8 +50,8 @@ public class DefaultComparator extends AbstractComparator {
     @Override
     public void compareValues(String prefix, Object expectedValue, Object actualValue, JSONCompareResult result)
             throws JSONException {
-        if (expectedValue instanceof Number && actualValue instanceof Number) {
-            if (((Number)expectedValue).doubleValue() != ((Number)actualValue).doubleValue()) {
+        if (areNumbers(expectedValue, actualValue)) {
+            if (areNotSameDoubles(expectedValue, actualValue)) {
                 result.fail(prefix, expectedValue, actualValue);
             }
         } else if (expectedValue.getClass().isAssignableFrom(actualValue.getClass())) {
@@ -73,5 +87,13 @@ public class DefaultComparator extends AbstractComparator {
             // An expensive last resort
             recursivelyCompareJSONArray(prefix, expected, actual, result);
         }
+    }
+
+    protected boolean areNumbers(Object expectedValue, Object actualValue) {
+        return expectedValue instanceof Number && actualValue instanceof Number;
+    }
+
+    protected boolean areNotSameDoubles(Object expectedValue, Object actualValue) {
+        return ((Number) expectedValue).doubleValue() != ((Number) actualValue).doubleValue();
     }
 }
