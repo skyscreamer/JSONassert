@@ -1,3 +1,17 @@
+/*
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+*/
+
 package org.skyscreamer.jsonassert;
 
 import org.json.JSONArray;
@@ -31,7 +45,7 @@ public final class JSONCompare {
      * @param actualStr JSON string to compare
      * @param comparator Comparator to use
      * @return result of the comparison
-     * @throws JSONException
+     * @throws JSONException JSON parsing error
      * @throws IllegalArgumentException when type of expectedStr doesn't match the type of actualStr
      */
     public static JSONCompareResult compareJSON(String expectedStr, String actualStr, JSONComparator comparator)
@@ -62,7 +76,7 @@ public final class JSONCompare {
      * @param actual actual json object
      * @param comparator comparator to use
      * @return result of the comparison
-     * @throws JSONException
+     * @throws JSONException JSON parsing error
      */
     public static JSONCompareResult compareJSON(JSONObject expected, JSONObject actual, JSONComparator comparator)
             throws JSONException {
@@ -76,7 +90,7 @@ public final class JSONCompare {
      * @param actual actual json array
      * @param comparator comparator to use
      * @return result of the comparison
-     * @throws JSONException
+     * @throws JSONException JSON parsing error
      */
     public static JSONCompareResult compareJSON(JSONArray expected, JSONArray actual, JSONComparator comparator)
             throws JSONException {
@@ -89,6 +103,7 @@ public final class JSONCompare {
      *
      * @param expected Expected {@code JSONstring}
      * @param actual   {@code JSONstring} to compare
+     * @return result of the comparison
      */
     public static JSONCompareResult compareJson(final JSONString expected, final JSONString actual) {
         final JSONCompareResult result = new JSONCompareResult();
@@ -125,7 +140,8 @@ public final class JSONCompare {
      * @param expectedStr Expected JSON string
      * @param actualStr   JSON string to compare
      * @param mode        Defines comparison behavior
-     * @throws JSONException
+     * @return result of the comparison
+     * @throws JSONException JSON parsing error
      */
     public static JSONCompareResult compareJSON(String expectedStr, String actualStr, JSONCompareMode mode)
             throws JSONException {
@@ -152,7 +168,8 @@ public final class JSONCompare {
      * @param expected Expected JSONObject
      * @param actual   JSONObject to compare
      * @param mode     Defines comparison behavior
-     * @throws JSONException
+     * @return result of the comparison
+     * @throws JSONException JSON parsing error
      */
     public static JSONCompareResult compareJSON(JSONObject expected, JSONObject actual, JSONCompareMode mode)
             throws JSONException {
@@ -179,7 +196,8 @@ public final class JSONCompare {
      * @param expected Expected JSONArray
      * @param actual   JSONArray to compare
      * @param mode     Defines comparison behavior
-     * @throws JSONException
+     * @return result of the comparison
+     * @throws JSONException JSON parsing error
      */
     public static JSONCompareResult compareJSON(JSONArray expected, JSONArray actual, JSONCompareMode mode)
             throws JSONException {

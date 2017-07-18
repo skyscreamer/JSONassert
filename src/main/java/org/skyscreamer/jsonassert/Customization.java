@@ -1,3 +1,17 @@
+/*
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+*/
+
 package org.skyscreamer.jsonassert;
 
 import java.util.regex.Pattern;
@@ -24,18 +38,7 @@ public final class Customization {
 		String regex = "\\*\\*\\.";
 		String replacement = "(?:.+\\.)?";
 
-		StringBuilder sb = new StringBuilder();
-		String[] parts = path.split(regex);
-		for (int i = 0; i < parts.length; i++) {
-			String part = parts[i];
-
-			sb.append(buildPatternLevel2(part));
-			if (i < parts.length - 1) {
-				sb.append(replacement);
-			}
-		}
-
-		return sb.toString();
+		return buildPattern(path, regex, replacement, 1);
 	}
 
 	private String buildPatternLevel2(String s) {
@@ -45,17 +48,7 @@ public final class Customization {
 		String regex = "\\*\\*";
 		String replacement = ".+";
 
-		StringBuilder sb = new StringBuilder();
-		String[] parts = s.split(regex);
-		for (int i = 0; i < parts.length; i++) {
-			String part = parts[i];
-
-			sb.append(buildPatternLevel3(part));
-			if (i < parts.length - 1) {
-				sb.append(replacement);
-            }
-        }
-		return sb.toString();
+		return buildPattern(s, regex, replacement, 2);
 	}
 
 	private String buildPatternLevel3(String s) {
@@ -66,19 +59,41 @@ public final class Customization {
 		String regex = "\\*";
 		String replacement = "[^\\.]+";
 
-		StringBuilder sb = new StringBuilder();
-		String[] parts = s.split(regex);
-		for (int i = 0; i < parts.length; i++) {
-			String part = parts[i];
+		return buildPattern(s, regex, replacement, 3);
+	}
 
-			sb.append(Pattern.quote(part));
+	private String buildPattern(String path, String regex, String replacement, int level) {
+		StringBuilder sb = new StringBuilder();
+		String[] parts = path.split(regex);
+		for (int i = 0; i < parts.length; i++) {
+			sb.append(buildPatternForLevel(level, parts[i]));
 			if (i < parts.length - 1) {
 				sb.append(replacement);
-            }
-        }
+			}
+		}
 		return sb.toString();
 	}
 
+	private String buildPatternForLevel(int level, String part) {
+		switch (level) {
+			case 1:
+				return buildPatternLevel2(part);
+			case 2:
+				return buildPatternLevel3(part);
+			case 3:
+				return Pattern.quote(part);
+			default:
+				return "Incorrect level.";
+		}
+	}
+
+	/**
+	 * Creates a new {@link Customization} instance for {@code path} and {@code comparator}.
+	 *
+	 * @param path the json path
+	 * @param comparator the comparator
+	 * @return a new Customization
+	 */
 	public static Customization customization(String path, ValueMatcher<Object> comparator) {
 		return new Customization(path, comparator);
 	}

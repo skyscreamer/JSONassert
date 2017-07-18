@@ -1,6 +1,13 @@
 Changelog
 =========
 
+Version 1.5.0 - 3/19/2017
+-------------------------
+ - JSONassert now supports user-supplied error messages (thanks yasin3061@!)
+ - Some refactoring / code health cleanup (thanks picimako@!)
+ - License headers on individual files
+ - Java 8 friendly javadocs
+
 Version 1.4.0 - 10/30/2016
 --------------------------
  - Change the implementation for org.json to one with a more open license
@@ -9,16 +16,16 @@ Version 1.4.0 - 10/30/2016
 
 Version 1.3.0 - 12/16/2015
 --------------------------
- - Fix & improve ArrayValueMatcher JavaDoc (dmackinder)
+ - Fix & improve ArrayValueMatcher JavaDoc (thanks dmackinder!)
      Fix final JavaDoc example and add new example showing how to verify
      every array element using a custom comparator
  - Fix URL in pom.xml (aukevanleeuwen)
- - Update JSONCompareResult.java adding 2 new lists for missing and unexpected fileds (riccorazza)
- - Includes missing imports in test class (javierseixas)
+ - Update JSONCompareResult.java adding 2 new lists for missing and unexpected fileds (thanks riccorazza!)
+ - Includes missing imports in test class (thanks javierseixas!)
 
 Version 1.2.3 - 2/5/2014
 ------------------------
- - This edition brought to you by dmackinder (thanks!)
+ - This edition brought to you by dmackinder (thanks dmackinder!)
  - Added array size comparator enhancements.
  - Added ArrayValueMatcher to simplify verification of range of array elements.
  - Improve diagnostics from RegularExpressionValueMatcher.
