@@ -14,6 +14,8 @@
 
 package org.skyscreamer.jsonassert;
 
+import java.util.List;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -44,18 +46,18 @@ public final class JSONCompare {
      * @throws JSONException JSON parsing error
      * @throws IllegalArgumentException when type of expectedStr doesn't match the type of actualStr
      */
-    public static JSONCompareResult compareJSON(String expectedStr, String actualStr, JSONComparator comparator)
+    public static JSONCompareResult compareJSON(String expectedStr, String actualStr, List<String> keysToIgnore, JSONComparator comparator)
             throws JSONException {
         Object expected = JSONParser.parseJSON(expectedStr);
         Object actual = JSONParser.parseJSON(actualStr);
         if ((expected instanceof JSONObject) && (actual instanceof JSONObject)) {
-            return compareJSON((JSONObject) expected, (JSONObject) actual, comparator);
+            return compareJSON((JSONObject) expected, (JSONObject) actual, keysToIgnore, comparator);
         }
         else if ((expected instanceof JSONArray) && (actual instanceof JSONArray)) {
-            return compareJSON((JSONArray)expected, (JSONArray)actual, comparator);
+            return compareJSON((JSONArray)expected, (JSONArray)actual, keysToIgnore, comparator);
         }
         else if (expected instanceof JSONString && actual instanceof JSONString) {
-            return compareJson((JSONString) expected, (JSONString) actual);
+            return compareJSONString((JSONString) expected, (JSONString) actual);
         }
         else if (expected instanceof JSONObject) {
             return new JSONCompareResult().fail("", expected, actual);
@@ -74,9 +76,9 @@ public final class JSONCompare {
      * @return result of the comparison
      * @throws JSONException JSON parsing error
      */
-    public static JSONCompareResult compareJSON(JSONObject expected, JSONObject actual, JSONComparator comparator)
+    public static JSONCompareResult compareJSON(JSONObject expected, JSONObject actual, List<String> keysToIgnore, JSONComparator comparator)
             throws JSONException {
-        return comparator.compareJSON(expected, actual);
+        return comparator.compareJSON(expected, actual, keysToIgnore);
     }
 
     /**
@@ -88,9 +90,9 @@ public final class JSONCompare {
      * @return result of the comparison
      * @throws JSONException JSON parsing error
      */
-    public static JSONCompareResult compareJSON(JSONArray expected, JSONArray actual, JSONComparator comparator)
+    public static JSONCompareResult compareJSON(JSONArray expected, JSONArray actual, List<String> keysToIgnore, JSONComparator comparator)
             throws JSONException {
-        return comparator.compareJSON(expected, actual);
+        return comparator.compareJSONArray(expected, actual, keysToIgnore);
     }
 
     /**
@@ -101,7 +103,7 @@ public final class JSONCompare {
      * @param actual   {@code JSONstring} to compare
      * @return result of the comparison
      */
-    public static JSONCompareResult compareJson(final JSONString expected, final JSONString actual) {
+    public static JSONCompareResult compareJSONString(final JSONString expected, final JSONString actual) {
         final JSONCompareResult result = new JSONCompareResult();
         final String expectedJson = expected.toJSONString();
         final String actualJson = actual.toJSONString();
@@ -120,9 +122,9 @@ public final class JSONCompare {
      * @return result of the comparison
      * @throws JSONException JSON parsing error
      */
-    public static JSONCompareResult compareJSON(String expectedStr, String actualStr, JSONCompareMode mode)
+    public static JSONCompareResult compareJSON(String expectedStr, String actualStr, List<String> keysToIgnore, JSONCompareMode mode)
             throws JSONException {
-        return compareJSON(expectedStr, actualStr, getComparatorForMode(mode));
+        return compareJSON(expectedStr, actualStr, keysToIgnore, getComparatorForMode(mode));
     }
 
     /**
@@ -134,9 +136,9 @@ public final class JSONCompare {
      * @return result of the comparison
      * @throws JSONException JSON parsing error
      */
-    public static JSONCompareResult compareJSON(JSONObject expected, JSONObject actual, JSONCompareMode mode)
+    public static JSONCompareResult compareJSON(JSONObject expected, JSONObject actual, List<String> keysToIgnore, JSONCompareMode mode)
             throws JSONException {
-        return compareJSON(expected, actual, getComparatorForMode(mode));
+        return compareJSON(expected, actual, keysToIgnore, getComparatorForMode(mode));
     }
 
 
@@ -149,9 +151,9 @@ public final class JSONCompare {
      * @return result of the comparison
      * @throws JSONException JSON parsing error
      */
-    public static JSONCompareResult compareJSON(JSONArray expected, JSONArray actual, JSONCompareMode mode)
+    public static JSONCompareResult compareJSON(JSONArray expected, JSONArray actual, List<String> keysToIgnore, JSONCompareMode mode)
             throws JSONException {
-        return compareJSON(expected, actual, getComparatorForMode(mode));
+        return compareJSON(expected, actual, keysToIgnore, getComparatorForMode(mode));
     }
 
 }

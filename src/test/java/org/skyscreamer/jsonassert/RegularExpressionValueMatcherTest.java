@@ -35,7 +35,7 @@ public class RegularExpressionValueMatcherTest {
 
 	private void doTest(String jsonPath, String regex, String expectedJSON,
 			String actualJSON) throws JSONException {
-		JSONAssert.assertEquals(expectedJSON, actualJSON, new CustomComparator(
+		JSONAssert.assertEquals(expectedJSON, actualJSON, null, new CustomComparator(
 				JSONCompareMode.STRICT_ORDER, new Customization(jsonPath,
 						new RegularExpressionValueMatcher<Object>(regex))));
 	}
@@ -73,7 +73,7 @@ public class RegularExpressionValueMatcherTest {
 
     @Test
     public void dynamicRegexMatchesStringAttributeInsideArrayWithNoArgConstructor() throws JSONException {
-		JSONAssert.assertEquals("{d:{results:[{__metadata:{uri:\"http://localhost:80/Person\\\\('\\\\d+'\\\\)\"}}]}}", JSON_STRING_WITH_ARRAY, new CustomComparator(
+		JSONAssert.assertEquals("{d:{results:[{__metadata:{uri:\"http://localhost:80/Person\\\\('\\\\d+'\\\\)\"}}]}}", JSON_STRING_WITH_ARRAY, null, new CustomComparator(
 				JSONCompareMode.STRICT_ORDER, new Customization(ARRAY_ELEMENT_PREFIX,
 						new RegularExpressionValueMatcher<Object>())));
     }

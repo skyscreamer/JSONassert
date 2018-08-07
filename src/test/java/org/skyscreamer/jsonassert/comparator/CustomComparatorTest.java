@@ -14,13 +14,16 @@
 
 package org.skyscreamer.jsonassert.comparator;
 
-import junit.framework.Assert;
+import java.util.List;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.junit.Test;
 import org.skyscreamer.jsonassert.JSONCompare;
 import org.skyscreamer.jsonassert.JSONCompareMode;
 import org.skyscreamer.jsonassert.JSONCompareResult;
+
+import junit.framework.Assert;
 
 /**
  * @author <a href="mailto:aiveeen@gmail.com">Ivan Zaytsev</a>
@@ -34,8 +37,8 @@ public class CustomComparatorTest {
         }
 
         @Override
-        public void compareJSONArray(String prefix, JSONArray expected, JSONArray actual, JSONCompareResult result) throws JSONException {
-            compareJSONArrayOfJsonObjects(prefix, expected, actual, result);
+        public void compareJSONArray(String prefix, JSONArray expected, JSONArray actual, List<String> keysToIgnore, JSONCompareResult result) throws JSONException {
+            compareJSONArrayOfJsonObjects(prefix, expected, actual, null, result);
         }
     }
 
@@ -43,7 +46,7 @@ public class CustomComparatorTest {
     public void testFullArrayComparison() throws Exception {
         JSONCompareResult compareResult = JSONCompare.compareJSON(
                 "[{id:1}, {id:3}, {id:5}]",
-                "[{id:1}, {id:3}, {id:6}, {id:7}]", new ArrayOfJsonObjectsComparator(JSONCompareMode.LENIENT)
+                "[{id:1}, {id:3}, {id:6}, {id:7}]", null, new ArrayOfJsonObjectsComparator(JSONCompareMode.LENIENT)
         );
 
         Assert.assertTrue(compareResult.failed());

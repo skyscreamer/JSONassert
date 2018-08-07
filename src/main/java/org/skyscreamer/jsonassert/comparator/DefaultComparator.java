@@ -14,14 +14,20 @@
 
 package org.skyscreamer.jsonassert.comparator;
 
+import static org.skyscreamer.jsonassert.comparator.JSONCompareUtil.allJSONObjects;
+import static org.skyscreamer.jsonassert.comparator.JSONCompareUtil.allSimpleValues;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.skyscreamer.jsonassert.JSONCompareMode;
 import org.skyscreamer.jsonassert.JSONCompareResult;
-
-import static org.skyscreamer.jsonassert.comparator.JSONCompareUtil.allJSONObjects;
-import static org.skyscreamer.jsonassert.comparator.JSONCompareUtil.allSimpleValues;
 
 /**
  * This class is the default json comparator implementation.
@@ -35,20 +41,24 @@ public class DefaultComparator extends AbstractComparator {
         this.mode = mode;
     }
 
-    @Override
-    public void compareJSON(String prefix, JSONObject expected, JSONObject actual, JSONCompareResult result)
+	@Override
+    public void compareJSON(String prefix, JSONObject expected, JSONObject actual, List<String> keysToIgnore, JSONCompareResult result)
             throws JSONException {
+    	if(keysToIgnore == null) {
+    		keysToIgnore = new ArrayList<String>();
+    	}
+    	
         // Check that actual contains all the expected values
-        checkJsonObjectKeysExpectedInActual(prefix, expected, actual, result);
+        checkJsonObjectKeysExpectedInActual(prefix, expected, actual, keysToIgnore, result);
 
         // If strict, check for vice-versa
         if (!mode.isExtensible()) {
-            checkJsonObjectKeysActualInExpected(prefix, expected, actual, result);
+            checkJsonObjectKeysActualInExpected(prefix, expected, actual, keysToIgnore, result);
         }
     }
 
     @Override
-    public void compareValues(String prefix, Object expectedValue, Object actualValue, JSONCompareResult result)
+    public void compareValues(String prefix, Object expectedValue, Object actualValue, List<String> keysToIgnore, JSONCompareResult result)
             throws JSONException {
         if (areNumbers(expectedValue, actualValue)) {
             if (areNotSameDoubles(expectedValue, actualValue)) {
@@ -56,9 +66,9 @@ public class DefaultComparator extends AbstractComparator {
             }
         } else if (expectedValue.getClass().isAssignableFrom(actualValue.getClass())) {
             if (expectedValue instanceof JSONArray) {
-                compareJSONArray(prefix, (JSONArray) expectedValue, (JSONArray) actualValue, result);
+                compareJSONArray(prefix, (JSONArray) expectedValue, (JSONArray) actualValue, keysToIgnore, result);
             } else if (expectedValue instanceof JSONObject) {
-                compareJSON(prefix, (JSONObject) expectedValue, (JSONObject) actualValue, result);
+                compareJSON(prefix, (JSONObject) expectedValue, (JSONObject) actualValue, keysToIgnore, result);
             } else if (!expectedValue.equals(actualValue)) {
                 result.fail(prefix, expectedValue, actualValue);
             }
@@ -68,7 +78,7 @@ public class DefaultComparator extends AbstractComparator {
     }
 
     @Override
-    public void compareJSONArray(String prefix, JSONArray expected, JSONArray actual, JSONCompareResult result)
+    public void compareJSONArray(String prefix, JSONArray expected, JSONArray actual, List<String> keysToIgnore, JSONCompareResult result)
             throws JSONException {
         if (expected.length() != actual.length()) {
             result.fail(prefix + "[]: Expected " + expected.length() + " values but got " + actual.length());
@@ -78,14 +88,14 @@ public class DefaultComparator extends AbstractComparator {
         }
 
         if (mode.hasStrictOrder()) {
-            compareJSONArrayWithStrictOrder(prefix, expected, actual, result);
+            compareJSONArrayWithStrictOrder(prefix, expected, actual, keysToIgnore, result);
         } else if (allSimpleValues(expected)) {
-            compareJSONArrayOfSimpleValues(prefix, expected, actual, result);
+            compareJSONArrayOfSimpleValues(prefix, expected, actual, keysToIgnore, result);
         } else if (allJSONObjects(expected)) {
-            compareJSONArrayOfJsonObjects(prefix, expected, actual, result);
+            compareJSONArrayOfJsonObjects(prefix, expected, actual, keysToIgnore, result);
         } else {
             // An expensive last resort
-            recursivelyCompareJSONArray(prefix, expected, actual, result);
+            recursivelyCompareJSONArray(prefix, expected, actual, keysToIgnore, result);
         }
     }
 

@@ -45,7 +45,7 @@ public class ArrayValueMatcherTest {
 	private void doTest(String jsonPath, ArrayValueMatcher<Object> arrayValueMatcher, String expectedJSON,
 			String actualJSON) throws JSONException {
 		Customization customization = new Customization(jsonPath, arrayValueMatcher);
-		JSONAssert.assertEquals(expectedJSON, actualJSON, new CustomComparator(JSONCompareMode.LENIENT, customization));
+		JSONAssert.assertEquals(expectedJSON, actualJSON, null, new CustomComparator(JSONCompareMode.LENIENT, customization));
 	}
 
 	private void doFailingMatchTest(String jsonPath, ArrayValueMatcher<Object> arrayValueMatcher, String expectedJSON, String actualJSON, String expectedMessagePattern) throws JSONException {
@@ -201,28 +201,28 @@ public class ArrayValueMatcherTest {
 	public void verifyIdAttributeOfFirstArrayElementMatches() throws JSONException {
 		JSONComparator comparator = new DefaultComparator(JSONCompareMode.LENIENT);
 		Customization customization = new Customization("a", new ArrayValueMatcher<Object>(comparator, 0));
-		JSONAssert.assertEquals("{a:[{id:1}]}", ARRAY_OF_JSONOBJECTS, new CustomComparator(JSONCompareMode.LENIENT, customization));
+		JSONAssert.assertEquals("{a:[{id:1}]}", ARRAY_OF_JSONOBJECTS, null, new CustomComparator(JSONCompareMode.LENIENT, customization));
 	}
 	
 	@Test
 	public void verifyIdAttributeOfFirstArrayElementMatchesSimplifiedExpectedSyntax() throws JSONException {
 		JSONComparator comparator = new DefaultComparator(JSONCompareMode.LENIENT);
 		Customization customization = new Customization("a", new ArrayValueMatcher<Object>(comparator, 0));
-		JSONAssert.assertEquals("{a:{id:1}}", ARRAY_OF_JSONOBJECTS, new CustomComparator(JSONCompareMode.LENIENT, customization));
+		JSONAssert.assertEquals("{a:{id:1}}", ARRAY_OF_JSONOBJECTS, null, new CustomComparator(JSONCompareMode.LENIENT, customization));
 	}
 	
 	@Test
 	public void verifyTypeAttributeOfSecondAndThirdElementMatchesRow() throws JSONException {
 		JSONComparator comparator = new DefaultComparator(JSONCompareMode.LENIENT);
 		Customization customization = new Customization("a", new ArrayValueMatcher<Object>(comparator, 1, 2));
-		JSONAssert.assertEquals("{a:[{type:row}]}", ARRAY_OF_JSONOBJECTS, new CustomComparator(JSONCompareMode.LENIENT, customization)); 
+		JSONAssert.assertEquals("{a:[{type:row}]}", ARRAY_OF_JSONOBJECTS, null, new CustomComparator(JSONCompareMode.LENIENT, customization)); 
 	}
 	
 	@Test
 	public void verifyTypeAttributeOfEveryArrayElementMatchesRow() throws JSONException {
 		 JSONComparator comparator = new DefaultComparator(JSONCompareMode.LENIENT);
 		 Customization customization = new Customization("a", new ArrayValueMatcher<Object>(comparator));
-		 JSONAssert.assertEquals("{a:[{type:row}]}", ARRAY_OF_JSONOBJECTS, new CustomComparator(JSONCompareMode.LENIENT, customization));
+		 JSONAssert.assertEquals("{a:[{type:row}]}", ARRAY_OF_JSONOBJECTS, null, new CustomComparator(JSONCompareMode.LENIENT, customization));
 	}
 	
 	@Test
@@ -241,21 +241,21 @@ public class ArrayValueMatcherTest {
 		ArrayValueMatcher<Object> regExArrayValueMatcher = new ArrayValueMatcher<Object>(regExComparator);
 		Customization regExArrayValueCustomization = new Customization("a", regExArrayValueMatcher);
 		CustomComparator regExCustomArrayValueComparator = new CustomComparator(JSONCompareMode.STRICT_ORDER, new Customization[] { regExArrayValueCustomization });
-		JSONAssert.assertEquals("{a:[{id:X}]}", ARRAY_OF_JSONOBJECTS, regExCustomArrayValueComparator);
+		JSONAssert.assertEquals("{a:[{id:X}]}", ARRAY_OF_JSONOBJECTS, null, regExCustomArrayValueComparator);
 	}
 	
 	@Test
 	public void verifyBackgroundAttributesOfEveryArrayElementAlternateBetweenWhiteAndGrey() throws JSONException {
 		 JSONComparator comparator = new DefaultComparator(JSONCompareMode.LENIENT);
 		 Customization customization = new Customization("a", new ArrayValueMatcher<Object>(comparator));
-		 JSONAssert.assertEquals("{a:[{background:white},{background:grey}]}", ARRAY_OF_JSONOBJECTS, new CustomComparator(JSONCompareMode.LENIENT, customization));
+		 JSONAssert.assertEquals("{a:[{background:white},{background:grey}]}", ARRAY_OF_JSONOBJECTS, null, new CustomComparator(JSONCompareMode.LENIENT, customization));
 	}
 	
 	@Test
 	public void verifyEveryElementOfArrayIsJSONArrayOfLength3() throws JSONException {
 		 JSONComparator comparator = new ArraySizeComparator(JSONCompareMode.STRICT_ORDER);
 		 Customization customization = new Customization("a", new ArrayValueMatcher<Object>(comparator, 0, 2));
-		 JSONAssert.assertEquals("{a:[[3]]}", ARRAY_OF_JSONARRAYS, new CustomComparator(JSONCompareMode.LENIENT, customization));
+		 JSONAssert.assertEquals("{a:[[3]]}", ARRAY_OF_JSONARRAYS, null, new CustomComparator(JSONCompareMode.LENIENT, customization));
 	}
 	
 	@Test
@@ -263,7 +263,7 @@ public class ArrayValueMatcherTest {
 		 Customization innerCustomization = new Customization("a[1]", new ArrayValueMatcher<Object>(comparator, 0));
 		 JSONComparator comparator = new CustomComparator(JSONCompareMode.LENIENT, innerCustomization);
 		 Customization customization = new Customization("a", new ArrayValueMatcher<Object>(comparator, 1));
-		 JSONAssert.assertEquals("{a:[[9]]}", ARRAY_OF_JSONARRAYS, new CustomComparator(JSONCompareMode.LENIENT, customization));
+		 JSONAssert.assertEquals("{a:[[9]]}", ARRAY_OF_JSONARRAYS, null, new CustomComparator(JSONCompareMode.LENIENT, customization));
 	}
 	
 	@Test
@@ -271,7 +271,7 @@ public class ArrayValueMatcherTest {
 		 Customization innerCustomization = new Customization("a[1]", new ArrayValueMatcher<Object>(comparator, 0));
 		 JSONComparator comparator = new CustomComparator(JSONCompareMode.LENIENT, innerCustomization);
 		 Customization customization = new Customization("a", new ArrayValueMatcher<Object>(comparator, 1));
-		 JSONAssert.assertEquals("{a:[9]}", ARRAY_OF_JSONARRAYS, new CustomComparator(JSONCompareMode.LENIENT, customization));
+		 JSONAssert.assertEquals("{a:[9]}", ARRAY_OF_JSONARRAYS, null, new CustomComparator(JSONCompareMode.LENIENT, customization));
 	}
 	
 	@Test
@@ -279,6 +279,6 @@ public class ArrayValueMatcherTest {
 		 Customization innerCustomization = new Customization("a[1]", new ArrayValueMatcher<Object>(comparator, 0));
 		 JSONComparator comparator = new CustomComparator(JSONCompareMode.LENIENT, innerCustomization);
 		 Customization customization = new Customization("a", new ArrayValueMatcher<Object>(comparator, 1));
-		 JSONAssert.assertEquals("{a:9}", ARRAY_OF_JSONARRAYS, new CustomComparator(JSONCompareMode.LENIENT, customization));
+		 JSONAssert.assertEquals("{a:9}", ARRAY_OF_JSONARRAYS, null, new CustomComparator(JSONCompareMode.LENIENT, customization));
 	}
 }
