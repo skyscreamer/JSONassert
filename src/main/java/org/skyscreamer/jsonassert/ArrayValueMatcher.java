@@ -209,7 +209,7 @@ public class ArrayValueMatcher<T> implements LocationAwareValueMatcher<T> {
 				String elementPrefix = MessageFormat.format("{0}[{1}]", prefix, i);
 				Object actualElement = actualArray.get(i);
 				Object expectedElement = expectedArray.get((i - first) % expectedLen);
-				comparator.compareValues(elementPrefix, expectedElement, actualElement, result);
+				comparator.compareValues(elementPrefix, expectedElement, actualElement, null, result);
 			}
 			// any failures have already been passed to result, so return true
 			return true;

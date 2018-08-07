@@ -35,7 +35,7 @@ public class ArraySizeComparatorTest {
 	
 	private void doTest(String expectedJSON, String actualJSON) throws JSONException
 	{
-		JSONAssert.assertEquals(expectedJSON, actualJSON, new ArraySizeComparator(JSONCompareMode.STRICT_ORDER));
+		JSONAssert.assertEquals(expectedJSON, actualJSON, null, new ArraySizeComparator(JSONCompareMode.STRICT_ORDER));
 	}
 
 	private void doFailingMatchTest(String expectedJSON, String actualJSON, String expectedMessagePattern) throws JSONException {
@@ -131,12 +131,12 @@ public class ArraySizeComparatorTest {
 
 	@Test
 	public void succeedsWhenActualArrayContainsExactly3Elements() throws JSONException {
-		JSONAssert.assertEquals("{a:[3]}", "{a:[7, 8, 9]}", new ArraySizeComparator(JSONCompareMode.LENIENT));
+		JSONAssert.assertEquals("{a:[3]}", "{a:[7, 8, 9]}", null, new ArraySizeComparator(JSONCompareMode.LENIENT));
 	}
 
 	@Test
 	public void succeedsWhenActualArrayContainsBetween2And6Elements() throws JSONException {
-		JSONAssert.assertEquals("{a:[2,6]}", "{a:[7, 8, 9]}", new ArraySizeComparator(JSONCompareMode.LENIENT));
+		JSONAssert.assertEquals("{a:[2,6]}", "{a:[7, 8, 9]}", null, new ArraySizeComparator(JSONCompareMode.LENIENT));
 	}
 
 }

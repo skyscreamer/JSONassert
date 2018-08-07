@@ -22,6 +22,7 @@ import org.skyscreamer.jsonassert.ValueMatcherException;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 
 public class CustomComparator extends DefaultComparator {
 
@@ -33,7 +34,7 @@ public class CustomComparator extends DefaultComparator {
     }
 
     @Override
-    public void compareValues(String prefix, Object expectedValue, Object actualValue, JSONCompareResult result) throws JSONException {
+    public void compareValues(String prefix, Object expectedValue, Object actualValue, List<String> keysToIgnore, JSONCompareResult result) throws JSONException {
         Customization customization = getCustomization(prefix);
         if (customization != null) {
             try {
@@ -45,7 +46,7 @@ public class CustomComparator extends DefaultComparator {
                 result.fail(prefix, e);
             }
         } else {
-            super.compareValues(prefix, expectedValue, actualValue, result);
+            super.compareValues(prefix, expectedValue, actualValue, keysToIgnore, result);
         }
     }
 

@@ -34,18 +34,18 @@ import org.junit.internal.matchers.TypeSafeMatcher;
 public class JSONCompareTest {
     @Test
     public void succeedsWithEmptyArrays() throws JSONException {
-        assertTrue(compareJSON("[]", "[]", LENIENT).passed());
+        assertTrue(compareJSON("[]", "[]", null, LENIENT).passed());
     }
 
     @Test
     public void reportsArraysOfUnequalLength() throws JSONException {
-        JSONCompareResult result = compareJSON("[4]", "[]", LENIENT);
+        JSONCompareResult result = compareJSON("[4]", "[]", null, LENIENT);
         assertThat(result, failsWithMessage(equalTo("[]: Expected 1 values but got 0")));
     }
 
     @Test
     public void reportsArrayMissingExpectedElement() throws JSONException {
-        JSONCompareResult result = compareJSON("[4]", "[7]", LENIENT);
+        JSONCompareResult result = compareJSON("[4]", "[7]", null, LENIENT);
         assertThat(result, failsWithMessage(equalTo("[]\nExpected: 4\n     but none found\n ; []\nUnexpected: 7\n")));
         assertEquals(result.getFieldMissing().size(), 1);
         assertEquals(result.getFieldUnexpected().size(), 1);
@@ -53,65 +53,65 @@ public class JSONCompareTest {
 
     @Test
     public void reportsMismatchedFieldValues() throws JSONException {
-        JSONCompareResult result = compareJSON("{\"id\": 3}", "{\"id\": 5}", LENIENT);
+        JSONCompareResult result = compareJSON("{\"id\": 3}", "{\"id\": 5}", null, LENIENT);
         assertThat(result, failsWithMessage(equalTo("id\nExpected: 3\n     got: 5\n")));
         assertThat(result, failsWithMessage(equalTo("id\nExpected: 3\n     got: 5\n")));
     }
 
     @Test
     public void reportsMissingField() throws JSONException {
-        JSONCompareResult result = compareJSON("{\"obj\": {\"id\": 3}}", "{\"obj\": {}}", LENIENT);
+        JSONCompareResult result = compareJSON("{\"obj\": {\"id\": 3}}", "{\"obj\": {}}", null, LENIENT);
         assertThat(result, failsWithMessage(equalTo("obj\nExpected: id\n     but none found\n")));
         assertEquals(result.getFieldMissing().size(), 1);
     }
 
     @Test
     public void reportsUnexpectedArrayWhenExpectingObject() throws JSONException {
-        JSONCompareResult result = compareJSON("{}", "[]", LENIENT);
+        JSONCompareResult result = compareJSON("{}", "[]", null, LENIENT);
         assertThat(result, failsWithMessage(equalTo("\nExpected: a JSON object\n     got: a JSON array\n")));
     }
 
     @Test
     public void reportsUnexpectedObjectWhenExpectingArray() throws JSONException {
-        JSONCompareResult result = compareJSON("[]", "{}", LENIENT);
+        JSONCompareResult result = compareJSON("[]", "{}", null, LENIENT);
         assertThat(result, failsWithMessage(equalTo("\nExpected: a JSON array\n     got: a JSON object\n")));
     }
 
     @Test
     public void reportsUnexpectedNull() throws JSONException {
-        JSONCompareResult result = compareJSON("{\"id\": 3}", "{\"id\": null}", LENIENT);
+        JSONCompareResult result = compareJSON("{\"id\": 3}", "{\"id\": null}", null, LENIENT);
         assertThat(result, failsWithMessage(equalTo("id\nExpected: 3\n     got: null\n")));
     }
 
     @Test
     public void reportsUnexpectedNonNull() throws JSONException {
-        JSONCompareResult result = compareJSON("{\"id\": null}", "{\"id\": \"abc\"}", LENIENT);
+        JSONCompareResult result = compareJSON("{\"id\": null}", "{\"id\": \"abc\"}", null, LENIENT);
         assertThat(result, failsWithMessage(equalTo("id\nExpected: null\n     got: abc\n")));
     }
 
     @Test
     public void reportsUnexpectedFieldInNonExtensibleMode() throws JSONException {
-        JSONCompareResult result = compareJSON("{\"obj\": {}}", "{\"obj\": {\"id\": 3}}", NON_EXTENSIBLE);
+        JSONCompareResult result = compareJSON("{\"obj\": {}}", "{\"obj\": {\"id\": 3}}", null, NON_EXTENSIBLE);
         assertThat(result, failsWithMessage(equalTo("obj\nUnexpected: id\n")));
         assertEquals(result.getFieldUnexpected().size(), 1);
     }
 
     @Test
     public void reportsMismatchedTypes() throws JSONException {
-        JSONCompareResult result = compareJSON("{\"arr\":[]}", "{\"arr\":{}}", LENIENT);
+        JSONCompareResult result = compareJSON("{\"arr\":[]}", "{\"arr\":{}}", null, LENIENT);
         assertThat(result, failsWithMessage(equalTo("arr\nExpected: a JSON array\n     got: a JSON object\n")));
     }
 
     @Test
     public void reportsWrongSimpleValueCountInUnorderedArray() throws JSONException {
-        JSONCompareResult result = compareJSON("[5, 5]", "[5, 7]", LENIENT);
+        JSONCompareResult result = compareJSON("[5, 5]", "[5, 7]", null, LENIENT);
         assertThat(result, failsWithMessage(equalTo("[]: Expected 2 occurrence(s) of 5 but got 1 occurrence(s) ; []\nUnexpected: 7\n")));
         assertEquals(result.getFieldUnexpected().size(), 1);
     }
 
     @Test
     public void reportsMissingJSONObjectWithUniqueKeyInUnorderedArray() throws JSONException {
-        JSONCompareResult result = compareJSON("[{\"id\" : 3}]", "[{\"id\" : 5}]", LENIENT);
+        JSONCompareResult result = compareJSON("[{\"id\" : 3}]", "[{\"id\" : 5}]", null, LENIENT);
         assertThat(result, failsWithMessage(equalTo("[id=3]\nExpected: a JSON object\n     but none found\n ; " +
                 "[id=5]\nUnexpected: a JSON object\n")));
         assertEquals(result.getFieldMissing().size(), 1);
@@ -120,42 +120,42 @@ public class JSONCompareTest {
 
     @Test
     public void reportsUnmatchedJSONObjectInUnorderedArray() throws JSONException {
-        JSONCompareResult result = compareJSON("[{\"address\" : {\"street\" : \"Acacia Avenue\"}}]", "[{\"age\" : 23}]", LENIENT);
+        JSONCompareResult result = compareJSON("[{\"address\" : {\"street\" : \"Acacia Avenue\"}}]", "[{\"age\" : 23}]", null, LENIENT);
         assertThat(result, failsWithMessage(equalTo("[0] Could not find match for element {\"address\":{\"street\":\"Acacia Avenue\"}}")));
     }
 
     @Test
     public void succeedsWithNestedJSONObjectsInUnorderedArray() throws JSONException {
-        assertTrue(compareJSON("[{\"address\" : {\"street\" : \"Acacia Avenue\"}}, 5]", "[5, {\"address\" : {\"street\" : \"Acacia Avenue\"}}]", LENIENT).passed());
+        assertTrue(compareJSON("[{\"address\" : {\"street\" : \"Acacia Avenue\"}}, 5]", "[5, {\"address\" : {\"street\" : \"Acacia Avenue\"}}]", null, LENIENT).passed());
     }
 
     @Test
     public void succeedsWithJSONObjectsWithNonUniqueKeyInUnorderedArray() throws JSONException {
         String jsonDocument = "[{\"age\" : 43}, {\"age\" : 43}]";
-        assertTrue(compareJSON(jsonDocument, jsonDocument, LENIENT).passed());
+        assertTrue(compareJSON(jsonDocument, jsonDocument, null, LENIENT).passed());
     }
 
     @Test
     public void succeedsWithSomeNestedJSONObjectsInUnorderedArray() throws JSONException {
         String jsonDocument = "[{\"age\" : 43}, {\"age\" : {\"years\" : 43}}]";
-        assertTrue(compareJSON(jsonDocument, jsonDocument, LENIENT).passed());
+        assertTrue(compareJSON(jsonDocument, jsonDocument, null, LENIENT).passed());
     }
 
     @Test
     public void reportsUnmatchesIntegerValueInUnorderedArrayContainingJSONObject() throws JSONException {
-        JSONCompareResult result = compareJSON("[{\"address\" : {\"street\" : \"Acacia Avenue\"}}, 5]", "[{\"address\" : {\"street\" : \"Acacia Avenue\"}}, 2]", LENIENT);
+        JSONCompareResult result = compareJSON("[{\"address\" : {\"street\" : \"Acacia Avenue\"}}, 5]", "[{\"address\" : {\"street\" : \"Acacia Avenue\"}}, 2]", null, LENIENT);
         assertThat(result, failsWithMessage(equalTo("[1] Could not find match for element 5")));
     }
 
     @Test
     public void reportsUnmatchedJSONArrayWhereOnlyExpectedContainsJSONObjectWithUniqueKey() throws JSONException {
-        JSONCompareResult result = compareJSON("[{\"id\": 3}]", "[{}]", LENIENT);
+        JSONCompareResult result = compareJSON("[{\"id\": 3}]", "[{}]", null, LENIENT);
         assertThat(result, failsWithMessage(equalTo("[0] Could not find match for element {\"id\":3}")));
     }
 
     @Test
     public void reportsUnmatchedJSONArrayWhereExpectedContainsJSONObjectWithUniqueKeyButActualContainsElementOfOtherType() throws JSONException {
-        JSONCompareResult result = compareJSON("[{\"id\": 3}]", "[5]", LENIENT);
+        JSONCompareResult result = compareJSON("[{\"id\": 3}]", "[5]", null, LENIENT);
         assertThat(result, failsWithMessage(equalTo("[0] Could not find match for element {\"id\":3}")));
     }
 
