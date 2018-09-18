@@ -17,6 +17,7 @@ package org.skyscreamer.jsonassert.comparator;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.skyscreamer.jsonassert.Customization;
 import org.skyscreamer.jsonassert.JSONCompareMode;
 import org.skyscreamer.jsonassert.JSONCompareResult;
 
@@ -30,9 +31,11 @@ import static org.skyscreamer.jsonassert.comparator.JSONCompareUtil.allSimpleVal
 public class DefaultComparator extends AbstractComparator {
 
     JSONCompareMode mode;
+	Customization[] customizations;
 
-    public DefaultComparator(JSONCompareMode mode) {
+    public DefaultComparator(JSONCompareMode mode, Customization... customizations) {
         this.mode = mode;
+        this.customizations = customizations;
     }
 
     @Override
@@ -78,11 +81,11 @@ public class DefaultComparator extends AbstractComparator {
         }
 
         if (mode.hasStrictOrder()) {
-            compareJSONArrayWithStrictOrder(prefix, expected, actual, result);
+            compareJSONArrayWithStrictOrder(prefix, expected, actual, result, this.customizations);
         } else if (allSimpleValues(expected)) {
-            compareJSONArrayOfSimpleValues(prefix, expected, actual, result);
+            compareJSONArrayOfSimpleValues(prefix, expected, actual, result, this.customizations);
         } else if (allJSONObjects(expected)) {
-            compareJSONArrayOfJsonObjects(prefix, expected, actual, result);
+            compareJSONArrayOfJsonObjects(prefix, expected, actual, result, this.customizations);
         } else {
             // An expensive last resort
             recursivelyCompareJSONArray(prefix, expected, actual, result);

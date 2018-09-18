@@ -16,6 +16,7 @@ package org.skyscreamer.jsonassert;
 
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
+import static org.skyscreamer.jsonassert.JSONCompare.compareJSON;
 import static org.skyscreamer.jsonassert.JSONCompareMode.LENIENT;
 import static org.skyscreamer.jsonassert.JSONCompareMode.NON_EXTENSIBLE;
 import static org.skyscreamer.jsonassert.JSONCompareMode.STRICT;
@@ -639,6 +640,94 @@ public class JSONAssertTest {
                 new Customization("entry.id", 
                 new RegularExpressionValueMatcher<Object>("\\d"))
         ));
+    }
+
+    @Test
+    public void testAssertEquals2JSONArraysCompareIgnoringCustomizationsFields() 
+    		throws IllegalArgumentException, JSONException {
+    	// Test for issue 109 (https://github.com/skyscreamer/JSONassert/issues/109)
+        String json1 = "{\n" +
+                "  	\"root\": {\n" +
+                "  	\"level\": {\n" +
+                "  		\"array\": [{\n" +
+	            "  			\"field1ToIgnore\": \"ignore_value1\",\n" +
+	            "  			\"field2\": \"valueA2\",\n" +
+                "  			\"field3\": \"valueA3\"\n" +
+                "  			}, {\n" +
+                "  			\"field1ToIgnore\": \"ignore_value2\",\n" +
+                "  			\"field2\": \"valueB2\",\n" +
+                "  			\"field3\": \"valueB3\"\n" +
+                "  		}]\n" +
+                "  	}\n" +
+                "  	}\n" +
+                "  }\n";
+        String json2 = "{\n" +
+                "  	\"root\": {\n" +
+                "  	\"level\": {\n" +
+                "  		\"array\": [{\n" +
+                "  			\"field1ToIgnore\": \"ignore_value3\",\n" +
+                "  			\"field2\": \"valueB2\",\n" +
+                "  			\"field3\": \"valueB3\"\n" +
+                "  			}, {\n" +
+                "  			\"field1ToIgnore\": \"ignore_value4\",\n" +
+                "  			\"field2\": \"valueA2\",\n" +
+                "  			\"field3\": \"valueA3\"\n" +
+                "  		}]\n" +
+                "  	}\n" +
+                "  	}\n" +
+                "  }\n";
+        
+        JSONAssert.assertEquals("Message", json1, json2, 
+            new CustomComparator(
+                JSONCompareMode.LENIENT, 
+                new Customization("**.field1ToIgnore", 
+                new ValueMatcher<Object>() {
+                    @Override
+                    public boolean equal(Object o1, Object o2) {
+                        return true;
+                    }
+                })
+         ));
+    }
+    
+    @Test
+    public void testAssertEquals2JSONArraysWithOnlyIgnoreFieldsCompareIgnoringCustomizationsFields() 
+    		throws IllegalArgumentException, JSONException {
+    	// Test for issue 109 (https://github.com/skyscreamer/JSONassert/issues/109)
+        String json1 = "{\n" +
+                "  	\"root\": {\n" +
+                "  	\"level\": {\n" +
+                "  		\"array\": [{\n" +
+	            "  			\"field1ToIgnore\": \"ignore_value1\"\n" +
+                "  			}, {\n" +
+                "  			\"field1ToIgnore\": \"ignore_value2\"\n" +
+                "  		}]\n" +
+                "  	}\n" +
+                "  	}\n" +
+                "  }\n";
+        String json2 = "{\n" +
+                "  	\"root\": {\n" +
+                "  	\"level\": {\n" +
+                "  		\"array\": [{\n" +
+                "  			\"field1ToIgnore\": \"ignore_value3\"\n" +
+                "  			}, {\n" +
+                "  			\"field1ToIgnore\": \"ignore_value4\"\n" +
+                "  		}]\n" +
+                "  	}\n" +
+                "  	}\n" +
+                "  }\n";
+        
+        JSONAssert.assertEquals("Message", json1, json2, 
+            new CustomComparator(
+                JSONCompareMode.LENIENT, 
+                new Customization("**.field1ToIgnore", 
+                new ValueMatcher<Object>() {
+                    @Override
+                    public boolean equal(Object o1, Object o2) {
+                        return true;
+                    }
+                })
+         ));
     }
     
     private void testPass(String expected, String actual, JSONCompareMode compareMode)

@@ -17,6 +17,7 @@ package org.skyscreamer.jsonassert.comparator;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.skyscreamer.jsonassert.Customization;
 import org.skyscreamer.jsonassert.JSONCompareResult;
 
 import java.util.*;
@@ -79,8 +80,9 @@ public abstract class AbstractComparator implements JSONComparator {
         }
     }
 
-    protected void compareJSONArrayOfJsonObjects(String key, JSONArray expected, JSONArray actual, JSONCompareResult result) throws JSONException {
-        String uniqueKey = findUniqueKey(expected);
+    protected void compareJSONArrayOfJsonObjects(String key, JSONArray expected, JSONArray actual, JSONCompareResult result, 
+    		Customization... customizations) throws JSONException {
+        String uniqueKey = findUniqueKey(key, expected, customizations);
         if (uniqueKey == null || !isUsableAsUniqueKey(uniqueKey, actual)) {
             // An expensive last resort
             recursivelyCompareJSONArray(key, expected, actual, result);
@@ -104,7 +106,8 @@ public abstract class AbstractComparator implements JSONComparator {
         }
     }
 
-    protected void compareJSONArrayOfSimpleValues(String key, JSONArray expected, JSONArray actual, JSONCompareResult result) throws JSONException {
+    protected void compareJSONArrayOfSimpleValues(String key, JSONArray expected, JSONArray actual, JSONCompareResult result, 
+    		Customization... customizations) throws JSONException {
         Map<Object, Integer> expectedCount = JSONCompareUtil.getCardinalityMap(jsonArrayToList(expected));
         Map<Object, Integer> actualCount = JSONCompareUtil.getCardinalityMap(jsonArrayToList(actual));
         for (Object o : expectedCount.keySet()) {
@@ -122,7 +125,8 @@ public abstract class AbstractComparator implements JSONComparator {
         }
     }
 
-    protected void compareJSONArrayWithStrictOrder(String key, JSONArray expected, JSONArray actual, JSONCompareResult result) throws JSONException {
+    protected void compareJSONArrayWithStrictOrder(String key, JSONArray expected, JSONArray actual, JSONCompareResult result, 
+    		Customization[] customizations) throws JSONException {
         for (int i = 0; i < expected.length(); ++i) {
             Object expectedValue = expected.get(i);
             Object actualValue = actual.get(i);

@@ -28,7 +28,7 @@ public class CustomComparator extends DefaultComparator {
     private final Collection<Customization> customizations;
 
     public CustomComparator(JSONCompareMode mode,  Customization... customizations) {
-        super(mode);
+        super(mode, customizations);
         this.customizations = Arrays.asList(customizations);
     }
 
