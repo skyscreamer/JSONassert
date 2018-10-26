@@ -124,8 +124,8 @@ public abstract class AbstractComparator implements JSONComparator {
 
     protected void compareJSONArrayWithStrictOrder(String key, JSONArray expected, JSONArray actual, JSONCompareResult result) throws JSONException {
         for (int i = 0; i < expected.length(); ++i) {
-            Object expectedValue = expected.get(i);
-            Object actualValue = actual.get(i);
+            Object expectedValue = JSONCompareUtil.getObjectOrNull(expected, i);
+            Object actualValue = JSONCompareUtil.getObjectOrNull(actual, i);
             compareValues(key + "[" + i + "]", expectedValue, actualValue, result);
         }
     }
@@ -138,10 +138,17 @@ public abstract class AbstractComparator implements JSONComparator {
                                                JSONCompareResult result) throws JSONException {
         Set<Integer> matched = new HashSet<Integer>();
         for (int i = 0; i < expected.length(); ++i) {
-            Object expectedElement = expected.get(i);
+            Object expectedElement = JSONCompareUtil.getObjectOrNull(expected, i);
             boolean matchFound = false;
             for (int j = 0; j < actual.length(); ++j) {
-                Object actualElement = actual.get(j);
+                Object actualElement = JSONCompareUtil.getObjectOrNull(actual, j);
+                if (expectedElement == actualElement) {
+                    matchFound = true;
+                    break;
+                }
+                if ((expectedElement == null && actualElement != null) || (expectedElement != null && actualElement == null)) {
+                    continue;
+                }
                 if (matched.contains(j) || !actualElement.getClass().equals(expectedElement.getClass())) {
                     continue;
                 }

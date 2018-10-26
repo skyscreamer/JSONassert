@@ -121,9 +121,21 @@ public final class JSONCompareUtil {
     public static List<Object> jsonArrayToList(JSONArray expected) throws JSONException {
         List<Object> jsonObjects = new ArrayList<Object>(expected.length());
         for (int i = 0; i < expected.length(); ++i) {
-            jsonObjects.add(expected.get(i));
+            jsonObjects.add(getObjectOrNull(expected, i));
         }
         return jsonObjects;
+    }
+
+    /**
+     * Returns the value present in the given index position. If null value is present, it will return null
+     *
+     * @param jsonArray the JSON array to get value from
+     * @param index index of object to retrieve
+     * @return value at the given index position
+     * @throws JSONException JSON parsing error
+     */
+    public static Object getObjectOrNull(JSONArray jsonArray, int index) throws JSONException {
+        return jsonArray.isNull(index) ? null : jsonArray.get(index);
     }
 
     /**
@@ -136,7 +148,7 @@ public final class JSONCompareUtil {
      */
     public static boolean allSimpleValues(JSONArray array) throws JSONException {
         for (int i = 0; i < array.length(); ++i) {
-            if (!isSimpleValue(array.get(i))) {
+            if (!array.isNull(i) && !isSimpleValue(array.get(i))) {
                 return false;
             }
         }
