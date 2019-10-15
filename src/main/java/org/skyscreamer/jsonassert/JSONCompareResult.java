@@ -14,12 +14,12 @@
 
 package org.skyscreamer.jsonassert;
 
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
 
 /**
  * Bean for holding results from JSONCompare.
@@ -77,7 +77,7 @@ public class JSONCompareResult {
     public List<FieldComparisonFailure> getFieldFailures() {
         return Collections.unmodifiableList(_fieldFailures);
     }
-    
+
     /**
      * Get the list of missed on field comparisons
      * @return list of comparsion failures
@@ -85,7 +85,7 @@ public class JSONCompareResult {
     public List<FieldComparisonFailure> getFieldMissing() {
         return Collections.unmodifiableList(_fieldMissing);
     }
-    
+
     /**
      * Get the list of failures on field comparisons
      * @return list of comparsion failures
@@ -96,7 +96,7 @@ public class JSONCompareResult {
 
     /**
      * Actual field value
-     * 
+     *
      * @return a {@code JSONObject}, {@code JSONArray} or other {@code Object}
      *         instance, or {@code null} if the comparison did not fail on a
      *         particular field
@@ -106,10 +106,10 @@ public class JSONCompareResult {
     public Object getActual() {
         return _actual;
     }
-    
+
     /**
      * Expected field value
-     * 
+     *
      * @return a {@code JSONObject}, {@code JSONArray} or other {@code Object}
      *         instance, or {@code null} if the comparison did not fail on a
      *         particular field
@@ -119,7 +119,7 @@ public class JSONCompareResult {
     public Object getExpected() {
         return _expected;
     }
-    
+
     /**
      * Check if comparison failed on any particular fields
      * @return true if there are field failures
@@ -127,7 +127,7 @@ public class JSONCompareResult {
     public boolean isFailureOnField() {
         return !_fieldFailures.isEmpty();
     }
-    
+
     /**
      * Check if comparison failed with missing on any particular fields
      * @return true if an expected field is missing
@@ -135,7 +135,7 @@ public class JSONCompareResult {
     public boolean isMissingOnField() {
         return !_fieldMissing.isEmpty();
     }
-    
+
     /**
      * Check if comparison failed with unexpected on any particular fields
      * @return true if an unexpected field is in the result
@@ -146,7 +146,7 @@ public class JSONCompareResult {
 
     /**
      * Dot-separated path the the field that failed comparison
-     * 
+     *
      * @return a {@code String} instance, or {@code null} if the comparison did
      *         not fail on a particular field
      * @deprecated Superseded by {@link #getFieldFailures()}
@@ -155,7 +155,7 @@ public class JSONCompareResult {
     public String getField() {
         return _field;
     }
-    
+
     public void fail(String message) {
         _success = false;
         if (_message.length() == 0) {

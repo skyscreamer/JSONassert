@@ -14,10 +14,10 @@
 
 package org.skyscreamer.jsonassert;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-import org.json.JSONString;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONAware;
+import com.alibaba.fastjson.JSONException;
+import com.alibaba.fastjson.JSONObject;
 import org.skyscreamer.jsonassert.comparator.DefaultComparator;
 import org.skyscreamer.jsonassert.comparator.JSONComparator;
 
@@ -54,8 +54,8 @@ public final class JSONCompare {
         else if ((expected instanceof JSONArray) && (actual instanceof JSONArray)) {
             return compareJSON((JSONArray)expected, (JSONArray)actual, comparator);
         }
-        else if (expected instanceof JSONString && actual instanceof JSONString) {
-            return compareJson((JSONString) expected, (JSONString) actual);
+        else if (expected instanceof JSONAware && actual instanceof JSONAware) {
+            return compareJson((JSONAware) expected, (JSONAware) actual);
         }
         else if (expected instanceof JSONObject) {
             return new JSONCompareResult().fail("", expected, actual);
@@ -94,19 +94,19 @@ public final class JSONCompare {
     }
 
     /**
-     * Compares {@link JSONString} provided to the expected {@code JSONString}, checking that the
-     * {@link org.json.JSONString#toJSONString()} are equal.
+     * Compares {@link JSONAware} provided to the expected {@code JSONString}, checking that the
+     * {@link JSONAware#toJSONString()} are equal.
      *
      * @param expected Expected {@code JSONstring}
      * @param actual   {@code JSONstring} to compare
      * @return result of the comparison
      */
-    public static JSONCompareResult compareJson(final JSONString expected, final JSONString actual) {
+    public static JSONCompareResult compareJson(final JSONAware expected, final JSONAware actual) {
         final JSONCompareResult result = new JSONCompareResult();
         final String expectedJson = expected.toJSONString();
         final String actualJson = actual.toJSONString();
         if (!expectedJson.equals(actualJson)) {
-          result.fail("");
+          result.fail("", expectedJson, actualJson);
         }
         return result;
     }

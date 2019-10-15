@@ -14,25 +14,25 @@
 
 package org.skyscreamer.jsonassert.comparator;
 
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
-import java.text.MessageFormat;
-
-import org.json.JSONException;
+import com.alibaba.fastjson.JSONException;
 import org.junit.Test;
 import org.skyscreamer.jsonassert.JSONAssert;
 import org.skyscreamer.jsonassert.JSONCompareMode;
 
+import java.text.MessageFormat;
+
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 /**
  * Unit tests for ArraySizeComparator
- * 
+ *
  * @author Duncan Mackinder
  *
  */
 public class ArraySizeComparatorTest {
 	private static final String twoElementArray = "{a:[b,c]}";
-	
+
 	private void doTest(String expectedJSON, String actualJSON) throws JSONException
 	{
 		JSONAssert.assertEquals(expectedJSON, actualJSON, new ArraySizeComparator(JSONCompareMode.STRICT_ORDER));

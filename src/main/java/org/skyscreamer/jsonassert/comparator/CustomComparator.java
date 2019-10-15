@@ -14,7 +14,7 @@
 
 package org.skyscreamer.jsonassert.comparator;
 
-import org.json.JSONException;
+import com.alibaba.fastjson.JSONException;
 import org.skyscreamer.jsonassert.Customization;
 import org.skyscreamer.jsonassert.JSONCompareMode;
 import org.skyscreamer.jsonassert.JSONCompareResult;
@@ -50,9 +50,11 @@ public class CustomComparator extends DefaultComparator {
     }
 
     private Customization getCustomization(String path) {
-        for (Customization c : customizations)
-            if (c.appliesToPath(path))
+        for (Customization c : customizations) {
+            if (c.appliesToPath(path)) {
                 return c;
+            }
+        }
         return null;
     }
 }

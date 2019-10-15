@@ -14,19 +14,18 @@
 
 package org.skyscreamer.jsonassert.comparator;
 
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONException;
+import com.alibaba.fastjson.JSONObject;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 /**
  * Utility class that contains Json manipulation methods.
@@ -48,7 +47,7 @@ public final class JSONCompareUtil {
      */
     public static Map<Object, JSONObject> arrayOfJsonObjectToMap(JSONArray array, String uniqueKey) throws JSONException {
         Map<Object, JSONObject> valueMap = new HashMap<Object, JSONObject>();
-        for (int i = 0; i < array.length(); ++i) {
+        for (int i = 0; i < array.size(); ++i) {
             JSONObject jsonObject = (JSONObject) array.get(i);
             Object id = jsonObject.get(uniqueKey);
             valueMap.put(id, jsonObject);
@@ -67,7 +66,9 @@ public final class JSONCompareUtil {
         // Find a unique key for the object (id, name, whatever)
         JSONObject o = (JSONObject) expected.get(0); // There's at least one at this point
         for (String candidate : getKeys(o)) {
-            if (isUsableAsUniqueKey(candidate, expected)) return candidate;
+            if (isUsableAsUniqueKey(candidate, expected)) {
+                return candidate;
+            }
         }
         // No usable unique key :-(
         return null;
@@ -90,11 +91,11 @@ public final class JSONCompareUtil {
      */
     public static boolean isUsableAsUniqueKey(String candidate, JSONArray array) throws JSONException {
         Set<Object> seenValues = new HashSet<Object>();
-        for (int i = 0; i < array.length(); i++) {
+        for (int i = 0; i < array.size(); i++) {
             Object item = array.get(i);
             if (item instanceof JSONObject) {
                 JSONObject o = (JSONObject) item;
-                if (o.has(candidate)) {
+                if (o.containsKey(candidate)) {
                     Object value = o.get(candidate);
                     if (isSimpleValue(value) && !seenValues.contains(value)) {
                         seenValues.add(value);
@@ -119,8 +120,8 @@ public final class JSONCompareUtil {
      * @throws JSONException JSON parsing error
      */
     public static List<Object> jsonArrayToList(JSONArray expected) throws JSONException {
-        List<Object> jsonObjects = new ArrayList<Object>(expected.length());
-        for (int i = 0; i < expected.length(); ++i) {
+        List<Object> jsonObjects = new ArrayList<Object>(expected.size());
+        for (int i = 0; i < expected.size(); ++i) {
             jsonObjects.add(expected.get(i));
         }
         return jsonObjects;
@@ -135,7 +136,7 @@ public final class JSONCompareUtil {
      * @see #isSimpleValue(Object)
      */
     public static boolean allSimpleValues(JSONArray array) throws JSONException {
-        for (int i = 0; i < array.length(); ++i) {
+        for (int i = 0; i < array.size(); ++i) {
             if (!isSimpleValue(array.get(i))) {
                 return false;
             }
@@ -161,7 +162,7 @@ public final class JSONCompareUtil {
      * @throws JSONException JSON parsing error
      */
     public static boolean allJSONObjects(JSONArray array) throws JSONException {
-        for (int i = 0; i < array.length(); ++i) {
+        for (int i = 0; i < array.size(); ++i) {
             if (!(array.get(i) instanceof JSONObject)) {
                 return false;
             }
@@ -177,7 +178,7 @@ public final class JSONCompareUtil {
      * @throws JSONException JSON parsing error
      */
     public static boolean allJSONArrays(JSONArray array) throws JSONException {
-        for (int i = 0; i < array.length(); ++i) {
+        for (int i = 0; i < array.size(); ++i) {
             if (!(array.get(i) instanceof JSONArray)) {
                 return false;
             }
@@ -192,11 +193,7 @@ public final class JSONCompareUtil {
      * @return the set of keys
      */
     public static Set<String> getKeys(JSONObject jsonObject) {
-        Set<String> keys = new TreeSet<String>();
-        Iterator<?> iter = jsonObject.keys();
-        while (iter.hasNext()) {
-            keys.add((String) iter.next());
-        }
+        Set<String> keys = new TreeSet<String>(jsonObject.keySet());
         return keys;
     }
 

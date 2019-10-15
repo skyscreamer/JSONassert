@@ -14,7 +14,7 @@
 
 package org.skyscreamer.jsonassert;
 
-import org.json.JSONObject;
+import com.alibaba.fastjson.JSONObject;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -34,10 +34,10 @@ public class DependencyTest {
         Long target = -4611686018427386614L;
         String targetString = target.toString();
 
-        JSONObject value = new JSONObject().put("id", target);
+        JSONObject value = new JSONObject().fluentPut("id", target);
         Assert.assertEquals(target, (Long) value.getLong("id"));  //Correct: when put as long getLong is correct
 
-        value = new JSONObject().put("id", targetString);
+        value = new JSONObject().fluentPut("id", targetString);
         Assert.assertEquals(target, (Long) Long.parseLong(value.getString("id"))); //Correct: when put as String getString is correct
         Assert.assertEquals(target, (Long) value.getLong("id")); //Bug: Having json convert the string to long fails
     }

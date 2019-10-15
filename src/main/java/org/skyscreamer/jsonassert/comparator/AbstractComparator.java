@@ -14,14 +14,22 @@
 
 package org.skyscreamer.jsonassert.comparator;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONException;
+import com.alibaba.fastjson.JSONObject;
 import org.skyscreamer.jsonassert.JSONCompareResult;
 
-import java.util.*;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
-import static org.skyscreamer.jsonassert.comparator.JSONCompareUtil.*;
+import static org.skyscreamer.jsonassert.comparator.JSONCompareUtil.arrayOfJsonObjectToMap;
+import static org.skyscreamer.jsonassert.comparator.JSONCompareUtil.findUniqueKey;
+import static org.skyscreamer.jsonassert.comparator.JSONCompareUtil.formatUniqueKey;
+import static org.skyscreamer.jsonassert.comparator.JSONCompareUtil.getKeys;
+import static org.skyscreamer.jsonassert.comparator.JSONCompareUtil.isUsableAsUniqueKey;
+import static org.skyscreamer.jsonassert.comparator.JSONCompareUtil.jsonArrayToList;
+import static org.skyscreamer.jsonassert.comparator.JSONCompareUtil.qualify;
 
 /**
  * This class provides a skeletal implementation of the {@link JSONComparator}
@@ -60,7 +68,7 @@ public abstract class AbstractComparator implements JSONComparator {
     protected void checkJsonObjectKeysActualInExpected(String prefix, JSONObject expected, JSONObject actual, JSONCompareResult result) {
         Set<String> actualKeys = getKeys(actual);
         for (String key : actualKeys) {
-            if (!expected.has(key)) {
+            if (!expected.containsKey(key)) {
                 result.unexpected(prefix, key);
             }
         }
@@ -70,7 +78,7 @@ public abstract class AbstractComparator implements JSONComparator {
         Set<String> expectedKeys = getKeys(expected);
         for (String key : expectedKeys) {
             Object expectedValue = expected.get(key);
-            if (actual.has(key)) {
+            if (actual.containsKey(key)) {
                 Object actualValue = actual.get(key);
                 compareValues(qualify(prefix, key), expectedValue, actualValue, result);
             } else {
@@ -123,7 +131,7 @@ public abstract class AbstractComparator implements JSONComparator {
     }
 
     protected void compareJSONArrayWithStrictOrder(String key, JSONArray expected, JSONArray actual, JSONCompareResult result) throws JSONException {
-        for (int i = 0; i < expected.length(); ++i) {
+        for (int i = 0; i < expected.size(); ++i) {
             Object expectedValue = expected.get(i);
             Object actualValue = actual.get(i);
             compareValues(key + "[" + i + "]", expectedValue, actualValue, result);
@@ -137,10 +145,10 @@ public abstract class AbstractComparator implements JSONComparator {
     protected void recursivelyCompareJSONArray(String key, JSONArray expected, JSONArray actual,
                                                JSONCompareResult result) throws JSONException {
         Set<Integer> matched = new HashSet<Integer>();
-        for (int i = 0; i < expected.length(); ++i) {
+        for (int i = 0; i < expected.size(); ++i) {
             Object expectedElement = expected.get(i);
             boolean matchFound = false;
-            for (int j = 0; j < actual.length(); ++j) {
+            for (int j = 0; j < actual.size(); ++j) {
                 Object actualElement = actual.get(j);
                 if (matched.contains(j) || !actualElement.getClass().equals(expectedElement.getClass())) {
                     continue;
@@ -169,4 +177,14 @@ public abstract class AbstractComparator implements JSONComparator {
             }
         }
     }
+
+
+    public static int getInt(JSONArray jsonArray, int index) {
+        Integer ret = jsonArray.getInteger(index);
+        if (ret == null) {
+            throw new JSONException("Value at " + 0 + " is null.");
+        }
+        return ret;
+    }
+
 }

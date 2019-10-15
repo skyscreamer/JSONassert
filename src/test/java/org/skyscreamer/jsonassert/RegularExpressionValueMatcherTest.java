@@ -14,19 +14,16 @@
 
 package org.skyscreamer.jsonassert;
 
+import com.alibaba.fastjson.JSONException;
 import org.junit.Assert;
-
-import org.json.JSONException;
 import org.junit.Test;
-import org.skyscreamer.jsonassert.Customization;
-import org.skyscreamer.jsonassert.JSONCompareMode;
 import org.skyscreamer.jsonassert.comparator.CustomComparator;
 
 /**
  * Unit tests for RegularExpressionValueMatcher
- * 
+ *
  * @author Duncan Mackinder
- * 
+ *
  */
 public class RegularExpressionValueMatcherTest {
 	private static final String ARRAY_ELEMENT_PREFIX = "d.results[0].__metadata.uri";

@@ -14,10 +14,11 @@
 
 package org.skyscreamer.jsonassert;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-import org.json.JSONString;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONAware;
+import com.alibaba.fastjson.JSONException;
+import com.alibaba.fastjson.JSONObject;
 
 /**
  * Simple JSON parsing utility.
@@ -31,7 +32,7 @@ public class JSONParser {
     private JSONParser() {}
 
     /**
-     * Takes a JSON string and returns either a {@link org.json.JSONObject} or {@link org.json.JSONArray},
+     * Takes a JSON string and returns either a {@link JSONObject} or {@link JSONArray},
      * depending on whether the string represents an object or an array.
      *
      * @param s Raw JSON string to be parsed
@@ -40,13 +41,13 @@ public class JSONParser {
      */
     public static Object parseJSON(final String s) throws JSONException {
         if (s.trim().startsWith("{")) {
-            return new JSONObject(s);
+            return JSON.parseObject(s);
         }
         else if (s.trim().startsWith("[")) {
-            return new JSONArray(s);
+            return JSONArray.parseArray(s);
         } else if (s.trim().startsWith("\"")
                    || s.trim().matches(NUMBER_REGEX)) {
-          return new JSONString() {
+          return new JSONAware() {
             @Override
             public String toJSONString() {
               return s;
