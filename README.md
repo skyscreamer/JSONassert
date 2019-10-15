@@ -12,6 +12,15 @@ Supported test frameworks:
 
  * [JUnit](http://junit.org)
 
+Branch
+-------
+
+1_fastjson: 
+ * change [com.vaadin.external.google:android-json](http://search.maven.org/#artifactdetails%7Ccom.vaadin.external.google%7Candroid-json%7C0.0.20131108.vaadin1%7Cjar) to [fastjson](https://github.com/alibaba/fastjson)
+
+master_from_20191015:
+ * fork from [skyscreamer/JSONassert](https://github.com/skyscreamer/JSONassert)
+
 Examples
 --------
 
