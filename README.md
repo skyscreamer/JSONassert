@@ -1,3 +1,18 @@
+This is a hacked JSONassert
+==========
+
+skyscreamer does not support java 9+ module systems yet, we provide this hacked version of JSONassert package for java 9+ applications.
+
+Usage
+-------
+
+        <dependency>
+            <groupId>no.ssb.org.skyscreamer</groupId>
+            <artifactId>jsonassert</artifactId>
+            <version>1.5.2-SNAPSHOT</version>
+            <scope>test</scope>
+        </dependency>
+
 JSONassert
 ==========
 
