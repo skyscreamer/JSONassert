@@ -1,19 +1,89 @@
-# Starter pipeline
-# Start with a minimal pipeline that you can customize to build and deploy your code.
-# Add steps that build, run tests, deploy, and more:
-# https://aka.ms/yaml
-
+name: $(Build.SourceBranch)-$(date:yyyyMMdd)$(rev:.r)
+# Pipeline triggers on any branch and tag
 trigger:
-- master
-
+  branches:
+    include:
+      - '*'
+  tags:
+    include:
+      - '*'
+# Pipeline will be run on this base image
 pool:
   vmImage: 'ubuntu-latest'
 
-steps:
-- script: echo Hello, world!
-  displayName: 'Run a one-line script'
+# Job which runs mvn test and verify, Sonar Analysis (if branch is master), mvn install,
+jobs:
+  - job: buildTestDocker
+    # Steps in this Job
+    steps:
+      # Authenticate Maven to Nexus using predefined Service Connections
+      # (Project Settings->Pipelines->Service Connections)
+      - task: MavenAuthenticate@0
+        displayName: 'Maven authenticate'
+        inputs:
+          mavenServiceConnections: 'mvnSsbBipPublic, mvnSsbBipSnapshots'
+      #Maven caching to speed up pipeline build time
+      - task: Cache@2
+        displayName: Cache Maven local repo
+        inputs:
+          key: 'maven | "$(Agent.OS)" | **/pom.xml'
+          restoreKeys: |
+            maven | "$(Agent.OS)"
+            maven
+          path: $(MAVEN_CACHE_FOLDER)
 
-- script: |
-    echo Add other tasks to build, test, and deploy your project.
-    echo See https://aka.ms/yaml
-  displayName: 'Run a multi-line script'
+      # Maven test and verify
+      - task: Maven@3
+        displayName: 'Maven test and verify'
+        inputs:
+          mavenPomFile: 'pom.xml'
+          goals: 'verify test'
+          options: '-P ssb-bip,coverage --batch-mode $(MAVEN_OPTS)'
+          publishJUnitResults: true
+          testResultsFiles: '**/TEST-*.xml'
+          codeCoverageToolOption: 'JaCoCo'
+          javaHomeOption: 'JDKVersion'
+          jdkVersionOption: '1.11'
+          mavenVersionOption: 'Default'
+          mavenOptions: '-Xmx3072m'
+          mavenAuthenticateFeed: false
+          effectivePomSkip: false
+          sonarQubeRunAnalysis: false
+          checkStyleRunAnalysis: true
+          pmdRunAnalysis: true
+
+      # Run Maven Sonar Analysis
+      - task: Maven@3
+        displayName: 'Maven Sonar Analysis'
+        # Task condition: We have community edition of SonarQube which only scans master-branch so
+        # it makes no sense running this tag when branch is other than master
+        condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
+        inputs:
+          mavenPomFile: 'pom.xml'
+          goals: 'sonar:sonar'
+          options: '-X -Dsonar.host.url=$(SONAR_HOST) -Dsonar.login=$(SONAR_TOKEN) sonar:sonar -P ssb-bip,coverage -Dmaven.javadoc.skip=true --batch-mode $(MAVEN_OPTS)'
+          publishJUnitResults: false
+          testResultsFiles: '**/TEST-*.xml'
+          javaHomeOption: 'JDKVersion'
+          jdkVersionOption: '1.11'
+          mavenVersionOption: 'Default'
+          mavenOptions: '-Xmx3072m'
+          mavenAuthenticateFeed: false
+          effectivePomSkip: false
+          sonarQubeRunAnalysis: false
+          checkStyleRunAnalysis: false
+          pmdRunAnalysis: false
+          findBugsRunAnalysis: false
+      # Deploy artifact to Nexus
+      - task: Maven@3
+        displayName: 'Maven install and deploy'
+        inputs:
+          mavenPomFile: 'pom.xml'
+          mavenOptions: '-Xmx3072m'
+          javaHomeOption: 'JDKVersion'
+          jdkVersionOption: '1.11'
+          jdkArchitectureOption: 'x64'
+          publishJUnitResults: false
+          testResultsFiles: '**/TEST-*.xml'
+          goals: 'deploy'
+          options: '-DskipTests=true -Dmaven.javadoc.skip=true -U -P ssb-bip --batch-mode -Djdk.tls.client.protocols="TLSv1.2" $(MAVEN_OPTS)'

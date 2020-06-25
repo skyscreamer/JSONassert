@@ -106,40 +106,62 @@
         </extensions>
     </build>
 
-    <distributionManagement>
-        <site>
-            <id>github-project-site</id>
-            <url>gitsite:git@github.com/skyscreamer/JSONassert.git</url>
-        </site>
-    </distributionManagement>
 
     <profiles>
         <profile>
-            <id>release-sign-artifacts</id>
-            <activation>
-                <property>
-                    <name>performRelease</name>
-                    <value>true</value>
-                </property>
-            </activation>
+            <id>coverage</id>
+            <properties>
+                <sonar.coverage.jacoco.xmlReportPaths>
+                    target/site/jacoco/jacoco.xml
+                </sonar.coverage.jacoco.xmlReportPaths>
+            </properties>
             <build>
                 <plugins>
                     <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-gpg-plugin</artifactId>
-                        <version>1.1</version>
+                        <groupId>org.sonarsource.scanner.maven</groupId>
+                        <artifactId>sonar-maven-plugin</artifactId>
+                        <version>3.7.0.1746</version>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.jacoco</groupId>
+                        <artifactId>jacoco-maven-plugin</artifactId>
+                        <version>0.8.5</version>
                         <executions>
                             <execution>
-                                <id>sign-artifacts</id>
-                                <phase>verify</phase>
+                                <id>prepare-agent</id>
                                 <goals>
-                                    <goal>sign</goal>
+                                    <goal>prepare-agent</goal>
+                                </goals>
+                            </execution>
+                            <execution>
+                                <id>report</id>
+                                <goals>
+                                    <goal>report</goal>
                                 </goals>
                             </execution>
                         </executions>
                     </plugin>
                 </plugins>
             </build>
+        </profile>
+        <profile>
+            <id>ssb-bip</id>
+            <repositories>
+                <repository>
+                    <id>ssb-bip-releases</id>
+                    <url>https://nexus.prod-bip-ci.ssb.no/repository/maven-public/</url>
+                    <snapshots>
+                        <enabled>true</enabled>
+                    </snapshots>
+                </repository>
+            </repositories>
+            <distributionManagement>
+                <snapshotRepository>
+                    <id>ssb-bip-snapshots</id>
+                    <name>SSB Snapshot Repository</name>
+                    <url>https://nexus.prod-bip-ci.ssb.no/repository/maven-snapshots/</url>
+                </snapshotRepository>
+            </distributionManagement>
         </profile>
     </profiles>
 

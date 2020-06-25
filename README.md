@@ -2,6 +2,7 @@ This is a hacked JSONassert
 ==========
 
 skyscreamer does not support java 9+ module systems yet, we provide this hacked version of JSONassert package for java 9+ applications.
+This repo is published to the Nexus-BIP public and snapshot repo.
 
 Usage
 -------
