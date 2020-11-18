@@ -1,0 +1,9 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: JSONassert
+Bundle-SymbolicName: org.skyscreamer.jsonassert
+Bundle-Version: 1.5.1.v20170627
+Export-Package: org.skyscreamer.jsonassert,
+ org.skyscreamer.jsonassert.comparator
+Require-Bundle: org.junit
+Import-Package: org.json
