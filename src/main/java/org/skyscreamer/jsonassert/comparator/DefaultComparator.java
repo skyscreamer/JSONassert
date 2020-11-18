@@ -50,6 +50,12 @@ public class DefaultComparator extends AbstractComparator {
     @Override
     public void compareValues(String prefix, Object expectedValue, Object actualValue, JSONCompareResult result)
             throws JSONException {
+        if (expectedValue == actualValue) {
+            return;
+        }
+        if ((expectedValue == null && actualValue != null) || (expectedValue != null && actualValue == null)) {
+            result.fail(prefix, expectedValue, actualValue);
+        }
         if (areNumbers(expectedValue, actualValue)) {
             if (areNotSameDoubles(expectedValue, actualValue)) {
                 result.fail(prefix, expectedValue, actualValue);
