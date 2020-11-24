@@ -27,6 +27,7 @@ import java.util.TreeSet;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.skyscreamer.jsonassert.Customization;
 
 /**
  * Utility class that contains Json manipulation methods.
@@ -59,15 +60,30 @@ public final class JSONCompareUtil {
     /**
      * Searches for the unique key of the {@code expected} JSON array.
      *
+     * @param key the current Json path
      * @param expected the array to find the unique key of
+     * @param customizations the list of customizations, if any
      * @return the unique key if there's any, otherwise null
      * @throws JSONException JSON parsing error
      */
-    public static String findUniqueKey(JSONArray expected) throws JSONException {
+    public static String findUniqueKey(String key, JSONArray expected, 
+    		Customization... customizations) throws JSONException {
         // Find a unique key for the object (id, name, whatever)
         JSONObject o = (JSONObject) expected.get(0); // There's at least one at this point
         for (String candidate : getKeys(o)) {
-            if (isUsableAsUniqueKey(candidate, expected)) return candidate;
+        	String currentPath = qualify(key, candidate);
+			boolean applytoPath = false;
+			for (Customization c : customizations) {
+				// If the current path matches one of the customizations path,
+				// do not consider this key as a candidate
+				applytoPath = c.appliesToPath(currentPath);
+				if (applytoPath)
+					break;
+			}
+			if (!applytoPath) {
+				if (isUsableAsUniqueKey(candidate, expected)) 
+					return candidate;
+			}
         }
         // No usable unique key :-(
         return null;
