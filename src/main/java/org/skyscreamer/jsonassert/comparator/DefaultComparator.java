@@ -77,7 +77,9 @@ public class DefaultComparator extends AbstractComparator {
     public void compareJSONArray(String prefix, JSONArray expected, JSONArray actual, JSONCompareResult result)
             throws JSONException {
         if (expected.length() != actual.length()) {
-            result.fail(prefix + "[]: Expected " + expected.length() + " values but got " + actual.length());
+            String description = " values but got ";
+            if (expected.length() == 1) description = " value but got ";
+            result.fail(prefix + "[]: Expected " + expected.length() + description + actual.length());
             return;
         } else if (expected.length() == 0) {
             return; // Nothing to compare
