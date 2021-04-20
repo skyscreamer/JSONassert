@@ -53,7 +53,7 @@ public final class JSONCompareUtil {
             Object id = jsonObject.get(uniqueKey);
             if(id instanceof Number){
                 id = Double.parseDouble(id.toString());
-            }
+            }//Change all numbers to type double
             valueMap.put(id, jsonObject);
         }
         return valueMap;
