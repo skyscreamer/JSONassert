@@ -51,6 +51,9 @@ public final class JSONCompareUtil {
         for (int i = 0; i < array.length(); ++i) {
             JSONObject jsonObject = (JSONObject) array.get(i);
             Object id = jsonObject.get(uniqueKey);
+            if(id instanceof Number){
+                id = Double.parseDouble(id.toString());
+            }
             valueMap.put(id, jsonObject);
         }
         return valueMap;
