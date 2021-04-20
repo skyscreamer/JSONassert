@@ -54,6 +54,7 @@ public final class JSONCompareUtil {
             if(id instanceof Number){
                 id = Double.parseDouble(id.toString());
             }//Change all numbers to type double
+            //make all numbers comparable
             valueMap.put(id, jsonObject);
         }
         return valueMap;
