@@ -10,7 +10,7 @@
 
     <groupId>org.skyscreamer</groupId>
     <artifactId>jsonassert</artifactId>
-    <version>1.5.1-SNAPSHOT</version>
+    <version>1.5.0</version>
     <packaging>jar</packaging>
 
     <name>JSONassert</name>
@@ -57,9 +57,14 @@
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>4.13.1</version>
+            <version>4.10</version>
             <scope>test</scope>
         </dependency>
+		<dependency>
+			<groupId>com.alibaba</groupId>
+			<artifactId>fastjson</artifactId>
+			<version>1.1.72.android</version>
+		</dependency>
     </dependencies>
 
     <build>
@@ -67,7 +72,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>2.3.1</version>
+                <version>3.8.1</version>
                 <configuration>
                     <source>1.6</source>
                     <target>1.6</target>

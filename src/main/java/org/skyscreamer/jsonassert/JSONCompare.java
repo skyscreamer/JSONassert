@@ -10,10 +10,11 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
-*/
+ */
 
 package org.skyscreamer.jsonassert;
 
+import com.alibaba.fastjson.JSON;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -37,11 +38,12 @@ public final class JSONCompare {
     /**
      * Compares JSON string provided to the expected JSON string using provided comparator, and returns the results of
      * the comparison.
+     *
      * @param expectedStr Expected JSON string
-     * @param actualStr JSON string to compare
-     * @param comparator Comparator to use
+     * @param actualStr   JSON string to compare
+     * @param comparator  Comparator to use
      * @return result of the comparison
-     * @throws JSONException JSON parsing error
+     * @throws JSONException            JSON parsing error
      * @throws IllegalArgumentException when type of expectedStr doesn't match the type of actualStr
      */
     public static JSONCompareResult compareJSON(String expectedStr, String actualStr, JSONComparator comparator)
@@ -50,26 +52,23 @@ public final class JSONCompare {
         Object actual = JSONParser.parseJSON(actualStr);
         if ((expected instanceof JSONObject) && (actual instanceof JSONObject)) {
             return compareJSON((JSONObject) expected, (JSONObject) actual, comparator);
-        }
-        else if ((expected instanceof JSONArray) && (actual instanceof JSONArray)) {
-            return compareJSON((JSONArray)expected, (JSONArray)actual, comparator);
-        }
-        else if (expected instanceof JSONString && actual instanceof JSONString) {
+        } else if ((expected instanceof JSONArray) && (actual instanceof JSONArray)) {
+            return compareJSON((JSONArray) expected, (JSONArray) actual, comparator);
+        } else if (expected instanceof JSONString && actual instanceof JSONString) {
             return compareJson((JSONString) expected, (JSONString) actual);
-        }
-        else if (expected instanceof JSONObject) {
+        } else if (expected instanceof JSONObject) {
             return new JSONCompareResult().fail("", expected, actual);
-        }
-        else {
+        } else {
             return new JSONCompareResult().fail("", expected, actual);
         }
     }
 
-  /**
+    /**
      * Compares JSON object provided to the expected JSON object using provided comparator, and returns the results of
      * the comparison.
-     * @param expected expected json object
-     * @param actual actual json object
+     *
+     * @param expected   expected json object
+     * @param actual     actual json object
      * @param comparator comparator to use
      * @return result of the comparison
      * @throws JSONException JSON parsing error
@@ -82,8 +81,9 @@ public final class JSONCompare {
     /**
      * Compares JSON object provided to the expected JSON object using provided comparator, and returns the results of
      * the comparison.
-     * @param expected expected json array
-     * @param actual actual json array
+     *
+     * @param expected   expected json array
+     * @param actual     actual json array
      * @param comparator comparator to use
      * @return result of the comparison
      * @throws JSONException JSON parsing error
@@ -106,11 +106,12 @@ public final class JSONCompare {
         final String expectedJson = expected.toJSONString();
         final String actualJson = actual.toJSONString();
         if (!expectedJson.equals(actualJson)) {
-          result.fail("");
+            result.fail("");
         }
         return result;
     }
 
+    //CS304 Issue link:https://github.com/skyscreamer/JSONassert/issues/103
     /**
      * Compares JSON string provided to the expected JSON string, and returns the results of the comparison.
      *
@@ -120,10 +121,16 @@ public final class JSONCompare {
      * @return result of the comparison
      * @throws JSONException JSON parsing error
      */
-    public static JSONCompareResult compareJSON(String expectedStr, String actualStr, JSONCompareMode mode)
+    public static JSONCompareResult compareJSON(String expectedStr, String
+            actualStr, JSONCompareMode mode)
             throws JSONException {
-        return compareJSON(expectedStr, actualStr, getComparatorForMode(mode));
+        if ((mode == JSONCompareMode.STRICT) && (!isJSON(expectedStr) || !isJSON(actualStr))) {
+            return new JSONCompareResult().fail("", expectedStr, actualStr);
+        }
+        return compareJSON(expectedStr, actualStr,
+                getComparatorForMode(mode));
     }
+
 
     /**
      * Compares JSONObject provided to the expected JSONObject, and returns the results of the comparison.
@@ -154,4 +161,22 @@ public final class JSONCompare {
         return compareJSON(expected, actual, getComparatorForMode(mode));
     }
 
+    //CS304 Issue link:https://github.com/skyscreamer/JSONassert/issues/103
+
+    /**
+     * Judge if the given string can be converted into JSON object.
+     *
+     * @param str JSON string
+     * @return if the string can be convert into JSON Object
+     */
+    public static boolean isJSON(String str) {
+        boolean result = false;
+        try {
+            Object obj = JSON.parse(str);
+            result = true;
+        } catch (Exception e) {
+            result = false;
+        }
+        return result;
+    }
 }

@@ -53,7 +53,7 @@ public class ArraySizeComparator extends DefaultComparator {
 	 * Create new ArraySizeComparator.
 	 * 
 	 * @param mode
-	 *            comparison mode, has no impact on ArraySizeComparator but is
+	 *          FindBugs  comparison mode, has no impact on ArraySizeComparator but is
 	 *            used by instance of superclass DefaultComparator to control
 	 *            comparison of JSON items other than arrays.
 	 */
