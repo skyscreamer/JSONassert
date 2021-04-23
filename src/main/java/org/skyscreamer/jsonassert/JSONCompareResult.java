@@ -249,7 +249,7 @@ public class JSONCompareResult {
         } else if (value instanceof JSONObject) {
             return "a JSON object";
         }
-        else if(value == null){//this else if is added
+        else if(value == null){
             return "null";
         }
         else {
