@@ -238,13 +238,21 @@ public class JSONCompareResult {
                 + describe(actual)
                 + "\n";
     }
-
+//changed place
+    /**CS304 Issue link: https://github.com/skyscreamer/JSONassert/issues/130
+     * modified by adding a case when {@code value} == null,
+     * return a String "null" to avoid {@exception NullPointer}
+     */
     private static String describe(Object value) {
         if (value instanceof JSONArray) {
             return "a JSON array";
         } else if (value instanceof JSONObject) {
             return "a JSON object";
-        } else {
+        }
+        else if(value == null){//this else if is added
+            return "null";
+        }
+        else {
             return value.toString();
         }
     }
