@@ -73,13 +73,52 @@ public class DefaultComparator extends AbstractComparator {
         }
     }
 
+    /**
+     * Generate error message for JSONArray comparision.<br>
+     *
+     * Solve problem mentioned in <a href="https://github.com/skyscreamer/JSONassert/issues/128">issue 128</a>
+     * @author Chengqi Xu
+     * @param prefix The prefix description given in compareJSONArray
+     * @param expected The expected length of the JSONArray
+     * @param actual The actual length of the JSONArray
+     * @return The description used as error message for JSONArray comparision
+     **/
+    // CS304 Issue link: https://github.com/skyscreamer/JSONassert/issues/128
+    public String getMessage(String prefix, int expected, int actual){
+        StringBuilder msgBuilder = new StringBuilder(prefix);
+        String description1 = " values but got ";
+        String description2 = "";
+        if (actual > 1) {
+            description2 = " values.";
+        }
+        else {
+            description2 = " value.";
+        }
+        if (expected <= 1) {
+            description1 = " value but got ";
+        }
+        msgBuilder.append("[]: Expected ");
+        msgBuilder.append(expected);
+        msgBuilder.append(description1);
+        msgBuilder.append(actual);
+        msgBuilder.append(description2);
+        return msgBuilder.toString();
+    }
+
+    /**
+     *
+     * @param prefix   the path in the json where the comparison happens
+     * @param expected the expected JSON array
+     * @param actual   the actual JSON array
+     * @param result   stores the actual state of the comparison result
+     * @throws JSONException Used to indicate the error
+     */
+    // CS304 Issue link: https://github.com/skyscreamer/JSONassert/issues/128
     @Override
     public void compareJSONArray(String prefix, JSONArray expected, JSONArray actual, JSONCompareResult result)
             throws JSONException {
         if (expected.length() != actual.length()) {
-            String description = " values but got ";
-            if (expected.length() == 1) description = " value but got ";
-            result.fail(prefix + "[]: Expected " + expected.length() + description + actual.length());
+            result.fail(getMessage(prefix,expected.length(), actual.length()));
             return;
         } else if (expected.length() == 0) {
             return; // Nothing to compare
