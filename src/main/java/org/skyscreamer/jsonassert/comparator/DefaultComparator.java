@@ -57,6 +57,11 @@ public class DefaultComparator extends AbstractComparator {
             result.fail(prefix, expectedValue, actualValue);
         }
         if (areNumbers(expectedValue, actualValue)) {
+            if(expectedValue instanceof Long && actualValue instanceof Long){
+                if (areNotSameLongs(expectedValue, actualValue)) {
+                    result.fail(prefix, expectedValue, actualValue);
+                }
+            }
             if (areNotSameDoubles(expectedValue, actualValue)) {
                 result.fail(prefix, expectedValue, actualValue);
             }
@@ -101,5 +106,15 @@ public class DefaultComparator extends AbstractComparator {
 
     protected boolean areNotSameDoubles(Object expectedValue, Object actualValue) {
         return ((Number) expectedValue).doubleValue() != ((Number) actualValue).doubleValue();
+    }
+    /**
+     * Compares JSON object provided to the expected JSON object using provided comparator, and returns the results of
+     * the comparison.
+     * @param expectedValue expected long value
+     * @param actualValue actual long value
+     * @return result of the comparison
+     */
+    protected boolean areNotSameLongs(Object expectedValue, Object actualValue) {
+        return ((Number) expectedValue).longValue() != ((Number) actualValue).longValue();
     }
 }
