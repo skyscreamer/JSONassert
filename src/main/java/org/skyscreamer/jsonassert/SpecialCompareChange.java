@@ -59,7 +59,7 @@ public class SpecialCompareChange {
 
     static String replaceNum(String str, ArrayList<String> num, ArrayList<String> newNum) {
         for (int i = 0; i < num.size(); i++) {
-            str = str.replaceAll(num.get(i), newNum.get(i));
+            str = str.replace(num.get(i), newNum.get(i));
         }
         return str;
     }
