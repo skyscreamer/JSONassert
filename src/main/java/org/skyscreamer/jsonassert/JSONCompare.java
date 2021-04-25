@@ -10,7 +10,7 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
-*/
+ */
 
 package org.skyscreamer.jsonassert;
 
@@ -37,39 +37,40 @@ public final class JSONCompare {
     /**
      * Compares JSON string provided to the expected JSON string using provided comparator, and returns the results of
      * the comparison.
+     *
      * @param expectedStr Expected JSON string
-     * @param actualStr JSON string to compare
-     * @param comparator Comparator to use
+     * @param actualStr   JSON string to compare
+     * @param comparator  Comparator to use
      * @return result of the comparison
-     * @throws JSONException JSON parsing error
+     * @throws JSONException            JSON parsing error
      * @throws IllegalArgumentException when type of expectedStr doesn't match the type of actualStr
      */
     public static JSONCompareResult compareJSON(String expectedStr, String actualStr, JSONComparator comparator)
             throws JSONException {
+        SpecialCompareChange scc = new SpecialCompareChange();
+        expectedStr = scc.change(expectedStr);
+        actualStr = scc.change(actualStr);
         Object expected = JSONParser.parseJSON(expectedStr);
         Object actual = JSONParser.parseJSON(actualStr);
         if ((expected instanceof JSONObject) && (actual instanceof JSONObject)) {
             return compareJSON((JSONObject) expected, (JSONObject) actual, comparator);
-        }
-        else if ((expected instanceof JSONArray) && (actual instanceof JSONArray)) {
-            return compareJSON((JSONArray)expected, (JSONArray)actual, comparator);
-        }
-        else if (expected instanceof JSONString && actual instanceof JSONString) {
+        } else if ((expected instanceof JSONArray) && (actual instanceof JSONArray)) {
+            return compareJSON((JSONArray) expected, (JSONArray) actual, comparator);
+        } else if (expected instanceof JSONString && actual instanceof JSONString) {
             return compareJson((JSONString) expected, (JSONString) actual);
-        }
-        else if (expected instanceof JSONObject) {
+        } else if (expected instanceof JSONObject) {
             return new JSONCompareResult().fail("", expected, actual);
-        }
-        else {
+        } else {
             return new JSONCompareResult().fail("", expected, actual);
         }
     }
 
-  /**
+    /**
      * Compares JSON object provided to the expected JSON object using provided comparator, and returns the results of
      * the comparison.
-     * @param expected expected json object
-     * @param actual actual json object
+     *
+     * @param expected   expected json object
+     * @param actual     actual json object
      * @param comparator comparator to use
      * @return result of the comparison
      * @throws JSONException JSON parsing error
@@ -82,8 +83,9 @@ public final class JSONCompare {
     /**
      * Compares JSON object provided to the expected JSON object using provided comparator, and returns the results of
      * the comparison.
-     * @param expected expected json array
-     * @param actual actual json array
+     *
+     * @param expected   expected json array
+     * @param actual     actual json array
      * @param comparator comparator to use
      * @return result of the comparison
      * @throws JSONException JSON parsing error
@@ -106,7 +108,7 @@ public final class JSONCompare {
         final String expectedJson = expected.toJSONString();
         final String actualJson = actual.toJSONString();
         if (!expectedJson.equals(actualJson)) {
-          result.fail("");
+            result.fail("");
         }
         return result;
     }
