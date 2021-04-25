@@ -286,6 +286,21 @@ public class JSONAssertTest {
         JSONAssert.assertEquals(expected, actual, true);
         JSONAssert.assertEquals(actual, expected, true);
     }
+    @Test
+    public void exceedDouble() throws JSONException {
+        JSONAssert.assertNotEquals("{ \"value\": 1234567890.1234567890123456 }", "{ \"value\": 1234567890.1234567000000000 }", true);
+    }
+    @Test
+    public void notExceedLong() throws JSONException {
+        JSONAssert.assertEquals("{ \"value\": 1234567890123423 }", "{ \"value\": 1234567890123423 }", true);
+        JSONAssert.assertNotEquals("{ \"value\": 1234567890123243233}", "{ \"value\": 1234567890123243232 }", true);
+    }
+
+    @Test
+    public void exceedLong() throws JSONException {
+        JSONAssert.assertNotEquals("{ \"value\": 12345678901234567890123456 }", "{ \"value\": 12345678901234567800000000}", true);
+        JSONAssert.assertEquals("{ \"value\": 12345678901234567890123456 }", "{ \"value\": 12345678901234567890123456}", true);
+    }
 
     @Test
     public void testEquivalentIntAndDouble() throws JSONException {

@@ -21,6 +21,11 @@ import org.json.JSONString;
 import org.skyscreamer.jsonassert.comparator.DefaultComparator;
 import org.skyscreamer.jsonassert.comparator.JSONComparator;
 
+import java.util.ArrayList;
+import java.util.Set;
+
+import static org.skyscreamer.jsonassert.comparator.JSONCompareUtil.getKeys;
+
 /**
  * Provides API to compare two JSON entities.  This is the backend to {@link JSONAssert}, but it can
  * be programmed against directly to access the functionality.  (eg, to make something that works with a
@@ -28,6 +33,78 @@ import org.skyscreamer.jsonassert.comparator.JSONComparator;
  */
 public final class JSONCompare {
     private JSONCompare() {
+    }
+    /**
+     * Replace the original String, add "\"" to both size of the values in expectedStr.
+     * Check if the original String should be replaced, if not, return "", else return the replaced String.
+     * @param expectedStr Strings that need to be replaced.
+     * @param expected jsonObject that was parsed by expectedStr.
+     * @return the replaced String.
+     * @throws JSONException JSON parsing error.
+     */
+    public static String repalceString(String expectedStr,Object expected) throws JSONException{
+        Set<String> re = getKeys((JSONObject) expected);
+        Object expectedValue;
+        String result = "";
+        ArrayList<String> name=new ArrayList<String>();
+        ArrayList<String> sval=new ArrayList<String>();  // value in String format;
+        for(String r:re){
+            expectedValue = ((JSONObject) expected).get(r);
+            if(expectedValue instanceof Double){
+                getPair(expectedStr,name,sval);
+                for(int i=0;i<name.size();i++){
+                    if(!String.valueOf(expectedValue).equals(sval.get(i)))
+                        result = expectedStr.replace(sval.get(i),"\""+sval.get(i)+"\"");
+                }
+            }
+        }
+        return result;
+    }
+    /**
+     * Split the input json(expectedStr) in String format. Get the output names and values
+     * store them to ArrayList name and ArrayList sval.
+     * @param expectedStr Strings that need to be splited.
+     * @param name The names in the expectedStr
+     * @param sval The values in the expectedStr
+     */
+    public static void getPair(String expectedStr, ArrayList<String> name,ArrayList<String> sval){
+        int POS = 2;
+        while(expectedStr.charAt(0)!='['){
+            while(expectedStr.charAt(POS-1)==' '){
+                POS++;
+            }
+            if(expectedStr.charAt(POS-1)!='"') break;
+            POS++;
+            StringBuffer buf = new StringBuffer();
+            while(expectedStr.charAt(POS-1)!='"'){
+                buf.append(expectedStr.charAt(POS-1));
+                POS++;
+            }
+            String n = buf.toString();
+            POS++;
+            name.add(n);
+            //   Object val = ((JSONObject) expected).get(n);
+//            if(!(val instanceof Double)) continue;
+            while(expectedStr.charAt(POS-1)==' '){
+                POS++;
+            }
+            if(expectedStr.charAt(POS-1)!=':') break;
+            POS++;
+            int j = expectedStr.charAt(POS-1);
+            while(expectedStr.charAt(POS-1)==' '){
+                POS++;
+            }
+            StringBuffer buf2 = new StringBuffer();
+            while(expectedStr.charAt(POS-1)!=' '&&expectedStr.charAt(POS-1)!='}'){
+                buf2.append(expectedStr.charAt(POS-1));
+                POS++;
+            }
+            String v = buf2.toString();
+            sval.add(v);
+            if(expectedStr.charAt(POS-1)=='}'){
+                break;
+            }
+        }
     }
 
     private static JSONComparator getComparatorForMode(JSONCompareMode mode) {
@@ -48,6 +125,18 @@ public final class JSONCompare {
             throws JSONException {
         Object expected = JSONParser.parseJSON(expectedStr);
         Object actual = JSONParser.parseJSON(actualStr);
+        int in1 = expectedStr.indexOf("[");
+        int in2 = actualStr.indexOf("[");
+        int in3 = expectedStr.indexOf("{");
+        int in4 = actualStr.indexOf("{");
+        if(in1==-1&&in2==-1&&in3!=-1&&in4!=-1){
+            String reexpectedStr = repalceString(expectedStr,expected);
+            String reactualStr = repalceString(actualStr,actual);
+            if(!reexpectedStr.equals(expectedStr)&&!actualStr.equals(reactualStr)&&!reexpectedStr.equals("")&&!reactualStr.equals("")){
+                expected = JSONParser.parseJSON(reexpectedStr);
+                actual = JSONParser.parseJSON(reactualStr);
+            }
+        }
         if ((expected instanceof JSONObject) && (actual instanceof JSONObject)) {
             return compareJSON((JSONObject) expected, (JSONObject) actual, comparator);
         }
