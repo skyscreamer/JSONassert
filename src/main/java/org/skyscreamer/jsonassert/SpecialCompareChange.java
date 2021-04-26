@@ -43,7 +43,7 @@ public class SpecialCompareChange {
         ArrayList<String> pretreat = new ArrayList<String>();
         for (String i : num) {
             i = removeEndZero(i);
-            if (!(String.valueOf(Double.parseDouble(i)).equals(i))) {
+            if ((!(String.valueOf(Double.parseDouble(i)).equals(i)))&&(!(String.valueOf(Long.parseLong(i)).equals(i)))) {
                 i = "a" + i;
                 pretreat.add(i);
             } else {
