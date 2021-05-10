@@ -65,6 +65,42 @@ public class JSONAssertTest {
         testFail("310.1e-1", "31.01", STRICT); // should fail though numbers are the same?
     }
 
+    /**
+     * Test cases for issue 107.
+     * CS304 Issue {@link: https://github.com/skyscreamer/JSONassert/issues/107}
+     * In origin case, there is a bug that JSONCompareResult assumes pass when the
+     * difference of two number exceeds the accuracy of Double.
+     * I create some new testcases below for this bug.
+     * @Time 2021.4.15 Tingyan Feng
+     */
+    @Test
+    public void testBigNumber() throws JSONException{
+        testPass("{ \"value\": 1234567890.1234567890123456 }",
+                "{ \"value\": 1234567890.1234567890123456 }",
+                STRICT); // Pass when big number is the same.
+        testPass("{ \"value\": 1234567890.1234567890123456 }",
+                "{ \"value\": 1234567890.1234567890123456 }",
+                LENIENT);// Pass when big number is the same.
+        testPass("{ \"value\": 12345678901234567890123456 }",
+                "{ \"value\": 12345678901234567890123456 }",
+                STRICT);// Pass when big number is the same.
+        testPass("{ \"value\": 12345678901234567890123456 }",
+                "{ \"value\": 12345678901234567890123456 }",
+                LENIENT);// Pass when big number is the same.
+        testFail("{ \"value\": 1234567890.1234567890123456 }",
+                "{ \"value\": 1234567890.1234567000000000 }",
+                STRICT);// Fail when the number is the different and the difference exceeds the accuracy of double.
+        testFail("{ \"value\": 1234567890.1234567890123456 }",
+                "{ \"value\": 1234567890.1234567000000000 }",
+                LENIENT);// Fail when the number is the different and the difference exceeds the accuracy of double.
+        testFail("{ \"value\": 12345678901234567890123456 }",
+                "{ \"value\": 12345678901234567800000000 }",
+                STRICT);// Fail when the number is the different and the difference exceeds the accuracy of double.
+        testFail("{ \"value\": 12345678901234567890123456 }",
+                "{ \"value\": 12345678901234567800000000 }",
+                LENIENT);// Fail when the number is the different and the difference exceeds the accuracy of double.
+    }
+
     @Test
     public void testSimple() throws JSONException {
         testPass("{id:1}", "{id:1}", STRICT);
@@ -631,7 +667,7 @@ public class JSONAssertTest {
                 JSONCompareMode.STRICT, 
                 new Customization("entry.id", 
                 new RegularExpressionValueMatcher<Object>("\\d"))
-         ));
+        ));
         
         performAssertNotEqualsTestForMessageVerification("{\"entry\":{\"id\":x}}", "{\"entry\":{\"id\":1, \"id\":2}}", 
             new CustomComparator(
