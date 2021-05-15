@@ -192,13 +192,29 @@ public class JSONCompareResult {
         return this;
     }
 
+     /**CS304 Issue link: https://github.com/skyscreamer/JSONassert/issues/127
+     * modified by adding a case when {@code expected} or {@code actual} == null,
+     * which the JSON may be an invalid JSON,
+     * return a warning sentence to inform the tester.
+     */
     private String formatFailureMessage(String field, Object expected, Object actual) {
-        return field
+        String describeExp = describe(expected);
+        String describeAct = describe(actual);
+        String message = field
                 + "\nExpected: "
-                + describe(expected)
+                + describeExp
                 + "\n     got: "
-                + describe(actual)
+                + describeAct
                 + "\n";
+        if(describeExp.equals("null")){
+            message += "the expected JSON may be an invalid JSON"
+                    + "\n";
+        }
+        if(describeAct.equals("null")){
+            message += "the actual JSON may be an invalid JSON"
+                    + "\n";
+        }
+        return message;
     }
 
     /**
