@@ -89,16 +89,57 @@ public abstract class AbstractComparator implements JSONComparator {
         Map<Object, JSONObject> expectedValueMap = arrayOfJsonObjectToMap(expected, uniqueKey);
         Map<Object, JSONObject> actualValueMap = arrayOfJsonObjectToMap(actual, uniqueKey);
         for (Object id : expectedValueMap.keySet()) {
-            if (!actualValueMap.containsKey(id)) {
+            boolean same = false;
+            Object aid = null;
+            for(Object id2 : actualValueMap.keySet()){
+                String sid = id.toString();
+                String sid2 = id2.toString();
+                if(sid.indexOf(".") > 0){
+                    sid = sid.replaceAll("0+?$", "");
+                    sid = sid.replaceAll("[.]$", "");
+                }
+                if(sid2.indexOf(".") > 0){
+                    sid2 = sid2.replaceAll("0+?$", "");
+                    sid2 = sid2.replaceAll("[.]$", "");
+                }
+                if(sid.equals(sid2)){
+                    same = true;
+                    aid = id2;
+
+                }
+            }
+            if (!actualValueMap.containsKey(id)&&!same) {
                 result.missing(formatUniqueKey(key, uniqueKey, id), expectedValueMap.get(id));
                 continue;
             }
             JSONObject expectedValue = expectedValueMap.get(id);
-            JSONObject actualValue = actualValueMap.get(id);
+            JSONObject actualValue = null;
+            if(!same) {
+                actualValue = actualValueMap.get(id);
+            }
+            else{
+                actualValue = actualValueMap.get(aid);
+            }
             compareValues(formatUniqueKey(key, uniqueKey, id), expectedValue, actualValue, result);
         }
         for (Object id : actualValueMap.keySet()) {
-            if (!expectedValueMap.containsKey(id)) {
+            boolean same = false;
+            for(Object id2 : expectedValueMap.keySet()){
+                String sid = id.toString();
+                String sid2 = id2.toString();
+                if(sid.indexOf(".") > 0){
+                    sid = sid.replaceAll("0+?$", "");
+                    sid = sid.replaceAll("[.]$", "");
+                }
+                if(sid2.indexOf(".") > 0){
+                    sid2 = sid2.replaceAll("0+?$", "");
+                    sid2 = sid2.replaceAll("[.]$", "");
+                }
+                if(sid.equals(sid2)){
+                    same = true;
+                }
+            }
+            if (!expectedValueMap.containsKey(id)&&!same) {
                 result.unexpected(formatUniqueKey(key, uniqueKey, id), actualValueMap.get(id));
             }
         }
