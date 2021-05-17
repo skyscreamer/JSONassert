@@ -20,6 +20,8 @@ import org.json.JSONObject;
 import org.json.JSONString;
 import org.skyscreamer.jsonassert.comparator.DefaultComparator;
 import org.skyscreamer.jsonassert.comparator.JSONComparator;
+import java.util.ArrayList;
+import java.util.Iterator;
 
 /**
  * Provides API to compare two JSON entities.  This is the backend to {@link JSONAssert}, but it can
