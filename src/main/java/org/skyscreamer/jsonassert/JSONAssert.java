@@ -833,4 +833,124 @@ public class JSONAssert {
         }
         return combinedMessage;
     }
+    
+    //CS304 issue link: https://github.com/skyscreamer/JSONassert/issues/129
+
+    /**
+     * Asserts that the JSONString provided match the expected JSONString. 
+     * If it isn't it throws an {@link AssertionError}
+     * 
+     * @param expected Expected JSON String
+     * @param actual JSON String to compare
+     * @param ignoreList The list of field name (in String) wanted to ignore
+     * @param strict Defines comparison behavior
+     * @throws JSONException JSON parsing error
+     */
+    public static void assertEqualsWithIgnore(String expected, String actual, ArrayList<String> ignoreList, boolean strict) throws JSONException {
+        JSONCompareResult result = JSONCompare.compareJSONWithIgnore(expected, actual, ignoreList,
+                strict?JSONCompareMode.STRICT:JSONCompareMode.LENIENT);
+        if (result.failed()){
+            throw new AssertionError(result.getMessage());
+        }
+    }
+
+    //CS304 issue link: https://github.com/skyscreamer/JSONassert/issues/129
+
+    /**
+     * Asserts that the JSONObject provided match the expected JSONObject. 
+     * If it isn't it throws an {@link AssertionError}
+     *
+     * @param expected Expected JSON Object
+     * @param actual JSON Object to compare
+     * @param ignoreList The list of field name (in String) wanted to ignore
+     * @param strict Defines comparison behavior
+     * @throws JSONException JSON parsing error
+     */
+    public static void assertEqualsWithIgnore(JSONObject expected, JSONObject actual, ArrayList<String> ignoreList, boolean strict) throws JSONException{
+        JSONCompareResult result = JSONCompare.compareJSONWithIgnore(expected, actual, ignoreList,
+                strict?JSONCompareMode.STRICT:JSONCompareMode.LENIENT);
+        if (result.failed()){
+            throw new AssertionError(result.getMessage());
+        }
+    }
+
+    //CS304 issue link: https://github.com/skyscreamer/JSONassert/issues/129
+
+    /**
+     * Asserts that the JSONArray provided match the expected JSONArray. 
+     * If it isn't it throws an {@link AssertionError}
+     *
+     * @param expected Expected JSON Array
+     * @param actual JSON Array to compare
+     * @param ignoreList The list of field name (in String) wanted to ignore
+     * @param strict Defines comparison behavior
+     * @throws JSONException JSON parsing error
+     */
+    public static void assertEqualsWithIgnore(JSONArray expected, JSONArray actual, ArrayList<String> ignoreList, boolean strict) throws JSONException{
+        JSONCompareResult result = JSONCompare.compareJSONWithIgnore(expected, actual, ignoreList,
+                strict?JSONCompareMode.STRICT:JSONCompareMode.LENIENT);
+        if (result.failed()){
+            throw new AssertionError(result.getMessage());
+        }
+    }
+
+    //CS304 issue link: https://github.com/skyscreamer/JSONassert/issues/129
+    
+    /**
+     * Asserts that the JSONString provided does not match the expected JSONString. 
+     * If it is it throws an {@link AssertionError}
+     *
+     * @param expected Expected JSON String
+     * @param actual JSON String to compare
+     * @param ignoreList The list of field name (in String) wanted to ignore
+     * @param strict Defines comparison behavior
+     * @throws JSONException JSON parsing error
+     */
+    public static void assertNotEqualsWithIgnore(String expected, String actual, ArrayList<String> ignoreList, boolean strict) throws JSONException{
+        JSONCompareResult result = JSONCompare.compareJSONWithIgnore(expected, actual, ignoreList,
+                strict?JSONCompareMode.STRICT:JSONCompareMode.LENIENT);
+        if (result.passed()){
+            throw new AssertionError("Two JSONs are equal!");
+        }
+    }
+
+    //CS304 issue link: https://github.com/skyscreamer/JSONassert/issues/129
+    
+    /**
+     * Asserts that the JSONObject provided does not match the expected JSONObject. 
+     * If it is it throws an {@link AssertionError}
+     *
+     * @param expected Expected JSON Object
+     * @param actual JSON Object to compare
+     * @param ignoreList The list of field name (in String) wanted to ignore
+     * @param strict Defines comparison behavior
+     * @throws JSONException JSON parsing error
+     */
+    public static void assertNotEqualsWithIgnore(JSONObject expected, JSONObject actual, ArrayList<String> ignoreList, boolean strict) throws JSONException{
+        JSONCompareResult result = JSONCompare.compareJSONWithIgnore(expected, actual, ignoreList,
+                strict?JSONCompareMode.STRICT:JSONCompareMode.LENIENT);
+        if (result.passed()){
+            throw new AssertionError("Two JSONs are equal!");
+        }
+    }
+
+    //CS304 issue link: https://github.com/skyscreamer/JSONassert/issues/129
+    
+    /**
+     * Asserts that the JSONArray provided does not match the expected JSONArray. 
+     * If it is it throws an {@link AssertionError}
+     *
+     * @param expected Expected JSON Array
+     * @param actual JSON Array to compare
+     * @param ignoreList The list of field name (in String) wanted to ignore
+     * @param strict Defines comparison behavior
+     * @throws JSONException JSON parsing error
+     */
+    public static void assertNotEqualsWithIgnore(JSONArray expected, JSONArray actual, ArrayList<String> ignoreList, boolean strict) throws JSONException{
+        JSONCompareResult result = JSONCompare.compareJSONWithIgnore(expected, actual, ignoreList,
+                strict?JSONCompareMode.STRICT:JSONCompareMode.LENIENT);
+        if (result.passed()){
+            throw new AssertionError("Two JSONs are equal!");
+        }
+    }
 }
