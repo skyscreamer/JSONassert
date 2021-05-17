@@ -18,6 +18,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.skyscreamer.jsonassert.comparator.JSONComparator;
+import java.util.ArrayList;
 
 /**
  * <p>A set of assertion methods useful for writing tests methods that return JSON.</p>
