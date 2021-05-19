@@ -30,7 +30,15 @@ public final class JSONCompare {
     private JSONCompare() {
     }
 
+    /**
+     * Get the corresponding comparator according to the compare mode
+     * @param mode, the compare mode
+     * @return a instance of ExtendNullComparator if the mode is EXTEND_WITH_NULL
+     */
     private static JSONComparator getComparatorForMode(JSONCompareMode mode) {
+        if(mode.isNullExtensible()){
+            return new ExtendNullComparator(mode);
+        }
         return new DefaultComparator(mode);
     }
 
