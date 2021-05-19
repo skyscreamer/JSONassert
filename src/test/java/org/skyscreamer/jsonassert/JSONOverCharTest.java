@@ -33,15 +33,17 @@ import org.junit.Test;
 import org.junit.internal.matchers.TypeSafeMatcher;
 public class JSONOverCharTest
 {
-    // This test fails
+    //CS304 (manually written) Issue link: https://github.com/skyscreamer/JSONassert/issues/113
     @Test
     public void testWithObjectEmpty() throws JSONException {
         JSONAssert.assertEquals("{}", "{}", JSONCompareMode.STRICT);
     }
+    //CS304 (manually written) Issue link: https://github.com/skyscreamer/JSONassert/issues/113
     @Test
     public void testWithArrayEmpty() throws JSONException {
         JSONAssert.assertEquals("[]", "[]", JSONCompareMode.STRICT);
     }
+    //CS304 (manually written) Issue link: https://github.com/skyscreamer/JSONassert/issues/113
     @Test(expected = AssertionError.class)
     public void testWithArrayLeftWord() throws JSONException {
         JSONAssert.assertEquals("[]", "[]a", LENIENT);
@@ -49,6 +51,7 @@ public class JSONOverCharTest
         JSONAssert.assertEquals("[]b", "[]a", LENIENT);
         JSONAssert.assertEquals("[{'a': 1}]", "[{'a': 1}]a", LENIENT);
     }
+    //CS304 (manually written) Issue link: https://github.com/skyscreamer/JSONassert/issues/113
     @Test(expected = AssertionError.class)
     public void testWithObjectLeftword() throws JSONException {
         JSONAssert.assertEquals("{}", "{}a", LENIENT);
