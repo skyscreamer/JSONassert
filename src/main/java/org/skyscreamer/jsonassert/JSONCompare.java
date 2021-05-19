@@ -19,6 +19,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONString;
 import org.skyscreamer.jsonassert.comparator.DefaultComparator;
+import org.skyscreamer.jsonassert.comparator.ExtendNullComparator;
 import org.skyscreamer.jsonassert.comparator.JSONComparator;
 
 /**
