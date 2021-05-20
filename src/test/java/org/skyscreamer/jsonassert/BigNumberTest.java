@@ -4,7 +4,7 @@ import org.json.JSONException;
 import org.junit.Test;
 
 public class BigNumberTest {
-    // This test fails
+    //CS304 (manually written) Issue link: https://github.com/skyscreamer/JSONassert/issues/107
     @Test
     public void testBigDecimalDifferent() throws JSONException {
         JSONAssert.assertNotEquals(
@@ -15,7 +15,7 @@ public class BigNumberTest {
 
     }
 
-
+    //CS304 (manually written) Issue link: https://github.com/skyscreamer/JSONassert/issues/107
     @Test
     public void testBigDecimalEqual() throws JSONException {
         JSONAssert.assertEquals(
@@ -24,7 +24,7 @@ public class BigNumberTest {
                 true
         );
     }
-
+    //CS304 (manually written) Issue link: https://github.com/skyscreamer/JSONassert/issues/107
     @Test
     public void testBigNumberDifferent() throws JSONException {
         JSONAssert.assertNotEquals(
@@ -33,7 +33,7 @@ public class BigNumberTest {
                 true
         );
     }
-
+    //CS304 (manually written) Issue link: https://github.com/skyscreamer/JSONassert/issues/107
     @Test
     public void testBigNumberEqual() throws JSONException {
         JSONAssert.assertEquals(
@@ -42,7 +42,7 @@ public class BigNumberTest {
                 true
         );
     }
-
+    //CS304 (manually written) Issue link: https://github.com/skyscreamer/JSONassert/issues/107
     @Test
     public void testNumberDemicalEqual() throws JSONException {
         JSONAssert.assertEquals(
@@ -51,7 +51,7 @@ public class BigNumberTest {
                 true
         );
     }
-
+    //CS304 (manually written) Issue link: https://github.com/skyscreamer/JSONassert/issues/107
     @Test
     public void testSmallNumberDemicalEqual1() throws JSONException {
         JSONAssert.assertEquals(
@@ -60,7 +60,7 @@ public class BigNumberTest {
                 true
         );
     }
-
+    //CS304 (manually written) Issue link: https://github.com/skyscreamer/JSONassert/issues/107
     @Test
     public void testSmallNumberDemicalEqual2() throws JSONException {
         JSONAssert.assertEquals(
