@@ -55,16 +55,18 @@ public final class JSONCompare {
         Object actual = JSONParser.parseJSON(actualStr);
         String eStrNoSpace = expectedStr.replaceAll(" ", "");
         String aStrNoSpace = actualStr.replaceAll(" ", "");
-        if (eStrNoSpace.charAt(0) != '[' || eStrNoSpace.charAt(eStrNoSpace.length() - 1) != ']'
-                || eStrNoSpace.charAt(0) != '{' || eStrNoSpace.charAt(eStrNoSpace.length() - 1) != '}') {
-            return new JSONCompareResult().fail("Invalid JSON object with extra character in head or tail in expected", expected, actual);
-        } else if (aStrNoSpace.charAt(0) != '[' || aStrNoSpace.charAt(aStrNoSpace.length() - 1) != ']'
-                || aStrNoSpace.charAt(0) != '{' || aStrNoSpace.charAt(aStrNoSpace.length() - 1) != '}') {
-            return new JSONCompareResult().fail("Invalid JSON object with extra character in head or tail in actual", expected, actual);
-        } else if ((expected instanceof JSONObject) && (actual instanceof JSONObject)) {
-            return compareJSON((JSONObject) expected, (JSONObject) actual, comparator);
-        } else if ((expected instanceof JSONArray) && (actual instanceof JSONArray)) {
-            return compareJSON((JSONArray) expected, (JSONArray) actual, comparator);
+        if((expected instanceof JSONObject) && (actual instanceof JSONObject)){
+            if ( eStrNoSpace.charAt(0) != '{' || eStrNoSpace.charAt(eStrNoSpace.length() - 1) != '}') {
+                return new JSONCompareResult().fail("Invalid JSON object with extra character in head or tail in expected", expected, actual);
+            }else{
+                return compareJSON((JSONObject) expected, (JSONObject) actual, comparator);
+            }
+        } else if((expected instanceof JSONArray) && (actual instanceof JSONArray)){
+            if (aStrNoSpace.charAt(0) != '[' || aStrNoSpace.charAt(aStrNoSpace.length() - 1) != ']') {
+                return new JSONCompareResult().fail("Invalid JSON object with extra character in head or tail in actual", expected, actual);
+            }else{
+                return compareJSON((JSONArray) expected, (JSONArray) actual, comparator);
+            }
         } else if (expected instanceof JSONString && actual instanceof JSONString) {
             return compareJson((JSONString) expected, (JSONString) actual);
         } else if (expected instanceof JSONObject) {
