@@ -39,19 +39,29 @@ public class JSONParser {
      * @throws JSONException JSON parsing error
      */
     public static Object parseJSON(final String s) throws JSONException {
-        if (s.trim().startsWith("{")) {
+        if (s.trim().startsWith("{")&&s.trim().endsWith("}")) {
             return new JSONObject(s);
         }
-        else if (s.trim().startsWith("[")) {
+        else if (s.trim().startsWith("[")&&s.trim().endsWith("]")) {
             return new JSONArray(s);
-        } else if (s.trim().startsWith("\"")
+        } else if (s.trim().startsWith("\"") && s.trim().endsWith("\"")
                    || s.trim().matches(NUMBER_REGEX)) {
-          return new JSONString() {
-            @Override
-            public String toJSONString() {
-              return s;
+            int pos = 0;
+            boolean hascolon = false;
+            while(pos<s.length()){
+                if(s.charAt(pos)==':'){
+                    hascolon = true;
+                }
+                pos++;
             }
-          };
+            if(!hascolon){
+                return new JSONString() {
+                  @Override
+                  public String toJSONString() {
+                    return s;
+                }
+                };
+            }
         }
         throw new JSONException("Unparsable JSON string: " + s);
     }
