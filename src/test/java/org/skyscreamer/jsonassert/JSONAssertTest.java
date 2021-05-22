@@ -640,6 +640,27 @@ public class JSONAssertTest {
                 new RegularExpressionValueMatcher<Object>("\\d"))
         ));
     }
+
+    @Test(expected= JSONException.class)
+    public void testInvalidString() throws JSONException {
+        JSONAssert.assertEquals("   \"id\": 1,\"props\": [{\"id\": 1,\"propB\": true}, ],\"propC\": false}  ",
+                "{id:\"12345\"}", false);
+    }
+
+    @Test(expected= JSONException.class)
+    public void testInvalidJsonObject() throws JSONException {
+        JSONCompare.compareJSON("{}a", "{}", JSONCompareMode.STRICT);
+    }
+
+    @Test(expected= JSONException.class)
+    public void testInvalidJsonArray() throws JSONException {
+        JSONCompare.compareJSON("[]", "[]a", JSONCompareMode.STRICT);
+    }
+
+    @Test(expected= JSONException.class)
+    public void testInvalidComplexJsonArray() throws JSONException {
+        JSONCompare.compareJSON("[{'a': 'b'}a]", "[{'a': 'b'}]", JSONCompareMode.STRICT);
+    }
     
     private void testPass(String expected, String actual, JSONCompareMode compareMode)
             throws JSONException
