@@ -658,6 +658,11 @@ public class JSONAssertTest {
         performAssertEqualsTestForMessageVerification("[{id:1},{id:2},]", "[{id:1},{id:2},{}]", true);
     }
 
+    @Test
+    public void testAssertWithNullValues5() throws JSONException {
+        JSONAssert.assertEquals("[{id:1},{id:2},]" , "[{id:1},{id:2},]" , true);
+    }
+
     private void testPass(String expected, String actual, JSONCompareMode compareMode)
             throws JSONException
     {
