@@ -181,11 +181,15 @@ public class JSONCustomComparatorTest {
     public void whenRootDeepWildcardPathWithArrayMatchesCallCustomMatcher() throws JSONException {
         JSONComparator jsonCmpStrict        = new CustomComparator(JSONCompareMode.STRICT,         new Customization("addresses[*].address.num", new RegularExpressionValueMatcher<Object>("\\d")));
         JSONComparator jsonCmpNonExtensible = new CustomComparator(JSONCompareMode.NON_EXTENSIBLE, new Customization("addresses[*].address.num", new RegularExpressionValueMatcher<Object>("\\d")));
+        JSONComparator jsonCmpNonLenient = new CustomComparator(JSONCompareMode.NON_EXTENSIBLE, new Customization("addresses[*].address.num", new RegularExpressionValueMatcher<Object>("\\d")));
 
         JSONCompareResult resultStrict = compareJSON(rootDeepWildcardWithArray, rootDeepWildcardWithArray, jsonCmpStrict);
         assertFalse(resultStrict.getMessage(), resultStrict.passed());
 
         JSONCompareResult resultNonExtensible = compareJSON(rootDeepWildcardWithArray, rootDeepWildcardWithArray, jsonCmpNonExtensible);
         assertFalse(resultNonExtensible.getMessage(), resultNonExtensible.passed());
+
+        JSONCompareResult resultLenient = compareJSON(rootDeepWildcardWithArray, rootDeepWildcardWithArray, jsonCmpNonExtensible);
+        assertFalse(resultLenient.getMessage(), resultLenient.passed());
     }
 }
