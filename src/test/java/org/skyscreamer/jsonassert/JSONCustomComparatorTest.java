@@ -21,6 +21,7 @@ import org.skyscreamer.jsonassert.comparator.JSONComparator;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertFalse;
 import static org.skyscreamer.jsonassert.JSONCompare.compareJSON;
 
 public class JSONCustomComparatorTest {
@@ -118,6 +119,15 @@ public class JSONCustomComparatorTest {
             "  }\n" +
             "}";
 
+    String rootDeepWildcardWithArray = "{\n" +
+            "  \"addresses\": [{\n" +
+            "    \"address\": {\n" +
+            "      \"num\": \"not_a_number\"" +
+            "    }\n" +
+            "  }]\n" +
+            "}";
+
+
     int comparatorCallCount = 0;
     ValueMatcher<Object> comparator = new ValueMatcher<Object>() {
         @Override
@@ -165,5 +175,17 @@ public class JSONCustomComparatorTest {
         JSONCompareResult result = compareJSON(rootDeepWildcardExpected, rootDeepWildcardActual, jsonCmp);
         assertTrue(result.getMessage(), result.passed());
         assertEquals(4, comparatorCallCount);
+    }
+
+    @Test
+    public void whenRootDeepWildcardPathWithArrayMatchesCallCustomMatcher() throws JSONException {
+        JSONComparator jsonCmpStrict        = new CustomComparator(JSONCompareMode.STRICT,         new Customization("addresses[*].address.num", new RegularExpressionValueMatcher<Object>("\\d")));
+        JSONComparator jsonCmpNonExtensible = new CustomComparator(JSONCompareMode.NON_EXTENSIBLE, new Customization("addresses[*].address.num", new RegularExpressionValueMatcher<Object>("\\d")));
+
+        JSONCompareResult resultStrict = compareJSON(rootDeepWildcardWithArray, rootDeepWildcardWithArray, jsonCmpStrict);
+        assertFalse(resultStrict.getMessage(), resultStrict.passed());
+
+        JSONCompareResult resultNonExtensible = compareJSON(rootDeepWildcardWithArray, rootDeepWildcardWithArray, jsonCmpNonExtensible);
+        assertFalse(resultNonExtensible.getMessage(), resultNonExtensible.passed());
     }
 }

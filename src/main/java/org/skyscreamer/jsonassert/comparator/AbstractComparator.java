@@ -43,6 +43,12 @@ public abstract class AbstractComparator implements JSONComparator {
         return result;
     }
 
+    public final JSONCompareResult compareJSONPreserveContext(String prefix, JSONObject expected, JSONObject actual) throws JSONException{
+        JSONCompareResult result = new JSONCompareResult();
+        compareJSON(prefix, expected, actual, result);
+        return result;
+    }
+
     /**
      * Compares JSONArray provided to the expected JSONArray, and returns the results of the comparison.
      *
@@ -54,6 +60,12 @@ public abstract class AbstractComparator implements JSONComparator {
     public final JSONCompareResult compareJSON(JSONArray expected, JSONArray actual) throws JSONException {
         JSONCompareResult result = new JSONCompareResult();
         compareJSONArray("", expected, actual, result);
+        return result;
+    }
+
+    public final JSONCompareResult compareJSONPreserveContext(String prefix, JSONArray expected, JSONArray actual) throws JSONException{
+        JSONCompareResult result = new JSONCompareResult();
+        compareJSONArray(prefix, expected, actual, result);
         return result;
     }
 
@@ -153,13 +165,13 @@ public abstract class AbstractComparator implements JSONComparator {
                     continue;
                 }
                 if (expectedElement instanceof JSONObject) {
-                    if (compareJSON((JSONObject) expectedElement, (JSONObject) actualElement).passed()) {
+                    if (compareJSONPreserveContext(key + "[" + i + "]",(JSONObject) expectedElement, (JSONObject) actualElement).passed()) {
                         matched.add(j);
                         matchFound = true;
                         break;
                     }
                 } else if (expectedElement instanceof JSONArray) {
-                    if (compareJSON((JSONArray) expectedElement, (JSONArray) actualElement).passed()) {
+                    if (compareJSONPreserveContext(key + "[" + i + "]", (JSONArray) expectedElement, (JSONArray) actualElement).passed()) {
                         matched.add(j);
                         matchFound = true;
                         break;
