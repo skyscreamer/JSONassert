@@ -120,8 +120,8 @@ public class JSONCustomComparatorTest {
             "}";
 
     String rootDeepWildcardWithArray = "{\n" +
-            "  \"addresses\": [{\n" +
-            "    \"address\": {\n" +
+            "  \"foo\": [{\n" +
+            "    \"bar\": {\n" +
             "      \"num\": \"not_a_number\"" +
             "    }\n" +
             "  }]\n" +
@@ -178,10 +178,10 @@ public class JSONCustomComparatorTest {
     }
 
     @Test
-    public void whenRootDeepWildcardPathWithArrayMatchesCallCustomMatcher() throws JSONException {
-        JSONComparator jsonCmpStrict        = new CustomComparator(JSONCompareMode.STRICT,         new Customization("addresses[*].address.num", new RegularExpressionValueMatcher<Object>("\\d")));
-        JSONComparator jsonCmpNonExtensible = new CustomComparator(JSONCompareMode.NON_EXTENSIBLE, new Customization("addresses[*].address.num", new RegularExpressionValueMatcher<Object>("\\d")));
-        JSONComparator jsonCmpNonLenient = new CustomComparator(JSONCompareMode.NON_EXTENSIBLE, new Customization("addresses[*].address.num", new RegularExpressionValueMatcher<Object>("\\d")));
+    public void whenDeepWildcardPathWithArrayMatchesCallCustomMatcher() throws JSONException {
+        JSONComparator jsonCmpStrict        = new CustomComparator(JSONCompareMode.STRICT,         new Customization("foo[*].bar.num", new RegularExpressionValueMatcher<Object>("\\d")));
+        JSONComparator jsonCmpNonExtensible = new CustomComparator(JSONCompareMode.NON_EXTENSIBLE, new Customization("foo[*].bar.num", new RegularExpressionValueMatcher<Object>("\\d")));
+        JSONComparator jsonCmpNonLenient    = new CustomComparator(JSONCompareMode.LENIENT,        new Customization("foo[*].bar.num", new RegularExpressionValueMatcher<Object>("\\d")));
 
         JSONCompareResult resultStrict = compareJSON(rootDeepWildcardWithArray, rootDeepWildcardWithArray, jsonCmpStrict);
         assertFalse(resultStrict.getMessage(), resultStrict.passed());
