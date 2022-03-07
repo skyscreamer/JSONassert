@@ -189,7 +189,7 @@ public class JSONCustomComparatorTest {
         JSONCompareResult resultNonExtensible = compareJSON(rootDeepWildcardWithArray, rootDeepWildcardWithArray, jsonCmpNonExtensible);
         assertFalse(resultNonExtensible.getMessage(), resultNonExtensible.passed());
 
-        JSONCompareResult resultLenient = compareJSON(rootDeepWildcardWithArray, rootDeepWildcardWithArray, jsonCmpNonExtensible);
+        JSONCompareResult resultLenient = compareJSON(rootDeepWildcardWithArray, rootDeepWildcardWithArray, jsonCmpNonLenient);
         assertFalse(resultLenient.getMessage(), resultLenient.passed());
     }
 }
