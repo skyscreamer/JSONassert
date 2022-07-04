@@ -1,6 +1,14 @@
 Changelog
 =========
 
+Version 1.5.1 - 7/4/2022
+------------------------
+Going to try to catch up on some ancient PRs, mainly around security and cleanup. Starting with accepted PRs that
+didn't get released yet. To be followed hopefully shortly with another release.
+ - Added convenience methods for JSONObject comparison using a custom JSONComparator (thanks jakob-o@!)
+ - Fix issue #105: Issue when comparing JSONArray if any value is null (thanks suraj1291993@!)
+ - Fixes security vulnerability associated with older version of junit
+
 Version 1.5.0 - 3/19/2017
 -------------------------
  - JSONassert now supports user-supplied error messages (thanks yasin3061@!)
@@ -16,12 +24,12 @@ Version 1.4.0 - 10/30/2016
 
 Version 1.3.0 - 12/16/2015
 --------------------------
- - Fix & improve ArrayValueMatcher JavaDoc (thanks dmackinder!)
+ - Fix & improve ArrayValueMatcher JavaDoc (thanks dmackinder@!)
      Fix final JavaDoc example and add new example showing how to verify
      every array element using a custom comparator
- - Fix URL in pom.xml (aukevanleeuwen)
- - Update JSONCompareResult.java adding 2 new lists for missing and unexpected fileds (thanks riccorazza!)
- - Includes missing imports in test class (thanks javierseixas!)
+ - Fix URL in pom.xml (aukevanleeuwen@)
+ - Update JSONCompareResult.java adding 2 new lists for missing and unexpected fileds (thanks riccorazza@!)
+ - Includes missing imports in test class (thanks javierseixas@!)
 
 Version 1.2.3 - 2/5/2014
 ------------------------
@@ -38,7 +46,8 @@ Version 1.2.2 - 12/31/2013
 Version 1.2.1 - 10/24/2013
 --------------------------
  - Remove commons-collection dependency
- - Updated Customization class to allow path-matching, and matching of expected and actual values with user-provided EqualityComparator.
+ - Updated Customization class to allow path-matching, and matching of expected and actual values with user-provided
+   EqualityComparator.
  - Added AssertNotEquals
 
 Version 1.2.0 - 3/17/2013
