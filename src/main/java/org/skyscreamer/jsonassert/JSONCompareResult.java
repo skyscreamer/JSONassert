@@ -245,6 +245,9 @@ public class JSONCompareResult {
         } else if (value instanceof JSONObject) {
             return "a JSON object";
         } else {
+            if (value == null) {
+                return "null";
+            }
             return value.toString();
         }
     }
