@@ -44,6 +44,24 @@ public abstract class AbstractComparator implements JSONComparator {
     }
 
     /**
+     * Compares JSONObject provided to the expected JSONObject, and returns the results of the comparison.
+     *
+     * @param expected Expected JSONObject
+     * @param actual   JSONObject to compare
+     * @param verbose  Showing verbose diff if set to true
+     * @throws JSONException JSON parsing error
+     */
+    @Override
+    public final JSONCompareResult compareJSON(JSONObject expected, JSONObject actual, boolean verbose) throws JSONException {
+        JSONCompareResult result = new JSONCompareResult();
+        compareJSON("", expected, actual, result);
+        if (verbose) {
+            result.fail("Verbose Diff:", expected.toString(), actual.toString());
+        }
+        return result;
+    }
+
+    /**
      * Compares JSONArray provided to the expected JSONArray, and returns the results of the comparison.
      *
      * @param expected Expected JSONArray

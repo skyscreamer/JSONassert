@@ -65,6 +65,38 @@ public final class JSONCompare {
         }
     }
 
+    /**
+     * Compares JSON string provided to the expected JSON string using provided comparator, and returns the results of
+     * the comparison.
+     * @param expectedStr Expected JSON string
+     * @param actualStr JSON string to compare
+     * @param comparator Comparator to use
+     * @param verbose Showing the verbose diff if set to true
+     * @return result of the comparison
+     * @throws JSONException JSON parsing error
+     * @throws IllegalArgumentException when type of expectedStr doesn't match the type of actualStr
+     */
+    public static JSONCompareResult compareJSON(String expectedStr, String actualStr, JSONComparator comparator, Boolean verbose)
+            throws JSONException {
+        Object expected = JSONParser.parseJSON(expectedStr);
+        Object actual = JSONParser.parseJSON(actualStr);
+        if ((expected instanceof JSONObject) && (actual instanceof JSONObject)) {
+            return compareJSON((JSONObject) expected, (JSONObject) actual, comparator, verbose);
+        }
+        else if ((expected instanceof JSONArray) && (actual instanceof JSONArray)) {
+            return compareJSON((JSONArray)expected, (JSONArray)actual, comparator);
+        }
+        else if (expected instanceof JSONString && actual instanceof JSONString) {
+            return compareJson((JSONString) expected, (JSONString) actual);
+        }
+        else if (expected instanceof JSONObject) {
+            return new JSONCompareResult().fail("", expected, actual);
+        }
+        else {
+            return new JSONCompareResult().fail("", expected, actual);
+        }
+    }
+
   /**
      * Compares JSON object provided to the expected JSON object using provided comparator, and returns the results of
      * the comparison.
@@ -77,6 +109,21 @@ public final class JSONCompare {
     public static JSONCompareResult compareJSON(JSONObject expected, JSONObject actual, JSONComparator comparator)
             throws JSONException {
         return comparator.compareJSON(expected, actual);
+    }
+
+    /**
+     * Compares JSON object provided to the expected JSON object using provided comparator, and returns the results of
+     * the comparison.
+     * @param expected expected json object
+     * @param actual actual json object
+     * @param comparator comparator to use
+     * @param verbose showing the verbose diff if set to true
+     * @return result of the comparison
+     * @throws JSONException JSON parsing error
+     */
+    public static JSONCompareResult compareJSON(JSONObject expected, JSONObject actual, JSONComparator comparator, boolean verbose)
+            throws JSONException {
+        return comparator.compareJSON(expected, actual, verbose);
     }
 
     /**
@@ -123,6 +170,21 @@ public final class JSONCompare {
     public static JSONCompareResult compareJSON(String expectedStr, String actualStr, JSONCompareMode mode)
             throws JSONException {
         return compareJSON(expectedStr, actualStr, getComparatorForMode(mode));
+    }
+
+    /**
+     * Compares JSON string provided to the expected JSON string, and returns the results of the comparison.
+     *
+     * @param expectedStr Expected JSON string
+     * @param actualStr   JSON string to compare
+     * @param mode        Defines comparison behavior
+     * @param verbose     Showing the verbose diff if set to true
+     * @return result of the comparison
+     * @throws JSONException JSON parsing error
+     */
+    public static JSONCompareResult compareJSON(String expectedStr, String actualStr, JSONCompareMode mode, Boolean verbose)
+            throws JSONException {
+        return compareJSON(expectedStr, actualStr, getComparatorForMode(mode), verbose);
     }
 
     /**
