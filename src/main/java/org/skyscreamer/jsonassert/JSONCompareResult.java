@@ -193,12 +193,16 @@ public class JSONCompareResult {
     }
 
     private String formatFailureMessage(String field, Object expected, Object actual) {
-        return field
-                + "\nExpected: "
-                + describe(expected)
-                + "\n     got: "
-                + describe(actual)
-                + "\n";
+        boolean isAssignableType = expected.getClass().isAssignableFrom(actual.getClass());
+        boolean isAnyNull = "null".equalsIgnoreCase(expected.toString().trim()) 
+            || "null".equalsIgnoreCase(actual.toString().trim());
+        
+        String message = field + "\nExpected: ";
+        message += isAssignableType || isAnyNull ? describe(expected) : describeWithType(expected);
+        message += "\n     got: ";
+        message += isAssignableType || isAnyNull ? describe(actual) : describeWithType(actual);
+        
+        return message + "\n";
     }
 
     /**
@@ -245,7 +249,17 @@ public class JSONCompareResult {
         } else if (value instanceof JSONObject) {
             return "a JSON object";
         } else {
-            return value.toString();
+            return "[" + value.toString() + "]";
+        }
+    }
+    
+    private static String describeWithType(Object value) {
+        if (value instanceof JSONArray) {
+            return "a JSON array";
+        } else if (value instanceof JSONObject) {
+            return "a JSON object";
+        } else {
+            return "[" + value.toString() + "]" + " of type [" + value.getClass() + "]";
         }
     }
 

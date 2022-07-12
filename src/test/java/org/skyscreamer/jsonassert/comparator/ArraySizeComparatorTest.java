@@ -112,17 +112,17 @@ public class ArraySizeComparatorTest {
 
 	@Test
 	public void failsWhenActualArrayTooShort() throws JSONException {
-		doFailingMatchTest("{a:[3]}", twoElementArray, "a\\[\\]\\s*Expected:\\s*array size of 3 elements\\s*got:\\s*2 elements\\s*");
+		doFailingMatchTest("{a:[3]}", twoElementArray, "a\\[\\]\\s*Expected:\\s*\\[array size of 3 elements\\]\\s*got:\\s*\\[2 elements\\]\\s*");
 	}
 
 	@Test
 	public void failsWhenActualArrayLongerThanExpectedLength() throws JSONException {
-		doFailingMatchTest("{a:[1]}", twoElementArray, "a\\[\\]\\s*Expected:\\s*array size of 1 elements\\s*got:\\s*2 elements\\s*");
+		doFailingMatchTest("{a:[1]}", twoElementArray, "a\\[\\]\\s*Expected:\\s*\\[array size of 1 elements\\]\\s*got:\\s*\\[2 elements\\]\\s*");
 	}
 
 	@Test
 	public void failsWhenActualArrayLongerThanMaxOfExpectedRange() throws JSONException {
-		doFailingMatchTest("{a:[0,1]}", twoElementArray, "a\\[\\]\\s*Expected:\\s*array size of 0 to 1 elements\\s*got:\\s*2 elements\\s*");
+		doFailingMatchTest("{a:[0,1]}", twoElementArray, "a\\[\\]\\s*Expected:\\s*\\[array size of 0 to 1 elements\\]\\s*got:\\s*\\[2 elements\\]\\s*");
 	}
 
 	/*
