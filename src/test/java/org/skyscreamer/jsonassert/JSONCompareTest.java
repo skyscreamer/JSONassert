@@ -40,7 +40,7 @@ public class JSONCompareTest {
     @Test
     public void reportsArraysOfUnequalLength() throws JSONException {
         JSONCompareResult result = compareJSON("[4]", "[]", LENIENT);
-        assertThat(result, failsWithMessage(equalTo("[]: Expected 1 values but got 0")));
+        assertThat(result, failsWithMessage(equalTo("[]: Expected 1 values but got 0, Expected: [4], Actual: []")));
     }
 
     @Test
