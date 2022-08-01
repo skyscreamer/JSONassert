@@ -21,6 +21,9 @@ import org.json.JSONString;
 import org.skyscreamer.jsonassert.comparator.DefaultComparator;
 import org.skyscreamer.jsonassert.comparator.JSONComparator;
 
+import java.util.regex.*;
+
+
 /**
  * Provides API to compare two JSON entities.  This is the backend to {@link JSONAssert}, but it can
  * be programmed against directly to access the functionality.  (eg, to make something that works with a
@@ -46,6 +49,12 @@ public final class JSONCompare {
      */
     public static JSONCompareResult compareJSON(String expectedStr, String actualStr, JSONComparator comparator)
             throws JSONException {
+        /**
+         * CS304 Issue {@link: https://github.com/skyscreamer/JSONassert/issues/107}
+         */
+        expectedStr = NumberParse(expectedStr); // Put double quotation marks on the numbers in expectedStr
+        actualStr = NumberParse(actualStr); // Put double quotation marks on the numbers in expectedStr
+
         Object expected = JSONParser.parseJSON(expectedStr);
         Object actual = JSONParser.parseJSON(actualStr);
         if ((expected instanceof JSONObject) && (actual instanceof JSONObject)) {
@@ -63,6 +72,40 @@ public final class JSONCompare {
         else {
             return new JSONCompareResult().fail("", expected, actual);
         }
+    }
+
+    /**
+     * @param str Put double quotation marks on the numbers in String str
+     * intend to fix issue 107
+     * CS304 Issue {@link: https://github.com/skyscreamer/JSONassert/issues/107}
+     * To fix the bug that JSONCompareResult is pass when the
+     * difference of two number exceeds the accuracy of Double,
+     * I create a static method NumberParse.
+     * Since the number stored in JSONObject is default double, it will lost accuracy
+     * when the number in string exceeds the accuracy of Double.
+     * So, method NumberParse puts double quotation marks on the numbers in expectedStr
+     * which transform the number into String to ensure the accuracy will not be lost.
+     * @Time 2021.4.15 Tingyan Feng
+     */
+    public static String NumberParse(String str){
+        Pattern p1 = Pattern.compile(":\\s*\\d+\\.?\\d+\\s*");
+        Pattern p2 = Pattern.compile("\\d+\\.?\\d+");
+        Matcher m =p1.matcher(str);
+
+        while(true){
+            if (m.find()) {
+                Matcher m2 = p2.matcher(m.group());
+                if(m2.find()){
+                    str = str.replaceAll(m2.group(), "\""+ m2.group() +"\"");
+                }else{
+                    break;
+                }
+            }else{
+                break;
+            }
+            m = p1.matcher(str);
+        }
+        return str;
     }
 
   /**
