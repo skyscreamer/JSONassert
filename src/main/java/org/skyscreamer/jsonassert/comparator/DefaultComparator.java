@@ -47,6 +47,15 @@ public class DefaultComparator extends AbstractComparator {
         }
     }
 
+
+    /**CS304 Issue link: https://github.com/skyscreamer/JSONassert/issues/130
+     * modified by adding {@code return} to the second {@code if}.
+     * because one of the {@param expectedValue} and {@param actualValue}
+     * should be null can enter the the second {@code if},
+     * after that if continue running, the next function {@code .getClass()}
+     * will always cause a {@exception NullPointer}.
+     * to avoid that case the {@code return} is added to the second {@code if}.
+     */
     @Override
     public void compareValues(String prefix, Object expectedValue, Object actualValue, JSONCompareResult result)
             throws JSONException {
@@ -55,6 +64,7 @@ public class DefaultComparator extends AbstractComparator {
         }
         if ((expectedValue == null && actualValue != null) || (expectedValue != null && actualValue == null)) {
             result.fail(prefix, expectedValue, actualValue);
+            return;
         }
         if (areNumbers(expectedValue, actualValue)) {
             if (areNotSameDoubles(expectedValue, actualValue)) {
