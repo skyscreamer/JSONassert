@@ -20,6 +20,9 @@ import org.json.JSONObject;
 import org.skyscreamer.jsonassert.JSONCompareMode;
 import org.skyscreamer.jsonassert.JSONCompareResult;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import static org.skyscreamer.jsonassert.comparator.JSONCompareUtil.allJSONObjects;
 import static org.skyscreamer.jsonassert.comparator.JSONCompareUtil.allSimpleValues;
 
@@ -73,11 +76,63 @@ public class DefaultComparator extends AbstractComparator {
         }
     }
 
+    //CS304 Issue link: https://github.com/skyscreamer/JSONassert/issues/108
+
+    /**
+     * Compares two JSONArray objects and throws exceptions if they are not the same
+     * @param prefix   the path in the json where the comparison happens
+     * @param expected the expected JSON array
+     * @param actual   the actual JSON array
+     * @param result   stores the actual state of the comparison result
+     * @throws JSONException
+     */
     @Override
     public void compareJSONArray(String prefix, JSONArray expected, JSONArray actual, JSONCompareResult result)
             throws JSONException {
         if (expected.length() != actual.length()) {
             result.fail(prefix + "[]: Expected " + expected.length() + " values but got " + actual.length());
+            //add more detail information about two JSONArrays
+            result.fail("\nexpected: "+expected.toString()+"\nactual: "+actual.toString()+"\n");
+            // find matches in recursive way
+            Set<Integer> matched = new HashSet<Integer>();
+            for (int i = 0; i < expected.length(); ++i) {
+                Object expectedElement = JSONCompareUtil.getObjectOrNull(expected, i);
+                boolean matchFound = false;
+                for (int j = 0; j < actual.length(); ++j) {
+                    Object actualElement = JSONCompareUtil.getObjectOrNull(actual, j);
+                    if (expectedElement == actualElement) {
+                        matchFound = true;
+                        break;
+                    }
+                    if ((expectedElement == null && actualElement != null) || (expectedElement != null && actualElement == null)) {
+                        continue;
+                    }
+                    if (matched.contains(j) || !actualElement.getClass().equals(expectedElement.getClass())) {
+                        continue;
+                    }
+                    if (expectedElement instanceof JSONObject) {
+                        if (compareJSON((JSONObject) expectedElement, (JSONObject) actualElement).passed()) {
+                            matched.add(j);
+                            matchFound = true;
+                            break;
+                        }
+                    } else if (expectedElement instanceof JSONArray) {
+                        if (compareJSON((JSONArray) expectedElement, (JSONArray) actualElement).passed()) {
+                            matched.add(j);
+                            matchFound = true;
+                            break;
+                        }
+                    } else if (expectedElement.equals(actualElement)) {
+                        matched.add(j);
+                        matchFound = true;
+                        break;
+                    }
+                }
+                if (!matchFound) {
+                    result.fail( "[" + i + "] Could not find match for element " + expectedElement+"\n");
+                    //return;
+                }
+            }
             return;
         } else if (expected.length() == 0) {
             return; // Nothing to compare
