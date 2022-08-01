@@ -10,7 +10,7 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
-*/
+ */
 
 package org.skyscreamer.jsonassert.comparator;
 
@@ -78,7 +78,14 @@ public abstract class AbstractComparator implements JSONComparator {
             }
         }
     }
-
+    /**
+     * Compares JSONArray provided to the expected JSONArray, and returns the results of the comparison.
+     * @param key unique key for the actual JSONArray
+     * @param expected Expected JSONArray
+     * @param actual   JSONArray to compare
+     * @throws JSONException JSON parsing error
+     */
+    @SuppressWarnings("checkstyle:WhitespaceAround")
     protected void compareJSONArrayOfJsonObjects(String key, JSONArray expected, JSONArray actual, JSONCompareResult result) throws JSONException {
         String uniqueKey = findUniqueKey(expected);
         if (uniqueKey == null || !isUsableAsUniqueKey(uniqueKey, actual)) {
@@ -89,7 +96,7 @@ public abstract class AbstractComparator implements JSONComparator {
         Map<Object, JSONObject> expectedValueMap = arrayOfJsonObjectToMap(expected, uniqueKey);
         Map<Object, JSONObject> actualValueMap = arrayOfJsonObjectToMap(actual, uniqueKey);
         for (Object id : expectedValueMap.keySet()) {
-            if (!actualValueMap.containsKey(id)) {
+            if ((!actualValueMap.containsKey(id))&&(!actualValueMap.containsKey(Double.parseDouble(id.toString())))) {
                 result.missing(formatUniqueKey(key, uniqueKey, id), expectedValueMap.get(id));
                 continue;
             }
