@@ -67,10 +67,26 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>2.3.1</version>
+                <version>3.10.1</version>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-toolchains-plugin</artifactId>
+                <version>3.1.0</version>
+                <executions>
+                    <execution>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>toolchain</goal>
+                        </goals>
+                    </execution>
+                </executions>
                 <configuration>
-                    <source>1.6</source>
-                    <target>1.6</target>
+                    <toolchains>
+                        <jdk>
+                            <version>[1.6,)</version>
+                        </jdk>
+                    </toolchains>
                 </configuration>
             </plugin>
             <plugin>
@@ -115,6 +131,32 @@
     </distributionManagement>
 
     <profiles>
+        <profile>
+            <id>java-6</id>
+            <properties>
+                <maven.compiler.source>1.6</maven.compiler.source>
+                <maven.compiler.target>1.6</maven.compiler.target>
+            </properties>
+        </profile>
+        <profile>
+            <id>legacy-java</id>
+            <activation>
+                <jdk>(,8]</jdk>
+            </activation>
+            <properties>
+                <maven.compiler.source>${java.specification.version}</maven.compiler.source>
+                <maven.compiler.target>${java.specification.version}</maven.compiler.target>
+            </properties>
+        </profile>
+        <profile>
+            <id>modern-java</id>
+            <activation>
+                <jdk>[9,)</jdk>
+            </activation>
+            <properties>
+                <maven.compiler.release>${java.specification.version}</maven.compiler.release>
+            </properties>
+        </profile>
         <profile>
             <id>release-sign-artifacts</id>
             <activation>

@@ -1,0 +1,94 @@
+# This workflow will build a Java project with Maven
+# For more information see: https://help.github.com/actions/language-and-framework-guides/building-and-testing-java-with-maven
+
+name: Java CI with Maven
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+permissions:
+  contents: read
+
+jobs:
+  build-6:
+    runs-on: ubuntu-latest
+    name: Java 6
+    steps:
+      - name: Check out Git repository
+        uses: actions/checkout@v3
+      # JDK 11 is required for Maven itself as runtime 
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: zulu
+          java-version: |
+            6
+            11
+      - name: Setup Maven
+        run: |
+          mkdir -p .mvn
+          echo "-B" > .mvn/maven.config
+      - name: Compile with Java 6
+        run: mvn clean compile -Dmaven.toolchains.jdk.id=zulu_6 -P java-6,!legacy-java,!modern-java
+      - name: Run Tests with Java 6
+        run: mvn test -Dmaven.toolchains.jdk.id=zulu_6 -P java-6,!legacy-java,!modern-java
+      - name: Build Test Report for Java 6
+        if: ${{ always() }}
+        run: |
+          mvn surefire-report:report-only
+          mvn site -DgenerateReports=false
+      - name: Upload Test Results for Java 6
+        if: ${{ always() }}
+        uses: actions/upload-artifact@v3
+        with:
+          name: Test Results for Java 6
+          path: target/surefire-reports/
+      - name: Upload Test Report 6
+        if: ${{ always() }}
+        uses: actions/upload-artifact@v3
+        with:
+          name: Test Report for Java 6
+          path: target/site/
+
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        java: [ 8, 11, 17 ]
+    name: Java ${{ matrix.java }}
+    steps:
+      - name: Check out Git repository
+        uses: actions/checkout@v3
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: zulu
+          java-version: ${{ matrix.java }}
+      - name: Setup Maven
+        run: |
+          mkdir -p .mvn
+          echo "-B" > .mvn/maven.config
+      - name: Compile with Java ${{ matrix.java }}
+        run: mvn clean compile
+      - name: Run Tests with Java ${{ matrix.java }}
+        run: mvn test
+      - name: Build Test Report for Java ${{ matrix.java }}
+        if: ${{ always() }}
+        run: |
+          mvn surefire-report:report-only
+          mvn site -DgenerateReports=false
+      - name: Upload Test Results for Java ${{ matrix.java }}
+        if: ${{ always() }}
+        uses: actions/upload-artifact@v3
+        with:
+          name: Test Results for Java ${{ matrix.java }}
+          path: target/surefire-reports/
+      - name: Upload Test Report ${{ matrix.java }}
+        if: ${{ always() }}
+        uses: actions/upload-artifact@v3
+        with:
+          name: Test Report for Java ${{ matrix.java }}
+          path: target/site/
