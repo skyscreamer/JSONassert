@@ -12,7 +12,7 @@
  * limitations under the License.
 */
 
-package org.json;
+package org.skyscreamer.jsonassert;
 
 /**
  * The JSONString interface allows a toJSONString() method so that a class can change
