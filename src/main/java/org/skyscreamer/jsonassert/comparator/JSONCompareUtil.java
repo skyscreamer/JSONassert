@@ -32,7 +32,7 @@ import org.json.JSONObject;
  * Utility class that contains Json manipulation methods.
  */
 public final class JSONCompareUtil {
-    private static Integer INTEGER_ONE = new Integer(1);
+    private static final Integer INTEGER_ONE = 1;
 
     private JSONCompareUtil() {
     }
@@ -228,13 +228,13 @@ public final class JSONCompareUtil {
      * @return the cardinality map
      */
     public static <T> Map<T, Integer> getCardinalityMap(final Collection<T> coll) {
-        Map count = new HashMap<T, Integer>();
+        Map<T, Integer> count = new HashMap<T, Integer>();
         for (T item : coll) {
-            Integer c = (Integer) (count.get(item));
+            Integer c = count.get(item);
             if (c == null) {
                 count.put(item, INTEGER_ONE);
             } else {
-                count.put(item, new Integer(c.intValue() + 1));
+                count.put(item, c + 1);
             }
         }
         return count;
