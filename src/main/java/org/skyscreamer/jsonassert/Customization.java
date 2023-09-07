@@ -22,12 +22,23 @@ import java.util.regex.Pattern;
 public final class Customization {
 	private final Pattern path;
 	private final ValueMatcher<Object> comparator;
+	private String arrayUniqueKey;
 
 	public Customization(String path, ValueMatcher<Object> comparator) {
         assert path != null;
         assert comparator != null;
 		this.path = Pattern.compile(buildPattern(path));
 		this.comparator = comparator;
+	}
+	public Customization(String path, String arrayUniqueKey) {
+		assert path != null;
+		this.path = Pattern.compile(buildPattern(path));
+		this.comparator = null;
+		this.arrayUniqueKey=arrayUniqueKey;
+	}
+
+	public String getArrayUniqueKey() {
+		return arrayUniqueKey;
 	}
 
 	private String buildPattern(String path) {
