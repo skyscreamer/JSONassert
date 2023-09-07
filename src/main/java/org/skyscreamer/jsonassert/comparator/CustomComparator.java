@@ -14,6 +14,7 @@
 
 package org.skyscreamer.jsonassert.comparator;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.skyscreamer.jsonassert.Customization;
 import org.skyscreamer.jsonassert.JSONCompareMode;
@@ -35,7 +36,7 @@ public class CustomComparator extends DefaultComparator {
     @Override
     public void compareValues(String prefix, Object expectedValue, Object actualValue, JSONCompareResult result) throws JSONException {
         Customization customization = getCustomization(prefix);
-        if (customization != null) {
+        if (customization != null && customization.getArrayUniqueKey() == null) {
             try {
     	        if (!customization.matches(prefix, actualValue, expectedValue, result)) {
                     result.fail(prefix, expectedValue, actualValue);
@@ -45,7 +46,12 @@ public class CustomComparator extends DefaultComparator {
                 result.fail(prefix, e);
             }
         } else {
-            super.compareValues(prefix, expectedValue, actualValue, result);
+            String arrayUniqueKey = customization == null ? null : customization.getArrayUniqueKey();
+            if (expectedValue instanceof JSONArray && arrayUniqueKey != null) {
+                compareJSONArrayOfJsonObjects(prefix, (JSONArray) expectedValue, (JSONArray) actualValue, result, arrayUniqueKey);
+            } else {
+                super.compareValues(prefix, expectedValue, actualValue, result);
+            }
         }
     }
 
