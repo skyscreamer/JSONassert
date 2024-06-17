@@ -1,6 +1,13 @@
 Changelog
 =========
 
+Version 1.5.2 - 7/14/2024
+-------------------------
+ - Fix CVE-2020-15250 JUnit vulnerability (https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2020-15250). Bump 
+   dependencies.
+ - Add gitIgnore file
+ - README syntax error fix
+
 Version 1.5.1 - 7/4/2022
 ------------------------
 Going to try to catch up on some ancient PRs, mainly around security and cleanup. Starting with accepted PRs that
