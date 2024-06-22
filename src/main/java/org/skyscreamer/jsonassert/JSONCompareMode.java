@@ -18,7 +18,10 @@ package org.skyscreamer.jsonassert;
  * <p>These different modes define different behavior for the comparison of JSON for testing.
  * Each mode encapsulates two underlying behaviors: extensibility and strict ordering.</p>
  *
- * <table border="1" summary="Behavior of JSONCompareMode">
+ * <table border="1">
+ *     <caption>
+ *         Behavior of JSONCompareMode
+ *     </caption>
  *     <tr><th>&nbsp;</th><th>Extensible</th><th>Strict Ordering</th></tr>
  *     <tr><th>STRICT</th><th>no</th><th>yes</th></tr>
  *     <tr><th>LENIENT</th><th>yes</th><th>no</th></tr>

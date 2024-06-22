@@ -28,7 +28,7 @@ import org.skyscreamer.jsonassert.ValueMatcher;
  * specify regular expression pattern that actual value must match.
  * 
  * @author Duncan Mackinder
- * 
+ * @param <T> Generic Type
  */
 public class RegularExpressionValueMatcher<T> implements ValueMatcher<T> {
 

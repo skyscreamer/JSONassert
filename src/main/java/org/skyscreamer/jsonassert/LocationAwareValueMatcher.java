@@ -21,7 +21,7 @@ package org.skyscreamer.jsonassert;
  * A ValueMatcher extension that provides location in form of prefix to the equals method.
  * 
  * @author Duncan Mackinder
- *
+ * @param <T> Generic Type
  */
 public interface LocationAwareValueMatcher<T> extends ValueMatcher<T> {
 
