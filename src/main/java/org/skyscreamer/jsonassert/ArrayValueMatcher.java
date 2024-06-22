@@ -133,7 +133,7 @@ import org.skyscreamer.jsonassert.comparator.JSONComparator;
  * <p>To simplify complexity of expected JSON string, the value <code>"{a:[[9]]}"</code> may be replaced by <code>"{a:[9]}"</code> or <code>"{a:9}"</code></p>
  * 
  * @author Duncan Mackinder
- * 
+ * @param <T> Array Type
  */
 public class ArrayValueMatcher<T> implements LocationAwareValueMatcher<T> {
 	private final JSONComparator comparator;

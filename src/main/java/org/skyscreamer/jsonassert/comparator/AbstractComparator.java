@@ -26,8 +26,16 @@ import static org.skyscreamer.jsonassert.comparator.JSONCompareUtil.*;
 /**
  * This class provides a skeletal implementation of the {@link JSONComparator}
  * interface, to minimize the effort required to implement this interface.
+ *
+ *
  */
 public abstract class AbstractComparator implements JSONComparator {
+
+    /**
+     * Default constructor
+     */
+    public AbstractComparator() {
+    }
 
     /**
      * Compares JSONObject provided to the expected JSONObject, and returns the results of the comparison.
@@ -57,6 +65,12 @@ public abstract class AbstractComparator implements JSONComparator {
         return result;
     }
 
+    /**
+     * @param prefix
+     * @param expected
+     * @param actual
+     * @param result
+     */
     protected void checkJsonObjectKeysActualInExpected(String prefix, JSONObject expected, JSONObject actual, JSONCompareResult result) {
         Set<String> actualKeys = getKeys(actual);
         for (String key : actualKeys) {
@@ -66,6 +80,14 @@ public abstract class AbstractComparator implements JSONComparator {
         }
     }
 
+    /**
+     *
+     * @param prefix
+     * @param expected
+     * @param actual
+     * @param result
+     * @throws JSONException
+     */
     protected void checkJsonObjectKeysExpectedInActual(String prefix, JSONObject expected, JSONObject actual, JSONCompareResult result) throws JSONException {
         Set<String> expectedKeys = getKeys(expected);
         for (String key : expectedKeys) {
