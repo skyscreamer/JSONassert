@@ -37,11 +37,22 @@ public class JSONCompareTest {
         assertTrue(compareJSON("[]", "[]", LENIENT).passed());
     }
 
+    // CS304 Issue link: https://github.com/skyscreamer/JSONassert/issues/128
+    // Modify to fit the new error message
     @Test
-    public void reportsArraysOfUnequalLength() throws JSONException {
-        JSONCompareResult result = compareJSON("[4]", "[]", LENIENT);
-        assertThat(result, failsWithMessage(equalTo("[]: Expected 1 values but got 0")));
+    public void arraysOfUnequalLength1() throws JSONException {
+        JSONCompareResult result = compareJSON("[4]", "[2, 3]", LENIENT);
+        assertThat(result, failsWithMessage(equalTo("[]: Expected 1 value but got 2 values.")));
     }
+
+    // CS304 Issue link: https://github.com/skyscreamer/JSONassert/issues/128
+    // Add new test
+    @Test
+    public void arraysOfUnequalLength2() throws JSONException{
+        JSONCompareResult result = compareJSON("[4,3,5]", "[]", LENIENT);
+        assertThat(result, failsWithMessage(equalTo("[]: Expected 3 values but got 0 value.")));
+    }
+
 
     @Test
     public void reportsArrayMissingExpectedElement() throws JSONException {
