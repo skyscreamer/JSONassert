@@ -55,6 +55,7 @@ public class DefaultComparator extends AbstractComparator {
         }
         if ((expectedValue == null && actualValue != null) || (expectedValue != null && actualValue == null)) {
             result.fail(prefix, expectedValue, actualValue);
+            return;
         }
         if (areNumbers(expectedValue, actualValue)) {
             if (areNotSameDoubles(expectedValue, actualValue)) {
