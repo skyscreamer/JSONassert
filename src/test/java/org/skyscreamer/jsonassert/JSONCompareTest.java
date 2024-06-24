@@ -21,6 +21,7 @@ import static org.junit.Assert.assertTrue;
 import static org.skyscreamer.jsonassert.JSONCompare.compareJSON;
 import static org.skyscreamer.jsonassert.JSONCompareMode.LENIENT;
 import static org.skyscreamer.jsonassert.JSONCompareMode.NON_EXTENSIBLE;
+import static org.skyscreamer.jsonassert.JSONCompareMode.STRICT;
 
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
@@ -32,6 +33,42 @@ import org.junit.internal.matchers.TypeSafeMatcher;
  * Unit tests for {@code JSONCompare}.
  */
 public class JSONCompareTest {
+    @Test
+    public void reportsUnmatchedJSONObjectWithVerboseMessage() throws JSONException {
+        String json1 = "{\n" +
+                "  \"id\": \"101\",\n" +
+                "  \"key\": {\n" +
+                "    \"a\": \"value\",\n" +
+                "    \"b\": \"xyz\",\n" +
+                "    \"c\": 201\n" +
+                "  }\n" +
+                "}";
+
+        String json2 = "{\n" +
+                "  \"id\": \"102\",\n" +
+                "  \"key\": {\n" +
+                "    \"a\": \"value\",\n" +
+                "    \"d\": [1, 2]\n" +
+                "  }\n" +
+                "}";
+
+        JSONCompareResult result = compareJSON(json1, json2, STRICT, true);
+        assertThat(result, failsWithMessage(equalTo("id\n" +
+                "Expected: 101\n" +
+                "     got: 102\n" +
+                " ; key\n" +
+                "Expected: b\n" +
+                "     but none found\n" +
+                " ; key\n" +
+                "Expected: c\n" +
+                "     but none found\n" +
+                " ; key\n" +
+                "Unexpected: d\n" +
+                " ; Verbose Diff:\n" +
+                "Expected: {\"id\":\"101\",\"key\":{\"a\":\"value\",\"b\":\"xyz\",\"c\":201}}\n" +
+                "     got: {\"id\":\"102\",\"key\":{\"a\":\"value\",\"d\":[1,2]}}\n")));
+    }
+
     @Test
     public void succeedsWithEmptyArrays() throws JSONException {
         assertTrue(compareJSON("[]", "[]", LENIENT).passed());
