@@ -1,12 +1,17 @@
 Changelog
 =========
 
-Version 1.5.2 - 7/14/2024
+Version 1.5.3 - 6/28/2024
+-------------------------
+ - Revert Java release version from 21 to 8 due to breaking older compilers.
+
+Version 1.5.2 - 6/14/2024
 -------------------------
  - Fix CVE-2020-15250 JUnit vulnerability (https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2020-15250). Bump 
    dependencies.
  - Add gitIgnore file
  - README syntax error fix
+ - Accidentally upgraded release to Java version 21
 
 Version 1.5.1 - 7/4/2022
 ------------------------
