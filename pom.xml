@@ -8,11 +8,11 @@
     <packaging>jar</packaging>
 
     <name>JSONassert</name>
-    <description>A library to develop RESTful but flexible APIs</description>
+    <description>Write JSON unit tests in less code. Great for testing REST interfaces.</description>
     <url>https://github.com/skyscreamer/JSONassert</url>
 
     <properties>
-        <maven.compiler.release>21</maven.compiler.release>
+        <maven.compiler.release>8</maven.compiler.release>
     </properties>
 
     <licenses>
@@ -34,14 +34,13 @@
             <email>carter@skyscreamer.org</email>
         </developer>
         <developer>
+            <id>hertzsprung</id>
+            <name>James Shaw</name>
+        </developer>	
+        <developer>
             <id>cepage</id>
             <name>Corby Page</name>
             <email>corby@skyscreamer.org</email>
-        </developer>
-        <developer>
-            <id>sduskis</id>
-            <name>Solomon Duskis</name>
-            <email>solomon@skyscreamer.org</email>
         </developer>
     </developers>
 
