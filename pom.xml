@@ -4,7 +4,7 @@
 
     <groupId>org.skyscreamer</groupId>
     <artifactId>jsonassert</artifactId>
-    <version>1.5.3-SNAPSHOT</version>
+    <version>1.5.3</version>
     <packaging>jar</packaging>
 
     <name>JSONassert</name>
