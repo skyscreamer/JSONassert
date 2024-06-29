@@ -32,7 +32,7 @@ public class JSONArrayWithNullTest {
     private JSONArray getJSONArray1() {
         JSONArray jsonArray1 = new JSONArray();
         jsonArray1.put(1);
-        jsonArray1.put(null);
+        jsonArray1.put(JSONObject.NULL);
         jsonArray1.put(3);
         jsonArray1.put(2);
         return jsonArray1;
@@ -41,7 +41,7 @@ public class JSONArrayWithNullTest {
     private JSONArray getJSONArray2() {
         JSONArray jsonArray1 = new JSONArray();
         jsonArray1.put(1);
-        jsonArray1.put(null);
+        jsonArray1.put(JSONObject.NULL);
         jsonArray1.put(3);
         jsonArray1.put(2);
         return jsonArray1;
