@@ -103,6 +103,15 @@ public abstract class AbstractComparator implements JSONComparator {
 
     protected void compareJSONArrayOfJsonObjects(String key, JSONArray expected, JSONArray actual, JSONCompareResult result) throws JSONException {
         String uniqueKey = findUniqueKey(expected);
+        doCompareJSONArrayOfJsonObjects(key, expected, actual, result, uniqueKey);
+    }
+
+    protected void compareJSONArrayOfJsonObjects(String key, JSONArray expected, JSONArray actual, JSONCompareResult result, String uniqueKey) throws JSONException {
+        doCompareJSONArrayOfJsonObjects(key, expected, actual, result, uniqueKey);
+    }
+
+    private void doCompareJSONArrayOfJsonObjects(String key, JSONArray expected, JSONArray actual,
+        JSONCompareResult result, String uniqueKey) throws JSONException {
         if (uniqueKey == null || !isUsableAsUniqueKey(uniqueKey, actual)) {
             // An expensive last resort
             recursivelyCompareJSONArray(key, expected, actual, result);
@@ -125,7 +134,6 @@ public abstract class AbstractComparator implements JSONComparator {
             }
         }
     }
-
     protected void compareJSONArrayOfSimpleValues(String key, JSONArray expected, JSONArray actual, JSONCompareResult result) throws JSONException {
         Map<Object, Integer> expectedCount = JSONCompareUtil.getCardinalityMap(jsonArrayToList(expected));
         Map<Object, Integer> actualCount = JSONCompareUtil.getCardinalityMap(jsonArrayToList(actual));
