@@ -14,7 +14,7 @@
 
 package org.skyscreamer.jsonassert.comparator;
 
-import junit.framework.Assert;
+import org.junit.Assert;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.junit.Test;
