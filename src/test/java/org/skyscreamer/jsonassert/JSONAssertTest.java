@@ -640,7 +640,44 @@ public class JSONAssertTest {
                 new RegularExpressionValueMatcher<Object>("\\d"))
         ));
     }
-    
+
+    @Test
+    public void testAssertWithNullValues1() throws JSONException {
+        performAssertEqualsTestForMessageVerification("[{id:1},]", "[{id:1},{}]", true);
+    }
+
+    @Test
+    public void testAssertWithNullValues2() throws JSONException {
+        JSONAssert.assertNotEquals("[{id:1},]", "[{id:2},]", true);
+    }
+    @Test
+    public void testAssertWithNullValues3() throws JSONException {
+        JSONAssert.assertEquals("[{id:1},]" , "[{id:1},]" , true);
+    }
+    @Test
+    public void testAssertWithNullValues4() throws JSONException {
+        performAssertEqualsTestForMessageVerification("[{id:1},{id:2},]", "[{id:1},{id:2},{}]", true);
+    }
+
+    @Test
+    public void testAssertWithNullValues5() throws JSONException {
+        JSONAssert.assertEquals("[{id:1},{id:2},{id:3},]" , "[{id:1},{id:2},{id:3},]" , true);
+    }
+
+    @Test
+    public void testAssertWithNullValues6() throws JSONException {
+        JSONAssert.assertEquals("[{id:1},{id:2},]" , "[{id:1},{id:2},]" , true);
+    }
+    @Test
+    public void testAssertWithNullValues7() throws JSONException {
+        performAssertEqualsTestForMessageVerification("[{id:1},{id:2},{id:3},]", "[{id:1},{id:2},{id:3},{}]", true);
+    }
+
+    @Test
+    public void testAssertWithNullValues8() throws JSONException {
+        JSONAssert.assertEquals("[{id:1},{id:2},{id:3},]" , "[{id:1},{id:2},{id:3},]" , true);
+    }
+
     private void testPass(String expected, String actual, JSONCompareMode compareMode)
             throws JSONException
     {
