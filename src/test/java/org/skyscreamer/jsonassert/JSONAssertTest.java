@@ -498,17 +498,17 @@ public class JSONAssertTest {
     
     @Test
     public void testAssertEqualsString2JsonComparator() throws IllegalArgumentException, JSONException {
-        JSONAssert.assertEquals("Message", "{\"entry\":{\"id\":x}}", "{\"entry\":{\"id\":1, \"id\":2}}", 
+        JSONAssert.assertEquals("Message", "{\"entry\":{\"id\":x}}", "{\"entry\":{\"id\":1}}",
             new CustomComparator(
-                JSONCompareMode.STRICT, 
-                new Customization("entry.id", 
+                JSONCompareMode.STRICT,
+                new Customization("entry.id",
                 new RegularExpressionValueMatcher<Object>("\\d"))
          ));
-        
-        performAssertEqualsTestForMessageVerification("{\"entry\":{\"id\":x}}", "{\"entry\":{\"id\":1, \"id\":as}}", 
+
+        performAssertEqualsTestForMessageVerification("{\"entry\":{\"id\":x}}", "{\"entry\":{\"id\":as}}",
             new CustomComparator(
-                JSONCompareMode.STRICT, 
-                new Customization("entry.id", 
+                JSONCompareMode.STRICT,
+                new Customization("entry.id",
                 new RegularExpressionValueMatcher<Object>("\\d"))
         ));
     }
@@ -626,19 +626,26 @@ public class JSONAssertTest {
     
     @Test
     public void testAssertNotEqualsString2JsonComparator() throws IllegalArgumentException, JSONException {
-        JSONAssert.assertNotEquals("Message", "{\"entry\":{\"id\":x}}", "{\"entry\":{\"id\":1, \"id\":hh}}", 
+        JSONAssert.assertNotEquals("Message", "{\"entry\":{\"id\":x}}", "{\"entry\":{\"id\":hh}}",
             new CustomComparator(
-                JSONCompareMode.STRICT, 
-                new Customization("entry.id", 
+                JSONCompareMode.STRICT,
+                new Customization("entry.id",
                 new RegularExpressionValueMatcher<Object>("\\d"))
          ));
-        
-        performAssertNotEqualsTestForMessageVerification("{\"entry\":{\"id\":x}}", "{\"entry\":{\"id\":1, \"id\":2}}", 
+
+        performAssertNotEqualsTestForMessageVerification("{\"entry\":{\"id\":x}}", "{\"entry\":{\"id\":1}}",
             new CustomComparator(
-                JSONCompareMode.STRICT, 
-                new Customization("entry.id", 
+                JSONCompareMode.STRICT,
+                new Customization("entry.id",
                 new RegularExpressionValueMatcher<Object>("\\d"))
         ));
+    }
+
+    @Test(expected = JSONException.class)
+    public void testAssertFailedForDuplicatedFields() throws JSONException {
+        String expected = "{\"field\":\"val1\"}";
+        String actual = "{\"field\":\"val2\",\"field\":\"val1\"}";
+        JSONAssert.assertEquals(expected, actual, JSONCompareMode.STRICT);
     }
     
     private void testPass(String expected, String actual, JSONCompareMode compareMode)
