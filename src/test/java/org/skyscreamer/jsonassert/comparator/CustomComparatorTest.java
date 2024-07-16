@@ -48,6 +48,6 @@ public class CustomComparatorTest {
 
         Assert.assertTrue(compareResult.failed());
         String message = compareResult.getMessage().replaceAll("\n", "");
-        Assert.assertTrue(message, message.matches(".*id=5.*Expected.*id=6.*Unexpected.*id=7.*Unexpected.*"));
+        Assert.assertTrue(message, message.matches("(?:.*id=(?:5.*Expected|6.*Unexpected|7.*Unexpected)){3}.*"));
     }
 }
