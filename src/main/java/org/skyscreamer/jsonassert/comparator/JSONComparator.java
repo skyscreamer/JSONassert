@@ -38,6 +38,18 @@ public interface JSONComparator {
     JSONCompareResult compareJSON(JSONObject expected, JSONObject actual) throws JSONException;
 
     /**
+     * Compares two {@link JSONObject}s and returns the result of the comparison in a {@link JSONCompareResult} object.
+     *
+     * @param expected the expected JSON object
+     * @param actual   the actual JSON object
+     * @param verbose  showing the verbose diff if set to true
+     * @return the result of the comparison
+     * @throws JSONException JSON parsing error
+     */
+    JSONCompareResult compareJSON(JSONObject expected, JSONObject actual, boolean verbose) throws JSONException;
+
+
+    /**
      * Compares two {@link JSONArray}s and returns the result of the comparison in a {@link JSONCompareResult} object.
      *
      * @param expected the expected JSON array
