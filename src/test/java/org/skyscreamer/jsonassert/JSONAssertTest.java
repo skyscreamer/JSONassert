@@ -25,9 +25,12 @@ import java.util.Arrays;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import java.lang.AssertionError;
 import org.json.JSONObject;
 import org.junit.Assert;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 import org.skyscreamer.jsonassert.comparator.CustomComparator;
 import org.skyscreamer.jsonassert.comparator.JSONComparator;
 
@@ -640,7 +643,17 @@ public class JSONAssertTest {
                 new RegularExpressionValueMatcher<Object>("\\d"))
         ));
     }
-    
+
+    @Rule
+    public ExpectedException thrown = ExpectedException.none();
+
+    @Test
+    public void testStringFailWithDetailedMessage() throws JSONException {
+        thrown.expect(AssertionError.class);
+        thrown.expectMessage("Actual: \"test2\"\n" + "Expected: \"test1\"");
+        JSONAssert.assertEquals("\"test1\"", "\"test2\"", true);
+    }
+
     private void testPass(String expected, String actual, JSONCompareMode compareMode)
             throws JSONException
     {
