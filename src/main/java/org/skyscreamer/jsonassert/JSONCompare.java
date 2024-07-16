@@ -20,6 +20,8 @@ import org.json.JSONObject;
 import org.json.JSONString;
 import org.skyscreamer.jsonassert.comparator.DefaultComparator;
 import org.skyscreamer.jsonassert.comparator.JSONComparator;
+import java.util.ArrayList;
+import java.util.Iterator;
 
 /**
  * Provides API to compare two JSON entities.  This is the backend to {@link JSONAssert}, but it can
@@ -123,6 +125,199 @@ public final class JSONCompare {
     public static JSONCompareResult compareJSON(String expectedStr, String actualStr, JSONCompareMode mode)
             throws JSONException {
         return compareJSON(expectedStr, actualStr, getComparatorForMode(mode));
+    }
+    
+    //CS304 Issue link: https://github.com/skyscreamer/JSONassert/issues/129
+    
+    /**
+     * The recursive method to check if the JSONObject has the target field. 
+     * If not, return false; if have, remove the target field and return true. 
+     * 
+     * @param target The target field that we want to check
+     * @param obj The target JSONObject that we want to check and remove the target field
+     * @return A boolean value indicates whether the target field is found
+     * @throws JSONException JSON parsing error
+     */
+    protected static boolean checkAndRemove(String target, JSONObject obj) throws JSONException {
+        boolean result = false;
+        Iterator<String> iterator = obj.keys();
+        while (iterator.hasNext()){
+            String key = iterator.next();
+            Object value = obj.get(key);
+            if (value instanceof JSONObject){
+                result = checkAndRemove(target, (JSONObject)value);
+            }else if (value instanceof JSONArray){
+                result = false;
+                JSONArray valueArray = (JSONArray) value;
+                for (int i = 0; i < valueArray.length(); i++){
+                    if (valueArray.get(i) instanceof JSONObject) {
+                        result = result | checkAndRemove(target, ((JSONArray) value).getJSONObject(i));
+                    }else if (valueArray.get(i) instanceof JSONArray){
+                        result = result | checkAndRemove(target, (JSONArray) ((JSONArray) value).get(i));
+                    }
+                }
+            }
+        }
+        if (obj.has(target)){
+            result = true;
+            obj.remove(target);
+        }
+        return result;
+    }
+
+    //CS304 Issue link: https://github.com/skyscreamer/JSONassert/issues/129
+
+    /**
+     * The recursive method to check if a JSON Array contains target field.
+     * Add this method to avoid recursively constructed JSON Array
+     * 
+     * @param target The target field that we want to check
+     * @param obj he target JSONArray that we want to check and remove the target field
+     * @return A boolean value indicates whether the JSONArray contains the target field. 
+     * @throws JSONException JSON parsing error
+     */
+    protected static boolean checkAndRemove(String target, JSONArray obj) throws JSONException {
+        boolean result = false;
+        for (int i = 0; i < obj.length(); i++){
+            if (obj.get(i) instanceof JSONArray){
+                result = result | checkAndRemove(target, (JSONArray) obj.get(i));
+            }else if (obj.get(i) instanceof JSONObject){
+                result = result | checkAndRemove(target, (JSONObject) obj.get(i));
+            }
+        }
+        return result;
+    }
+
+    //CS304 Issue link: https://github.com/skyscreamer/JSONassert/issues/129
+
+    /**
+     * Provide a ignore list, compare the two JSONObject ignoring these fields. 
+     * If the ignore list is empty, which means you don't want to ignore anything, then, please use other method without ignore. 
+     * 
+     * @param expect Expected JSONObject
+     * @param actual JSONObject to compare
+     * @param ignoreList The list of field name (in String) wanted to ignore
+     * @param mode Defines comparison behavior
+     * @return result of the comparison
+     * @throws JSONException JSON parsing error
+     */
+    public static JSONCompareResult compareJSONWithIgnore(JSONObject expect, JSONObject actual, ArrayList<String> ignoreList, JSONCompareMode mode) throws JSONException {
+        if (ignoreList.size() == 0){
+            JSONCompareResult result = new JSONCompareResult();
+            result.fail("Please use other mode if don't want to ignore any field");
+            return result;
+        }
+        ArrayList<String> errorFields = new ArrayList<String>();
+        for (String toIgnore : ignoreList) {
+            boolean have = checkAndRemove(toIgnore, expect) | checkAndRemove(toIgnore, actual);
+            if (!have){
+                errorFields.add(toIgnore);
+            }
+        }
+        if (errorFields.size() == 0){
+            return compareJSON(expect, actual, mode);
+        }else{
+            JSONCompareResult result = new JSONCompareResult();
+            StringBuilder message = new StringBuilder("Following ignore field(s) not found:\n");
+            for (String field: errorFields){
+                message.append(field);
+                message.append("\n");
+            }
+            result.fail(message.toString());
+            return result;
+        }
+    }
+
+    //CS304 Issue link: https://github.com/skyscreamer/JSONassert/issues/129
+
+    /**
+     * Provide a ignore list, compare the two JSONArray ignoring these fields. 
+     * If the ignore list is empty, which means you don't want to ignore anything, then, please use other method without ignore. 
+     * @param expect Expected JSONArray
+     * @param actual JSONArray to compare
+     * @param ignoreList The list of field name (in String) wanted to ignore
+     * @param mode Defines comparison behavior
+     * @return result of the comparison
+     * @throws JSONException JSON parsing error
+     */
+    public static JSONCompareResult compareJSONWithIgnore(JSONArray expect, JSONArray actual, ArrayList<String> ignoreList, JSONCompareMode mode) throws JSONException{
+        if (ignoreList.size() == 0){
+            JSONCompareResult result = new JSONCompareResult();
+            result.fail("Please use other mode if don't want to ignore any field");
+            return result;
+        }
+        ArrayList<String> errorFields = new ArrayList<String>();
+        for (String toIgnore: ignoreList){
+            boolean have = false;
+            for (int i = 0; i < expect.length(); i++){
+                if (expect.get(i) instanceof JSONObject) {
+                    JSONObject element = expect.getJSONObject(i);
+                    have = checkAndRemove(toIgnore, element) | have;
+                }else if (expect.get(i) instanceof JSONArray){
+                    JSONArray element = (JSONArray) expect.get(i);
+                    have = checkAndRemove(toIgnore, element);
+                }
+
+            }
+            for (int i = 0; i < actual.length(); i++){
+                if (actual.get(i) instanceof JSONObject) {
+                    JSONObject element = actual.getJSONObject(i);
+                    have = checkAndRemove(toIgnore, element) | have;
+                }else if (actual.get(i) instanceof JSONArray){
+                    JSONArray element = (JSONArray) actual.get(i);
+                    have = checkAndRemove(toIgnore, element) | have;
+                }
+            }
+            if (!have){
+                errorFields.add(toIgnore);
+            }
+        }
+        if (errorFields.size() == 0){
+            return compareJSON(expect, actual, mode);
+        }else{
+            JSONCompareResult result = new JSONCompareResult();
+            StringBuilder message = new StringBuilder("Following ignore field(s) not found:\n");
+            for (String field: errorFields){
+                message.append(field);
+                message.append("\n");
+            }
+            result.fail(message.toString());
+            return result;
+        }
+    }
+
+    //CS304 Issue link: https://github.com/skyscreamer/JSONassert/issues/129
+
+    /**
+     * Compare JSON String provided to the expected JSON string and returns the results of the comparison.
+     * 
+     * @param expectedStr Expected JSON String
+     * @param actualStr JSON String to compare
+     * @param ignoreList The list of field name (in String) wanted to ignore
+     * @param mode Defines comparison behavior
+     * @return result of the comparison
+     * @throws JSONException JSON parsing error
+     */
+    public static JSONCompareResult compareJSONWithIgnore(String expectedStr, String actualStr, ArrayList<String> ignoreList, JSONCompareMode mode) throws JSONException {
+        if (ignoreList.size() == 0){
+            JSONCompareResult result = new JSONCompareResult();
+            result.fail("Please use other mode if don't want to ignore any field");
+            return result;
+        }
+        Object _expect = JSONParser.parseJSON(expectedStr);
+        Object _actual = JSONParser.parseJSON(actualStr);
+        if ((_expect instanceof JSONObject) && (_actual instanceof JSONObject)){
+            return compareJSONWithIgnore((JSONObject)_expect, (JSONObject)_actual, ignoreList, mode);
+        }else if ((_expect instanceof JSONArray) && (_actual instanceof JSONArray)){
+            return compareJSONWithIgnore((JSONArray)_expect, (JSONArray)_actual, ignoreList, mode);
+        }else if ((_expect instanceof JSONString) && (_actual instanceof JSONString)){
+            return compareJSONWithIgnore(((JSONString)_expect).toJSONString(), ((JSONString)_actual).toJSONString(), ignoreList, mode);
+        }else if (_expect instanceof JSONObject) {
+            return new JSONCompareResult().fail("", _expect, _actual);
+        }
+        else {
+            return new JSONCompareResult().fail("", _expect, _actual);
+        }
     }
 
     /**
