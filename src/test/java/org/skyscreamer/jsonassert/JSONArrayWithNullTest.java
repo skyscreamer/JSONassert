@@ -1,13 +1,12 @@
 package org.skyscreamer.jsonassert;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 import org.junit.Test;
 
 public class JSONArrayWithNullTest {
     @Test
-    public void testJSONArrayWithNullValue() throws JSONException {
+    public void testJSONArrayWithNullValue() {
         JSONArray jsonArray1 = getJSONArray1();
         JSONArray jsonArray2 = getJSONArray2();
 
@@ -16,7 +15,7 @@ public class JSONArrayWithNullTest {
     }
 
     @Test
-    public void testJSONArrayWithNullValueAndJsonObject() throws JSONException {
+    public void testJSONArrayWithNullValueAndJsonObject() {
         JSONArray jsonArray1 = getJSONArray1();
         JSONObject jsonObject1 = new JSONObject();
         jsonObject1.put("hey", "value");
