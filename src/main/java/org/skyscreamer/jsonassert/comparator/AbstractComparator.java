@@ -83,7 +83,6 @@ public abstract class AbstractComparator implements JSONComparator {
      * @param expected
      * @param actual
      * @param result
-     * @throws JSONException
      */
     protected void checkJsonObjectKeysExpectedInActual(String prefix, JSONObject expected, JSONObject actual, JSONCompareResult result) {
         Set<String> expectedKeys = getKeys(expected);
