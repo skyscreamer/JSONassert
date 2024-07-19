@@ -15,7 +15,6 @@
 package org.skyscreamer.jsonassert.comparator;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 import org.skyscreamer.jsonassert.JSONCompareMode;
 import org.skyscreamer.jsonassert.JSONCompareResult;
@@ -36,8 +35,7 @@ public class DefaultComparator extends AbstractComparator {
     }
 
     @Override
-    public void compareJSON(String prefix, JSONObject expected, JSONObject actual, JSONCompareResult result)
-            throws JSONException {
+    public void compareJSON(String prefix, JSONObject expected, JSONObject actual, JSONCompareResult result) {
         // Check that actual contains all the expected values
         checkJsonObjectKeysExpectedInActual(prefix, expected, actual, result);
 
@@ -48,8 +46,7 @@ public class DefaultComparator extends AbstractComparator {
     }
 
     @Override
-    public void compareValues(String prefix, Object expectedValue, Object actualValue, JSONCompareResult result)
-            throws JSONException {
+    public void compareValues(String prefix, Object expectedValue, Object actualValue, JSONCompareResult result) {
         if (expectedValue == actualValue) {
             return;
         }
@@ -74,8 +71,7 @@ public class DefaultComparator extends AbstractComparator {
     }
 
     @Override
-    public void compareJSONArray(String prefix, JSONArray expected, JSONArray actual, JSONCompareResult result)
-            throws JSONException {
+    public void compareJSONArray(String prefix, JSONArray expected, JSONArray actual, JSONCompareResult result) {
         if (expected.length() != actual.length()) {
             result.fail(prefix + "[]: Expected " + expected.length() + " values but got " + actual.length());
             return;

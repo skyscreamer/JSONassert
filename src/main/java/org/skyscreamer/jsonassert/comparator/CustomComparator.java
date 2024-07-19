@@ -14,7 +14,6 @@
 
 package org.skyscreamer.jsonassert.comparator;
 
-import org.json.JSONException;
 import org.skyscreamer.jsonassert.Customization;
 import org.skyscreamer.jsonassert.JSONCompareMode;
 import org.skyscreamer.jsonassert.JSONCompareResult;
@@ -33,7 +32,7 @@ public class CustomComparator extends DefaultComparator {
     }
 
     @Override
-    public void compareValues(String prefix, Object expectedValue, Object actualValue, JSONCompareResult result) throws JSONException {
+    public void compareValues(String prefix, Object expectedValue, Object actualValue, JSONCompareResult result) {
         Customization customization = getCustomization(prefix);
         if (customization != null) {
             try {

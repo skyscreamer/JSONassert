@@ -16,10 +16,7 @@ package org.skyscreamer.jsonassert;
 
 import org.junit.Assert;
 
-import org.json.JSONException;
 import org.junit.Test;
-import org.skyscreamer.jsonassert.Customization;
-import org.skyscreamer.jsonassert.JSONCompareMode;
 import org.skyscreamer.jsonassert.comparator.CustomComparator;
 
 /**
@@ -34,52 +31,52 @@ public class RegularExpressionValueMatcherTest {
 	private static final String CONSTANT_URI_REGEX_EXPECTED_JSON = "{d:{results:[{__metadata:{uri:X}}]}}";
 
 	private void doTest(String jsonPath, String regex, String expectedJSON,
-			String actualJSON) throws JSONException {
+			String actualJSON) {
 		JSONAssert.assertEquals(expectedJSON, actualJSON, new CustomComparator(
 				JSONCompareMode.STRICT_ORDER, new Customization(jsonPath,
 						new RegularExpressionValueMatcher<Object>(regex))));
 	}
 
 	@Test
-	public void constantRegexWithSimplePathMatchsStringAttribute() throws JSONException {
+	public void constantRegexWithSimplePathMatchsStringAttribute() {
 		doTest("a", "v.", "{a:x}", "{a:v1}");
 	}
 
 	@Test
-	public void constantRegexWithThreeLevelPathMatchsStringAttribute() throws JSONException {
+	public void constantRegexWithThreeLevelPathMatchsStringAttribute() {
 		doTest("a.b.c", ".*Is.*", "{a:{b:{c:x}}}", "{a:{b:{c:thisIsAString}}}");
 	}
 
 	@Test
-	public void dynamicRegexWithSimplePathMatchsStringAttribute() throws JSONException {
+	public void dynamicRegexWithSimplePathMatchsStringAttribute() {
 		doTest("a", null, "{a:\"v.\"}", "{a:v1}");
 	}
 
 	@Test
-	public void dynamicRegexWithThreeLevelPathMatchsStringAttribute() throws JSONException {
+	public void dynamicRegexWithThreeLevelPathMatchsStringAttribute() {
 		doTest("a.b.c", null, "{a:{b:{c:\".*Is.*\"}}}",
 				"{a:{b:{c:thisIsAString}}}");
 	}
 
 	@Test
-	public void constantRegexMatchesStringAttributeInsideArray() throws JSONException {
+	public void constantRegexMatchesStringAttributeInsideArray() {
 		doTest(ARRAY_ELEMENT_PREFIX, "http://localhost:80/Person\\('\\d+'\\)", CONSTANT_URI_REGEX_EXPECTED_JSON, JSON_STRING_WITH_ARRAY);
 	}
 
     @Test
-    public void dynamicRegexMatchesStringAttributeInsideArray() throws JSONException {
+    public void dynamicRegexMatchesStringAttributeInsideArray() {
         doTest(ARRAY_ELEMENT_PREFIX, null, "{d:{results:[{__metadata:{uri:\"http://localhost:80/Person\\\\('\\\\d+'\\\\)\"}}]}}", JSON_STRING_WITH_ARRAY);
     }
 
     @Test
-    public void dynamicRegexMatchesStringAttributeInsideArrayWithNoArgConstructor() throws JSONException {
+    public void dynamicRegexMatchesStringAttributeInsideArrayWithNoArgConstructor() {
 		JSONAssert.assertEquals("{d:{results:[{__metadata:{uri:\"http://localhost:80/Person\\\\('\\\\d+'\\\\)\"}}]}}", JSON_STRING_WITH_ARRAY, new CustomComparator(
 				JSONCompareMode.STRICT_ORDER, new Customization(ARRAY_ELEMENT_PREFIX,
 						new RegularExpressionValueMatcher<Object>())));
     }
 
     @Test
-    public void failsWhenDynamicRegexInvalid() throws JSONException {
+    public void failsWhenDynamicRegexInvalid() {
     	try {
     		doTest(ARRAY_ELEMENT_PREFIX, null, "{d:{results:[{__metadata:{uri:\"http://localhost:80/Person('\\\\d+'\\\\)\"}}]}}", JSON_STRING_WITH_ARRAY);
     	}
@@ -89,7 +86,7 @@ public class RegularExpressionValueMatcherTest {
     }
 
     @Test
-    public void failsWhenDynamicRegexDoesNotMatchStringAttributeInsideArray() throws JSONException {
+    public void failsWhenDynamicRegexDoesNotMatchStringAttributeInsideArray() {
     	try {
     		doTest(ARRAY_ELEMENT_PREFIX, null, "{d:{results:[{__metadata:{uri:\"http://localhost:80/Person\\\\('\\\\w+'\\\\)\"}}]}}", JSON_STRING_WITH_ARRAY);
     	}
@@ -99,7 +96,7 @@ public class RegularExpressionValueMatcherTest {
     }
 
     @Test
-    public void failsWhenConstantRegexInvalid() throws JSONException {
+    public void failsWhenConstantRegexInvalid() {
     	try {
     		doTest(ARRAY_ELEMENT_PREFIX, "http://localhost:80/Person\\\\['\\\\d+'\\\\)", CONSTANT_URI_REGEX_EXPECTED_JSON, JSON_STRING_WITH_ARRAY);
     	}
@@ -109,7 +106,7 @@ public class RegularExpressionValueMatcherTest {
     }
 
     @Test
-    public void failsWhenConstantRegexDoesNotMatchStringAttributeInsideArray() throws JSONException {
+    public void failsWhenConstantRegexDoesNotMatchStringAttributeInsideArray() {
     	try {
     		doTest(ARRAY_ELEMENT_PREFIX, "http://localhost:80/Person\\\\('\\\\w+'\\\\)", CONSTANT_URI_REGEX_EXPECTED_JSON, JSON_STRING_WITH_ARRAY);
     	}

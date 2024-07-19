@@ -16,7 +16,6 @@ package org.skyscreamer.jsonassert.comparator;
 
 import junit.framework.Assert;
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.junit.Test;
 import org.skyscreamer.jsonassert.JSONCompare;
 import org.skyscreamer.jsonassert.JSONCompareMode;
@@ -34,7 +33,7 @@ public class CustomComparatorTest {
         }
 
         @Override
-        public void compareJSONArray(String prefix, JSONArray expected, JSONArray actual, JSONCompareResult result) throws JSONException {
+        public void compareJSONArray(String prefix, JSONArray expected, JSONArray actual, JSONCompareResult result) {
             compareJSONArrayOfJsonObjects(prefix, expected, actual, result);
         }
     }

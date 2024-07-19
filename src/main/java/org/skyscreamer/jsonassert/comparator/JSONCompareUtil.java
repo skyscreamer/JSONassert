@@ -25,7 +25,6 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
@@ -44,9 +43,8 @@ public final class JSONCompareUtil {
      * @param array     the JSON array to convert
      * @param uniqueKey the key to map the JSON objects to
      * @return the map of {@link JSONObject}s from {@code array}
-     * @throws JSONException JSON parsing error
      */
-    public static Map<Object, JSONObject> arrayOfJsonObjectToMap(JSONArray array, String uniqueKey) throws JSONException {
+    public static Map<Object, JSONObject> arrayOfJsonObjectToMap(JSONArray array, String uniqueKey) {
         Map<Object, JSONObject> valueMap = new HashMap<Object, JSONObject>();
         for (int i = 0; i < array.length(); ++i) {
             JSONObject jsonObject = (JSONObject) array.get(i);
@@ -61,9 +59,8 @@ public final class JSONCompareUtil {
      *
      * @param expected the array to find the unique key of
      * @return the unique key if there's any, otherwise null
-     * @throws JSONException JSON parsing error
      */
-    public static String findUniqueKey(JSONArray expected) throws JSONException {
+    public static String findUniqueKey(JSONArray expected) {
         // Find a unique key for the object (id, name, whatever)
         JSONObject o = (JSONObject) expected.get(0); // There's at least one at this point
         for (String candidate : getKeys(o)) {
@@ -86,9 +83,8 @@ public final class JSONCompareUtil {
      * @param candidate is usable as a unique key if every element in the
      * @param array is a JSONObject having that key, and no two values are the same.
      * @return true if the candidate can work as a unique id across array
-     * @throws JSONException JSON parsing error
      */
-    public static boolean isUsableAsUniqueKey(String candidate, JSONArray array) throws JSONException {
+    public static boolean isUsableAsUniqueKey(String candidate, JSONArray array) {
         Set<Object> seenValues = new HashSet<Object>();
         for (int i = 0; i < array.length(); i++) {
             Object item = array.get(i);
@@ -116,9 +112,8 @@ public final class JSONCompareUtil {
      *
      * @param expected the JSON array to convert
      * @return the list of objects from the {@code expected} array
-     * @throws JSONException JSON parsing error
      */
-    public static List<Object> jsonArrayToList(JSONArray expected) throws JSONException {
+    public static List<Object> jsonArrayToList(JSONArray expected) {
         List<Object> jsonObjects = new ArrayList<Object>(expected.length());
         for (int i = 0; i < expected.length(); ++i) {
             jsonObjects.add(getObjectOrNull(expected, i));
@@ -132,9 +127,8 @@ public final class JSONCompareUtil {
      * @param jsonArray the JSON array to get value from
      * @param index index of object to retrieve
      * @return value at the given index position
-     * @throws JSONException JSON parsing error
      */
-    public static Object getObjectOrNull(JSONArray jsonArray, int index) throws JSONException {
+    public static Object getObjectOrNull(JSONArray jsonArray, int index) {
         return jsonArray.isNull(index) ? null : jsonArray.get(index);
     }
 
@@ -143,10 +137,9 @@ public final class JSONCompareUtil {
      *
      * @param array the JSON array to iterate through on
      * @return true if all the elements in {@code array} are simple values
-     * @throws JSONException JSON parsing error
      * @see #isSimpleValue(Object)
      */
-    public static boolean allSimpleValues(JSONArray array) throws JSONException {
+    public static boolean allSimpleValues(JSONArray array) {
         for (int i = 0; i < array.length(); ++i) {
             if (!array.isNull(i) && !isSimpleValue(array.get(i))) {
                 return false;
@@ -170,9 +163,8 @@ public final class JSONCompareUtil {
      *
      * @param array the array to inspect
      * @return true if all the elements in the given array are JSONObjects
-     * @throws JSONException JSON parsing error
      */
-    public static boolean allJSONObjects(JSONArray array) throws JSONException {
+    public static boolean allJSONObjects(JSONArray array) {
         for (int i = 0; i < array.length(); ++i) {
             if (!(array.get(i) instanceof JSONObject)) {
                 return false;
@@ -186,9 +178,8 @@ public final class JSONCompareUtil {
      *
      * @param array the array to inspect
      * @return true if all the elements in the given array are JSONArrays
-     * @throws JSONException JSON parsing error
      */
-    public static boolean allJSONArrays(JSONArray array) throws JSONException {
+    public static boolean allJSONArrays(JSONArray array) {
         for (int i = 0; i < array.length(); ++i) {
             if (!(array.get(i) instanceof JSONArray)) {
                 return false;
