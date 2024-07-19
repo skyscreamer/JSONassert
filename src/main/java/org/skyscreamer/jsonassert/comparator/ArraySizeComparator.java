@@ -17,7 +17,6 @@ package org.skyscreamer.jsonassert.comparator;
 import java.text.MessageFormat;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.skyscreamer.jsonassert.JSONCompareMode;
 import org.skyscreamer.jsonassert.JSONCompareResult;
 
@@ -69,7 +68,7 @@ public class ArraySizeComparator extends DefaultComparator {
 	 */
 	@Override
 	public void compareJSONArray(String prefix, JSONArray expected,
-			JSONArray actual, JSONCompareResult result) throws JSONException {
+			JSONArray actual, JSONCompareResult result) {
 		String arrayPrefix = prefix + "[]";
 		if (expected.length() < 1 || expected.length() > 2) {
 			result.fail(MessageFormat

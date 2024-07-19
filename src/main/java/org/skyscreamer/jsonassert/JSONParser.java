@@ -36,9 +36,8 @@ public class JSONParser {
      *
      * @param s Raw JSON string to be parsed
      * @return JSONObject or JSONArray
-     * @throws JSONException JSON parsing error
      */
-    public static Object parseJSON(final String s) throws JSONException {
+    public static Object parseJSON(final String s) {
         if (s.trim().startsWith("{")) {
             return new JSONObject(s);
         }

@@ -15,7 +15,6 @@
 package org.skyscreamer.jsonassert.comparator;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 import org.skyscreamer.jsonassert.JSONCompareResult;
 
@@ -42,10 +41,9 @@ public abstract class AbstractComparator implements JSONComparator {
      *
      * @param expected Expected JSONObject
      * @param actual   JSONObject to compare
-     * @throws JSONException JSON parsing error
      */
     @Override
-    public final JSONCompareResult compareJSON(JSONObject expected, JSONObject actual) throws JSONException {
+    public final JSONCompareResult compareJSON(JSONObject expected, JSONObject actual) {
         JSONCompareResult result = new JSONCompareResult();
         compareJSON("", expected, actual, result);
         return result;
@@ -56,10 +54,9 @@ public abstract class AbstractComparator implements JSONComparator {
      *
      * @param expected Expected JSONArray
      * @param actual   JSONArray to compare
-     * @throws JSONException JSON parsing error
      */
     @Override
-    public final JSONCompareResult compareJSON(JSONArray expected, JSONArray actual) throws JSONException {
+    public final JSONCompareResult compareJSON(JSONArray expected, JSONArray actual) {
         JSONCompareResult result = new JSONCompareResult();
         compareJSONArray("", expected, actual, result);
         return result;
@@ -86,9 +83,8 @@ public abstract class AbstractComparator implements JSONComparator {
      * @param expected
      * @param actual
      * @param result
-     * @throws JSONException
      */
-    protected void checkJsonObjectKeysExpectedInActual(String prefix, JSONObject expected, JSONObject actual, JSONCompareResult result) throws JSONException {
+    protected void checkJsonObjectKeysExpectedInActual(String prefix, JSONObject expected, JSONObject actual, JSONCompareResult result) {
         Set<String> expectedKeys = getKeys(expected);
         for (String key : expectedKeys) {
             Object expectedValue = expected.get(key);
@@ -101,7 +97,7 @@ public abstract class AbstractComparator implements JSONComparator {
         }
     }
 
-    protected void compareJSONArrayOfJsonObjects(String key, JSONArray expected, JSONArray actual, JSONCompareResult result) throws JSONException {
+    protected void compareJSONArrayOfJsonObjects(String key, JSONArray expected, JSONArray actual, JSONCompareResult result) {
         String uniqueKey = findUniqueKey(expected);
         if (uniqueKey == null || !isUsableAsUniqueKey(uniqueKey, actual)) {
             // An expensive last resort
@@ -126,7 +122,7 @@ public abstract class AbstractComparator implements JSONComparator {
         }
     }
 
-    protected void compareJSONArrayOfSimpleValues(String key, JSONArray expected, JSONArray actual, JSONCompareResult result) throws JSONException {
+    protected void compareJSONArrayOfSimpleValues(String key, JSONArray expected, JSONArray actual, JSONCompareResult result) {
         Map<Object, Integer> expectedCount = JSONCompareUtil.getCardinalityMap(jsonArrayToList(expected));
         Map<Object, Integer> actualCount = JSONCompareUtil.getCardinalityMap(jsonArrayToList(actual));
         for (Object o : expectedCount.keySet()) {
@@ -144,7 +140,7 @@ public abstract class AbstractComparator implements JSONComparator {
         }
     }
 
-    protected void compareJSONArrayWithStrictOrder(String key, JSONArray expected, JSONArray actual, JSONCompareResult result) throws JSONException {
+    protected void compareJSONArrayWithStrictOrder(String key, JSONArray expected, JSONArray actual, JSONCompareResult result) {
         for (int i = 0; i < expected.length(); ++i) {
             Object expectedValue = JSONCompareUtil.getObjectOrNull(expected, i);
             Object actualValue = JSONCompareUtil.getObjectOrNull(actual, i);
@@ -157,7 +153,7 @@ public abstract class AbstractComparator implements JSONComparator {
     // This is expensive (O(n^2) -- yuck), but may be the only resort for some cases with loose array ordering, and no
     // easy way to uniquely identify each element.
     protected void recursivelyCompareJSONArray(String key, JSONArray expected, JSONArray actual,
-                                               JSONCompareResult result) throws JSONException {
+                                               JSONCompareResult result) {
         Set<Integer> matched = new HashSet<Integer>();
         for (int i = 0; i < expected.length(); ++i) {
             Object expectedElement = JSONCompareUtil.getObjectOrNull(expected, i);

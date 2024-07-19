@@ -77,7 +77,7 @@ To use, [download the JAR](https://github.com/skyscreamer/JSONassert/releases) o
     <dependency>
         <groupId>org.skyscreamer</groupId>
         <artifactId>jsonassert</artifactId>
-        <version>1.5.3</version>
+        <version>2.0.0-SNAPSHOT</version>
         <scope>test</scope>
     </dependency>
 
@@ -97,16 +97,15 @@ Who uses JSONassert?
  + [GroupDocs](http://groupdocs.com/)
  + [Shazam](http://www.shazam.com/)
  + [Thucydides](http://thucydides.net/)
+ + [and over a thousand more](https://mvnrepository.com/artifact/org.skyscreamer/jsonassert)...
 
 * * *
 
 org.json
 --------
 
-This implementation uses a clean-room implementation of the org.json
-library implemented for the Android system, released under the Apache 2.0 license. See
-[com.vaadin.external.google:android-json](http://search.maven.org/#artifactdetails%7Ccom.vaadin.external.google%7Candroid-json%7C0.0.20131108.vaadin1%7Cjar)
-That jar does **not** include the org.json.JSONString interface, so a new implementation of that interface is added to this source.
+As of v2, JSONAssert uses @stleary's [JSON-java](https://github.com/stleary/JSON-java) implementation of org.json, the
+most commonly used reference implementation for JSON in Java.
 
 Resources
 ---------
