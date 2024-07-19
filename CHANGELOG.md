@@ -1,6 +1,10 @@
 Changelog
 =========
 
+Version 2.0.0 - TBD
+-------------------
+ - TODO - placeholder
+
 Version 1.5.3 - 6/28/2024
 -------------------------
  - Revert Java release version from 21 to 8 due to breaking older compilers.
