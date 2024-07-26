@@ -106,11 +106,6 @@
                 <artifactId>maven-scm-manager-plexus</artifactId>
                 <version>1.12.2</version>
             </extension>
-            <extension>
-                <groupId>org.kathrynhuxtable.maven.wagon</groupId>
-                <artifactId>wagon-gitsite</artifactId>
-                <version>0.3.1</version>
-            </extension>
         </extensions>
     </build>
 
