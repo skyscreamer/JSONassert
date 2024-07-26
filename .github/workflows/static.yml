@@ -33,6 +33,13 @@ jobs:
         uses: actions/checkout@v4
       - name: Setup Pages
         uses: actions/configure-pages@v5
+      - name: Deploy JavaDoc 🚀
+        uses: MathieuSoysal/Javadoc-publisher.yml@v2.5.0
+        with:
+          java-version: 8
+          deploy-mode: artifact
+          javadoc-source-folder: ./src/site/resources/apidocs
+          project: maven
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
