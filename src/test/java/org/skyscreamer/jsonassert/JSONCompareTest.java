@@ -21,6 +21,7 @@ import static org.junit.Assert.assertTrue;
 import static org.skyscreamer.jsonassert.JSONCompare.compareJSON;
 import static org.skyscreamer.jsonassert.JSONCompareMode.LENIENT;
 import static org.skyscreamer.jsonassert.JSONCompareMode.NON_EXTENSIBLE;
+import static org.skyscreamer.jsonassert.JSONCompareMode.STRICT;
 
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
@@ -156,6 +157,32 @@ public class JSONCompareTest {
     public void reportsUnmatchedJSONArrayWhereExpectedContainsJSONObjectWithUniqueKeyButActualContainsElementOfOtherType() {
         JSONCompareResult result = compareJSON("[{\"id\": 3}]", "[5]", LENIENT);
         assertThat(result, failsWithMessage(equalTo("[0] Could not find match for element {\"id\":3}")));
+    }
+
+    @Test
+    public void reportsUnmatchedJSONArrayWhereExpectedContainsNonnullIntegerButActualContainsNullElement() throws JSONException {
+        JSONCompareResult result = compareJSON("[ 3 ]", "[ null ]", LENIENT);
+        assertThat(result, failsWithMessage(equalTo("[]\nExpected: 3\n     but none found\n ; " +
+                "[]\nUnexpected: null\n")));
+    }
+
+    @Test
+    public void reportsUnmatchedJSONArrayWhereExpectedContainsNullElementButActualContainsNonnullInteger() throws JSONException {
+        JSONCompareResult result = compareJSON("[ null ]", "[ 3 ]", LENIENT);
+        assertThat(result, failsWithMessage(equalTo("[]\nExpected: null\n     but none found\n ; " +
+                "[]\nUnexpected: 3\n")));
+    }
+
+    @Test
+    public void reportsStrictUnmatchedJSONArrayWhereExpectedContainsNonnullIntegerButActualContainsNullElement() throws JSONException {
+        JSONCompareResult result = compareJSON("[ 3 ]", "[ null ]", STRICT);
+        assertThat(result, failsWithMessage(equalTo("[0]\nExpected: 3\n     got: null\n")));
+    }
+
+    @Test
+    public void reportsStrictUnmatchedJSONArrayWhereExpectedContainsNullButActualContainsNonnullInteger() throws JSONException {
+        JSONCompareResult result = compareJSON("[ null ]", "[ 3 ]", STRICT);
+        assertThat(result, failsWithMessage(equalTo("[0]\nExpected: null\n     got: 3\n")));
     }
 
     private Matcher<JSONCompareResult> failsWithMessage(final Matcher<String> expectedMessage) {
