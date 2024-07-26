@@ -37,9 +37,10 @@ jobs:
         uses: MathieuSoysal/Javadoc-publisher.yml@v2.5.0
         with:
           java-version: 8
-          deploy-mode: artifact
           javadoc-source-folder: ./src/site/resources/apidocs
           project: maven
+          without-deploy: true
+          without-checkout: true
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
