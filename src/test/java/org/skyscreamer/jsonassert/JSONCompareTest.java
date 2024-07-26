@@ -160,27 +160,27 @@ public class JSONCompareTest {
     }
 
     @Test
-    public void reportsUnmatchedJSONArrayWhereExpectedContainsNonnullIntegerButActualContainsNullElement() throws JSONException {
+    public void reportsUnmatchedJSONArrayWhereExpectedContainsNonnullIntegerButActualContainsNullElement() {
         JSONCompareResult result = compareJSON("[ 3 ]", "[ null ]", LENIENT);
         assertThat(result, failsWithMessage(equalTo("[]\nExpected: 3\n     but none found\n ; " +
                 "[]\nUnexpected: null\n")));
     }
 
     @Test
-    public void reportsUnmatchedJSONArrayWhereExpectedContainsNullElementButActualContainsNonnullInteger() throws JSONException {
+    public void reportsUnmatchedJSONArrayWhereExpectedContainsNullElementButActualContainsNonnullInteger() {
         JSONCompareResult result = compareJSON("[ null ]", "[ 3 ]", LENIENT);
         assertThat(result, failsWithMessage(equalTo("[]\nExpected: null\n     but none found\n ; " +
                 "[]\nUnexpected: 3\n")));
     }
 
     @Test
-    public void reportsStrictUnmatchedJSONArrayWhereExpectedContainsNonnullIntegerButActualContainsNullElement() throws JSONException {
+    public void reportsStrictUnmatchedJSONArrayWhereExpectedContainsNonnullIntegerButActualContainsNullElement() {
         JSONCompareResult result = compareJSON("[ 3 ]", "[ null ]", STRICT);
         assertThat(result, failsWithMessage(equalTo("[0]\nExpected: 3\n     got: null\n")));
     }
 
     @Test
-    public void reportsStrictUnmatchedJSONArrayWhereExpectedContainsNullButActualContainsNonnullInteger() throws JSONException {
+    public void reportsStrictUnmatchedJSONArrayWhereExpectedContainsNullButActualContainsNonnullInteger() {
         JSONCompareResult result = compareJSON("[ null ]", "[ 3 ]", STRICT);
         assertThat(result, failsWithMessage(equalTo("[0]\nExpected: null\n     got: 3\n")));
     }
