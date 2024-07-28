@@ -1,9 +1,13 @@
 Changelog
 =========
 
-Version 2.0.0 - TBD
+Version 2.0-rc1 - 7/28/2024
 -------------------
- - TODO - placeholder
+ - Release candidate
+ - ** Switches JSON implementation to use org.json:json:20240303 **
+ - Deployment still built with Java version 8 to maximize compatibility
+ - Cannot insert null directly into JSONArray without casting. Recommend to use JSONObject.Null
+ - JSONException is now a RuntimeException. Is not defined as thrown in method signatures anynmore.
 
 Version 1.5.3 - 6/28/2024
 -------------------------
