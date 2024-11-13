@@ -64,14 +64,27 @@ public enum JSONCompareMode {
     /**
      * Strict order checking.  Extensible, and strict array ordering.
      */
-    STRICT_ORDER(true, true);
+    STRICT_ORDER(true, true),
+    
+    /**
+     * Extensible checking, and only null values can be extended
+     */
+    EXTEND_WITH_NULL(true, false,true);
 
     private final boolean _extensible;
     private final boolean _strictOrder;
+    private  boolean _isNullExtensible=false;
 
     JSONCompareMode(boolean extensible, boolean strictOrder) {
         _extensible = extensible;
         _strictOrder = strictOrder;
+    }
+    
+    
+    JSONCompareMode(boolean extensible, boolean strictOrder,boolean isNullExtensible){
+        _extensible = extensible;
+        _strictOrder = strictOrder;
+        _isNullExtensible=isNullExtensible;
     }
 
     /**
@@ -116,5 +129,13 @@ public enum JSONCompareMode {
         } else {
             return hasStrictOrder() ? STRICT : NON_EXTENSIBLE;
         }
+    }
+    
+    /**
+     * Get whether the mode allow extend with null values
+     * @return true if the mode allow extend with null values
+     */
+    public boolean isNullExtensible(){
+        return _isNullExtensible;
     }
 }
