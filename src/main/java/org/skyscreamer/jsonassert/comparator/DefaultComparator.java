@@ -72,7 +72,8 @@ public class DefaultComparator extends AbstractComparator {
     @Override
     public void compareJSONArray(String prefix, JSONArray expected, JSONArray actual, JSONCompareResult result) {
         if (expected.length() != actual.length()) {
-            result.fail(prefix + "[]: Expected " + expected.length() + " values but got " + actual.length());
+            result.fail(prefix + "[]: Expected " + expected.length() + " values but got " + actual.length() + ", "
+                    + "Expected: " + expected + ", " + "Actual: " + actual);
             return;
         } else if (expected.length() == 0) {
             return; // Nothing to compare
