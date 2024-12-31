@@ -1,0 +1,115 @@
+# yaml-language-server:$schema=https://json.schemastore.org/github-workflow.json
+name: Java CI with Maven
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+  workflow_dispatch:
+
+# https://docs.github.com/en/actions/security-for-github-actions/security-guides/automatic-token-authentication#permissions-for-the-github_token
+permissions:
+  contents: read
+
+jobs:
+  legacy-java:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        java: [ 6, 8 ]
+    name: Java ${{ matrix.java }}
+    steps:
+      - name: Check out Git repository
+        uses: actions/checkout@v4
+      # JDK 11 is required for Maven itself as runtime 
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: zulu
+          java-version: |
+            ${{ matrix.java }}
+            11
+      - name: Cache Maven artifacts
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.m2/repository
+            ~/.m2/wrapper
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
+      - name: Setup Maven
+        run: |
+          mkdir -p .mvn
+          echo "-B" > .mvn/maven.config
+      - name: Compile with Java ${{ matrix.java }}
+        run: mvn clean compile -P=legacy-java -Djava.version="1.${{ matrix.java }}"
+      - name: Run Tests with Java ${{ matrix.java }}
+        run: mvn test -P=legacy-java -Djava.version="1.${{ matrix.java }}"
+      - name: Build Test Report for Java ${{ matrix.java }}
+        if: ${{ always() }}
+        run: |
+          mvn surefire-report:report-only
+          mvn site -DgenerateReports=false
+      - name: Upload Test Results for Java ${{ matrix.java }}
+        if: ${{ always() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: Test Results for Java ${{ matrix.java }}
+          path: target/surefire-reports/
+      - name: Upload Test Report ${{ matrix.java }}
+        if: ${{ always() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: Test Report for Java ${{ matrix.java }}
+          path: target/site/
+
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        java: [ 11, 17, 21 ]
+    name: Java ${{ matrix.java }}
+    steps:
+      - name: Check out Git repository
+        uses: actions/checkout@v4
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: zulu
+          java-version: ${{ matrix.java }}
+      - name: Cache Maven artifacts
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.m2/repository
+            ~/.m2/wrapper
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
+      - name: Setup Maven
+        run: |
+          mkdir -p .mvn
+          echo "-B" > .mvn/maven.config
+      - name: Compile with Java ${{ matrix.java }}
+        run: mvn clean compile -Djava.version="${{ matrix.java }}"
+      - name: Run Tests with Java ${{ matrix.java }}
+        run: mvn test -Djava.version="${{ matrix.java }}"
+      - name: Build Test Report for Java ${{ matrix.java }}
+        if: ${{ always() }}
+        run: |
+          mvn surefire-report:report-only
+          mvn site -DgenerateReports=false
+      - name: Upload Test Results for Java ${{ matrix.java }}
+        if: ${{ always() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: Test Results for Java ${{ matrix.java }}
+          path: target/surefire-reports/
+      - name: Upload Test Report ${{ matrix.java }}
+        if: ${{ always() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: Test Report for Java ${{ matrix.java }}
+          path: target/site/

@@ -12,7 +12,15 @@
     <url>https://github.com/skyscreamer/JSONassert</url>
 
     <properties>
-        <maven.compiler.release>8</maven.compiler.release>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>${project.build.sourceEncoding}</project.reporting.outputEncoding>
+        <maven.compiler.encoding>${project.build.sourceEncoding}</maven.compiler.encoding>
+
+        <java.version>1.8</java.version>
+        <maven.compiler.release>${java.version}</maven.compiler.release>
+        <toolchain.jdk.version>[${java.version},${parsedVersion.nextMajorVersion})</toolchain.jdk.version>
+        <!-- For some reason IfMatch does not work as expected together with Java 8 and below -->
+        <toolchain.jdk.mode>IfSame</toolchain.jdk.mode>
     </properties>
 
     <licenses>
@@ -62,10 +70,58 @@
 
     <build>
         <plugins>
+            <!--
+                Plugin declaration order is the deciding factor when the same phase is targeted
+                builder-helper-maven-plugin has to execute before maven-toolchains-plugin or else
+                the expected property will not be available because the selected goals run in the
+                same phase by default (`validate`).
+                See:
+                - https://maven.apache.org/ref/3.9.8/maven-core/lifecycles.html
+                - https://www.mojohaus.org/build-helper-maven-plugin/parse-version-mojo.html
+                - https://maven.apache.org/plugins/maven-toolchains-plugin/select-jdk-toolchain-mojo.html
+            -->
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>build-helper-maven-plugin</artifactId>
+                <version>3.4.0</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>parse-version</goal>
+                        </goals>
+                        <configuration>
+                            <versionString>${java.version}</versionString>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <!--
+                Maven Toolchains has to be declared before the compiler plugin
+                or else the wrong JDK/JVM will be used for compilation.
+            -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-toolchains-plugin</artifactId>
+                <version>3.2.0</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>select-jdk-toolchain</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.11.0</version>
+                <configuration>
+                    <!--
+                        Ensure that the correct compiler is used independently of the Maven runtime selection.
+                        This is also important in case the JDK/JVM runtime args need to be modified for compilation e.g. for Google Error-Prone integration. 
+                    -->
+                    <fork>true</fork>
+                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.sonatype.plugins</groupId>
@@ -100,6 +156,19 @@
     </distributionManagement>
 
     <profiles>
+        <profile>
+            <id>legacy-java</id>
+            <!-- Automatically activate if the runtime JDK is Java 8 or below -->
+            <activation>
+                <jdk>(,1.8]</jdk>
+            </activation>
+            <properties>
+                <maven.compiler.source>${java.version}</maven.compiler.source>
+                <maven.compiler.target>${java.version}</maven.compiler.target>
+                <!-- Unset the release flag that isn't supported by Java 8 and below -->
+                <maven.compiler.release></maven.compiler.release>
+            </properties>
+        </profile>
         <profile>
             <id>deploy</id>
             <build>
