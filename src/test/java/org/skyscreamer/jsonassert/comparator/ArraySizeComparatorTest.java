@@ -137,5 +137,4 @@ public class ArraySizeComparatorTest {
 	public void succeedsWhenActualArrayContainsBetween2And6Elements() {
 		JSONAssert.assertEquals("{a:[2,6]}", "{a:[7, 8, 9]}", new ArraySizeComparator(JSONCompareMode.LENIENT));
 	}
-
 }

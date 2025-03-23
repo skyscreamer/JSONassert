@@ -143,9 +143,6 @@ public final class Customization {
 	 */
 	public boolean matches(String prefix, Object actual, Object expected,
 			JSONCompareResult result) throws ValueMatcherException {
-		if (comparator instanceof LocationAwareValueMatcher) {
-			return ((LocationAwareValueMatcher<Object>)comparator).equal(prefix, actual, expected, result);
-		}
-		return comparator.equal(actual, expected);
+		return CustomizationEvaluator.matches(comparator, prefix, actual, expected, result);
 	}
 }
