@@ -65,6 +65,14 @@ public class JSONAssertTest {
     }
 
     @Test
+    public void testBoolean() {
+        testPass("true", "true", STRICT);
+        testFail("true", "false", STRICT);
+        testPass("false", "false", STRICT);
+        testFail("false", "true", STRICT);
+    }
+
+    @Test
     public void testSimple() {
         testPass("{id:1}", "{id:1}", STRICT);
         testFail("{id:1}", "{id:2}", STRICT);
