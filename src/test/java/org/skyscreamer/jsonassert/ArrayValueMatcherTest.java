@@ -165,6 +165,15 @@ public class ArrayValueMatcherTest {
 	}
 
 	@Test
+	public void failsWhenExpectedArrayIsEmptyAndActualIsNot() {
+		doFailingMatchTest("b",
+				new ArrayValueMatcher<Object>(comparator),
+				"{a:1,b:[]}",
+				"{a:1,b:[{c:1}]}",
+				"b\\[\\]\\: Expected 0 values but got 1\\s*");
+	}
+
+	@Test
 	public void failsWhenAppliedToNonArray() {
 		try {
 			doTest("a", new ArrayValueMatcher<Object>(comparator), "{a:[{background:white}]}", "{a:{attr1:value1,attr2:value2}}");

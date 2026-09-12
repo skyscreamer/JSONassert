@@ -205,6 +205,12 @@ public class ArrayValueMatcher<T> implements LocationAwareValueMatcher<T> {
 			int first = Math.max(0, from);
 			int last = Math.min(actualArray.length() - 1, to);
 			int expectedLen = expectedArray.length();
+			if (expectedLen == 0) {
+				if (first <= last) {
+					result.fail(prefix + "[]: Expected 0 values but got " + actualArray.length());
+				}
+				return true;
+			}
 			for (int i = first; i <= last; i++) {
 				String elementPrefix = MessageFormat.format("{0}[{1}]", prefix, i);
 				Object actualElement = actualArray.get(i);
