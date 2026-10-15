@@ -38,20 +38,21 @@ public final class Customization {
 		String regex = "\\*\\*\\.";
 		String replacement = "(?:.+\\.)?";
 
-		return buildPattern(path, regex, replacement, 1);
+		// Only a trailing * or ** needs the empty part retained.
+		return buildPattern(path, regex, replacement, 1, path.endsWith("*") && !path.endsWith("***"));
 	}
 
-	private String buildPatternLevel2(String s) {
+	private String buildPatternLevel2(String s, boolean trailingWildcard) {
 		if (s.isEmpty()) {
 			return "";
 		}
 		String regex = "\\*\\*";
 		String replacement = ".+";
 
-		return buildPattern(s, regex, replacement, 2);
+		return buildPattern(s, regex, replacement, 2, trailingWildcard);
 	}
 
-	private String buildPatternLevel3(String s) {
+	private String buildPatternLevel3(String s, boolean trailingWildcard) {
 		if (s.isEmpty()) {
 			return "";
 		}
@@ -59,14 +60,14 @@ public final class Customization {
 		String regex = "\\*";
 		String replacement = "[^\\.]+";
 
-		return buildPattern(s, regex, replacement, 3);
+		return buildPattern(s, regex, replacement, 3, trailingWildcard);
 	}
 
-	private String buildPattern(String path, String regex, String replacement, int level) {
+	private String buildPattern(String path, String regex, String replacement, int level, boolean trailingWildcard) {
 		StringBuilder sb = new StringBuilder();
-		String[] parts = path.split(regex);
+		String[] parts = path.split(regex, trailingWildcard ? -1 : 0);
 		for (int i = 0; i < parts.length; i++) {
-			sb.append(buildPatternForLevel(level, parts[i]));
+			sb.append(buildPatternForLevel(level, parts[i], trailingWildcard && i == parts.length - 1));
 			if (i < parts.length - 1) {
 				sb.append(replacement);
 			}
@@ -74,12 +75,12 @@ public final class Customization {
 		return sb.toString();
 	}
 
-	private String buildPatternForLevel(int level, String part) {
+	private String buildPatternForLevel(int level, String part, boolean trailingWildcard) {
 		switch (level) {
 			case 1:
-				return buildPatternLevel2(part);
+				return buildPatternLevel2(part, trailingWildcard);
 			case 2:
-				return buildPatternLevel3(part);
+				return buildPatternLevel3(part, trailingWildcard);
 			case 3:
 				return Pattern.quote(part);
 			default:

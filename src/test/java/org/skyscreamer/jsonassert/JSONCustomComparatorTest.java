@@ -19,6 +19,7 @@ import org.skyscreamer.jsonassert.comparator.CustomComparator;
 import org.skyscreamer.jsonassert.comparator.JSONComparator;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.skyscreamer.jsonassert.JSONCompare.compareJSON;
 
@@ -148,6 +149,71 @@ public class JSONCustomComparatorTest {
         JSONCompareResult result = compareJSON(simpleWildcardExpected, simpleWildcardActual, jsonCmp);
         assertTrue(result.getMessage(), result.passed());
         assertEquals(2, comparatorCallCount);
+    }
+
+    @Test
+    public void whenTrailingWildcardPathMatchesCallCustomMatcher() {
+        JSONComparator jsonCmp = new CustomComparator(JSONCompareMode.STRICT, new Customization("foo.*.*", comparator));
+        JSONCompareResult result = compareJSON(simpleWildcardExpected, simpleWildcardActual, jsonCmp);
+        assertTrue(result.getMessage(), result.passed());
+        assertEquals(2, comparatorCallCount);
+    }
+
+    @Test
+    public void whenTrailingWildcardMatchesOnlyOneLevel() {
+        Customization customization = new Customization("foo.*", comparator);
+        assertTrue(customization.appliesToPath("foo.bar"));
+        assertFalse(customization.appliesToPath("foo.bar.baz"));
+        assertFalse(customization.appliesToPath("foo."));
+        assertFalse(customization.appliesToPath("other.bar"));
+    }
+
+    @Test
+    public void whenTrailingDeepWildcardMatchesMultipleLevels() {
+        Customization customization = new Customization("foo.**", comparator);
+        assertTrue(customization.appliesToPath("foo.bar"));
+        assertTrue(customization.appliesToPath("foo.bar.baz"));
+        assertFalse(customization.appliesToPath("foo."));
+        assertFalse(customization.appliesToPath("other.bar"));
+    }
+
+    @Test
+    public void whenWildcardOnlyPathsMatch() {
+        Customization simple = new Customization("*", comparator);
+        assertTrue(simple.appliesToPath("foo"));
+        assertFalse(simple.appliesToPath("foo.bar"));
+        assertFalse(simple.appliesToPath(""));
+
+        Customization deep = new Customization("**", comparator);
+        assertTrue(deep.appliesToPath("foo"));
+        assertTrue(deep.appliesToPath("foo.bar"));
+        assertFalse(deep.appliesToPath(""));
+    }
+
+    @Test
+    public void whenTripleWildcardMatchesMultipleLevels() {
+        Customization customization = new Customization("foo.***", comparator);
+        assertTrue(customization.appliesToPath("foo.b"));
+        assertTrue(customization.appliesToPath("foo.bar"));
+        assertTrue(customization.appliesToPath("foo.bar.baz"));
+        assertFalse(customization.appliesToPath("foo."));
+    }
+
+    @Test
+    public void whenTripleWildcardMatchesBeforeProperty() {
+        Customization customization = new Customization("foo.***.bar", comparator);
+        assertTrue(customization.appliesToPath("foo.bar"));
+        assertTrue(customization.appliesToPath("foo.b.bar"));
+        assertTrue(customization.appliesToPath("foo.b.c.bar"));
+        assertFalse(customization.appliesToPath("foo.baz"));
+    }
+
+    @Test
+    public void whenTrailingWildcardFollowsTripleWildcard() {
+        Customization customization = new Customization("foo.***.*", comparator);
+        assertTrue(customization.appliesToPath("foo.b"));
+        assertTrue(customization.appliesToPath("foo.b.c"));
+        assertFalse(customization.appliesToPath("foo."));
     }
 
     @Test
