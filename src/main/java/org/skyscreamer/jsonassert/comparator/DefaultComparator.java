@@ -14,6 +14,8 @@
 
 package org.skyscreamer.jsonassert.comparator;
 
+import java.math.BigInteger;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.skyscreamer.jsonassert.JSONCompareMode;
@@ -95,6 +97,21 @@ public class DefaultComparator extends AbstractComparator {
     }
 
     protected boolean areNotSameDoubles(Object expectedValue, Object actualValue) {
+        if (isIntegralNumber(expectedValue) && isIntegralNumber(actualValue)) {
+            if (expectedValue instanceof BigInteger || actualValue instanceof BigInteger) {
+                return !toBigInteger((Number) expectedValue).equals(toBigInteger((Number) actualValue));
+            }
+            return ((Number) expectedValue).longValue() != ((Number) actualValue).longValue();
+        }
         return ((Number) expectedValue).doubleValue() != ((Number) actualValue).doubleValue();
+    }
+
+    private static boolean isIntegralNumber(Object value) {
+        return value instanceof Byte || value instanceof Short || value instanceof Integer
+                || value instanceof Long || value instanceof BigInteger;
+    }
+
+    private static BigInteger toBigInteger(Number value) {
+        return value instanceof BigInteger ? (BigInteger) value : BigInteger.valueOf(value.longValue());
     }
 }
