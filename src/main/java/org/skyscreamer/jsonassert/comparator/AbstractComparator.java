@@ -18,6 +18,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.skyscreamer.jsonassert.JSONCompareResult;
 
+import java.math.BigDecimal;
 import java.util.*;
 
 import static org.skyscreamer.jsonassert.comparator.JSONCompareUtil.*;
@@ -122,9 +123,22 @@ public abstract class AbstractComparator implements JSONComparator {
         }
     }
 
+    /**
+     * Normalizes numbers in a list of simple values to a canonical {@link BigDecimal} form with trailing
+     * zeros stripped, so that numerically equal values with different runtime types (e.g. {@code Integer} 1
+     * and {@code Double} 1.0) share the same cardinality-map key. Non-number values are returned unchanged.
+     */
+    private static List<Object> normalizeNumbers(List<Object> list) {
+        List<Object> normalized = new ArrayList<Object>(list.size());
+        for (Object o : list) {
+            normalized.add(o instanceof Number ? new BigDecimal(o.toString()).stripTrailingZeros() : o);
+        }
+        return normalized;
+    }
+
     protected void compareJSONArrayOfSimpleValues(String key, JSONArray expected, JSONArray actual, JSONCompareResult result) {
-        Map<Object, Integer> expectedCount = JSONCompareUtil.getCardinalityMap(jsonArrayToList(expected));
-        Map<Object, Integer> actualCount = JSONCompareUtil.getCardinalityMap(jsonArrayToList(actual));
+        Map<Object, Integer> expectedCount = JSONCompareUtil.getCardinalityMap(normalizeNumbers(jsonArrayToList(expected)));
+        Map<Object, Integer> actualCount = JSONCompareUtil.getCardinalityMap(normalizeNumbers(jsonArrayToList(actual)));
         for (Object o : expectedCount.keySet()) {
             if (!actualCount.containsKey(o)) {
                 result.missing(key + "[]", o);
